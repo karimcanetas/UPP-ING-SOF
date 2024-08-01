@@ -9,6 +9,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Iconos -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    
     <style>
         body {
             display: flex;
@@ -16,12 +17,28 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f8f9fa;
+            background: linear-gradient(45deg, #ffffff, #555555, #2f2f2f, #000000);
+            background-size: 300% 300%;
+            animation: gradient 6s ease infinite;
         }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 100%;
+            }
+            50% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+
         h1 {
             text-align: center;
             margin-bottom: 40px;
             font-size: 3.5rem; 
+            color:#000b36
         }
         .btn-container {
             display: flex;
@@ -30,13 +47,13 @@
         }
         .pulse-effect {
             border: none;
-            color: white;
+            color: rgb(255, 255, 255);
             padding: 40px 80px; 
             cursor: pointer;
             border-radius: 50px;
             background-color: #b31500; 
             font-size: 1.5rem; 
-            transition: transform 0.1s ease-in-out; 
+            transition: background-color 0.8s ease, transform 0.3s ease; 
         }
         .pulse-effect:hover {
             background-color: #0047a4; 

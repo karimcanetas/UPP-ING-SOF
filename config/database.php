@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 
 return [
 
-    'default' => env('DB_CONNECTION', 'mysql', 'mysql_2'),
+    'default' => env('mysql', 'mysql_2'),
 
     'connections' => [
 
