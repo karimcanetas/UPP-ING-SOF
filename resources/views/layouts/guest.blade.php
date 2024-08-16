@@ -342,58 +342,58 @@
 
         <script>
 
-            $(document).ready(function () {
-                $('#loginForm').submit(function (e) {
-                    e.preventDefault();
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route("login") }}',
-                        data: $('#loginForm').serialize(),
-                        success: function (response) {
-                            if (response.success) {
-                                $('#message').html('<b class="text-success"><i class="fa-solid fa-check-circle fa-beat-fade"></i> Accediendo... </b>');
-                                const Toast = Swal.mixin({
+$(document).ready(function () {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    didOpen: (toast) => {
-                                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-                                Toast.fire({
-                                    icon: 'success',
-                                    title: 'Inicio de sesión exitoso.'
-                                })
-                                window.location.href = "home";
-                            } else {
-
-                                $('#message').html('<b class="text-danger"><i class="fa-solid fa-triangle-exclamation fa-fade"></i> Error: ' + response.message + '</b>');
-                                    const Toast = Swal.mixin({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    didOpen: (toast) => {
-                                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                                    }
-                                })
-                                Toast.fire({
-                                    icon: 'error',
-                                    title: 'Error: ' + response.message + ''
-                                })
-                            }
+    $('#loginForm').submit(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{{ route("login") }}',
+            data: $('#loginForm').serialize(),
+            success: function (response) {
+                if (response.success) {
+                    $('#message').html('<b class="text-success"><i class="fa-solid fa-check-circle fa-beat-fade"></i> Accediendo... </b>');
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
                         }
                     });
-
-                });
-
-            });
-
-        </script>
-
-    </body>
-</html>
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Inicio de sesión exitoso.'
+                    });
+                    window.location.href = "home";
+                } else {
+                    $('#message').html('<b class="text-danger"><i class="fa-solid fa-triangle-exclamation fa-fade"></i> Error: ' + response.message + '</b>');
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer);
+                            toast.addEventListener('mouseleave', Swal.resumeTimer);
+                        }
+                    });
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Error: ' + response.message
+                    });
+                }
+            },
+            error: function (xhr) {
+                $('#message').html('<b class="text-danger"><i class="fa-solid fa-triangle-exclamation fa-fade"></i> Error de conexión.</b>');
+            }
+        });
+    });
+});

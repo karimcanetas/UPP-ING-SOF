@@ -14,9 +14,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $primaryKey = 'id_user';
+    protected $primaryKey = 'id';
 
-    protected $connection = 'mysql_2';
+    // protected $connection = 'mysql_2';
 
     protected $fillable = [
         'perfil',

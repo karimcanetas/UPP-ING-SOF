@@ -1,7 +1,7 @@
 <!-- SIDE-BAR -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-light text-white accordion toggled animated animated-sm bounceInUp" id="accordionSidebar">
 
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('home') }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
         <div class="sidebar-brand-icon anim-down anim-pause-1">
             <div class="sidebar-brand-icon">
                 <svg width="70" height="40" viewBox="0 0 227 72" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: relative; left: 34px; width: 180px;">
@@ -25,9 +25,9 @@
         {{ __('Menu') }}
     </div>
 
-    <li class="nav-item anim-right anim-pause-1 @if (Route::is('home')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('home') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de aplicaciones">
-            <svg @if( Route::is('home') ) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <li class="nav-item anim-right anim-pause-1 @if (Route::is('dashboard')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de aplicaciones">
+            <svg @if( Route::is('dashboard') ) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -42,9 +42,9 @@
 
     <hr class="sidebar-divider anim-right anim-pause-1">
 
-    <li class="nav-item anim-left anim-pause-1 @if(Route::is('users.index') || Route::is('users.edit') || Route::is('users.show')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('users.index') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
-            <svg @if(Route::is('users.index')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <li class="nav-item anim-left anim-pause-1 @if(Route::is('dashboard') || Route::is('dashboard') || Route::is('dashboard')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
+            <svg @if(Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -60,9 +60,9 @@
         </a>
     </li>
 
-    <li class="nav-item anim-left anim-pause-1 @if(Route::is('configuracion')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('configuracion') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
-            <svg @if(Route::is('configuracion')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <li class="nav-item anim-left anim-pause-1 @if(Route::is('dashboard')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
+            <svg @if(Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -76,9 +76,9 @@
         </a>
     </li>
 
-    <li class="nav-item anim-left anim-pause-1 @if(Route::is('log.index')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('log.index') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
-            <svg @if(Route::is('log.index')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <li class="nav-item anim-left anim-pause-1 @if(Route::is('dashboard')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
+            <svg @if(Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
@@ -101,9 +101,9 @@
         </a>
     </li>
 
-    <li class="nav-item anim-left anim-pause-1 @if(Route::is('manual') || Route::is('libro')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('manual') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
-            <svg @if(Route::is('manual') || Route::is('libro')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <li class="nav-item anim-left anim-pause-1 @if(Route::is('dashboard') || Route::is('dashboard')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
+            <svg @if(Route::is('dashboard') || Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">

@@ -10,33 +10,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Sistema administrativo de Tickets digitales Web') }}</title>
+        @if(Route::is('home') )
 
-        <link href="{{ asset('https://serviciosespecializados.grupoprt.com/public/assets/img/logo/prt_Mesa.ico') }}" rel='icon' type='image/png'>
+            <title>{{ config('app.name', 'Sistema administrativo de Vigilancia') }}</title>
 
-        <!-- Fonts -->
+            <link href="{{ asset('https://serviciosespecializados.grupoprt.com/public/assets/img/logo/prt_Mesa.ico') }}" rel='icon' type='image/png'>
 
-        <link href="//fonts.bunny.net" rel="dns-prefetch">
-        <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
+            <!-- Fonts -->
 
-        <!-- CSS -->
+            <link href="//fonts.bunny.net" rel="dns-prefetch">
+            <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' rel='stylesheet'>
-        <link href="{{ url('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-        <link href="{{ url('css/toyota_style.css') }}" rel="stylesheet">
-        <link href="{{ url('css/animacion.css') }}" rel="stylesheet">
-        <link href="{{ url('css/loader.css') }}" rel="stylesheet">
-        <link href="{{ url('css/style.css') }}" rel="stylesheet">
-        <link href="{{ url('css/sucursal.css') }}" rel="stylesheet">
+            <!-- CSS -->
 
-        @if(Route::is('disenio') || Route::is('home'))
-            <link href="{{ url('css/app.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.css">
+            <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+            <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' rel='stylesheet'>
+            <link href="{{ url('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+            <link href="{{ url('css/toyota_style.css') }}" rel="stylesheet">
+            <link href="{{ url('css/animacion.css') }}" rel="stylesheet">
+            <link href="{{ url('css/loader.css') }}" rel="stylesheet">
+            <link href="{{ url('css/style.css') }}" rel="stylesheet">
+            <link href="{{ url('css/sucursal.css') }}" rel="stylesheet">
+            
+            @if(Route::is('disenio') || Route::is('dashboard'))
+                <link href="{{ url('css/app.css') }}" rel="stylesheet">
+            @endif
+
+        @else
+        
+            <title>{{ config('app.name', 'Sistema administrativo de vigilancia') }}</title>
+
+            <!-- Bootstrap CSS -->
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+            <!-- Iconos -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+            <!-- css -->
+            <link rel="stylesheet" href="{{ asset('css/welcvigilante.css') }}">
+
         @endif
-
         <!-- JS-->
 
         <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
@@ -55,113 +69,126 @@
     </head>
     <body id="page-top" class="scroll-bar-toyota sidebar-toggled">
 
-        <div class="progress" style="height: 6.5px; border-rodius: 0px;">
-            <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+        @if(route::is('home'))
 
-        @include('sweetalert::alert')
-
-        <link href="{{ url('css/sweet_styles.css') }}" rel="stylesheet">
-
-        @include('layouts.loader')
-        @if(Route::is('home'))
-            @include('tickets.Inicio.alertas')
-            @include('tickets.Inicio.modal_tabla')
-            @include('tickets.Inicio.seleccionador')
-            @include('tickets.Inicio.modal_nuevo_ticket')
-        @endif
-
-        <div id="wrapper">
-
-            @include('layouts.sidebar')
-
-            <div id="content-wrapper" class="d-flex flex-column animated animated-sm bounceInUp @if(Route::is('disenio')) home-5-bg @endif">
-
-                <div id="content">
-
-                    @include('layouts.navbar')
-
-                    <div class="container-fluid animated animated-sm bounceInUp" id="dato_modal">
-                        @include('alertas')
-
-                        <div class="d-sm-flex align-items-center justify-content-between mb-2">
-                            @include('layouts.breadcrumb')
-                        </div>
-
-                        <main>
-                            {{ $slot }}
-                        </main>
-
-                    </div>
-                    @include('layouts.footer')
-
-                </div>
+            <div class="progress" style="height: 6.5px; border-rodius: 0px;">
+                <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
 
-        </div>
+            @include('sweetalert::alert')
 
-        <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="{{ asset('vendor/datatables/jquery.Tables.js') }}"></script>
-        <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('js/app/demo/datatables-demo.js') }}"></script>
-        <script src="{{ asset('assets/js/toyota_admin.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.all.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <link href="{{ url('css/sweet_styles.css') }}" rel="stylesheet">
 
-        <script>
+            <div id="wrapper">
 
-            $(document).ready(function () {
-                $('[data-toggle="popover"]').popover({
-                    trigger: 'hover'
-                });
-            });
+                @include('layouts.sidebar')
 
-            $('.confirmar_salida').click(function(event) {
-                var form =  $(this).closest("form");
-                var name = $(this).data("name");
-                event.preventDefault();
-                Swal.fire({
-                    imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/salir.gif',
-                    title: "¿Listo para salir?",
-                    text: "Seleccione 'Cerrar sesión' para finalizar su sesión actual.",
-                    imageWidth: 400,
-                    imageHeight: 300,
-                    showCancelButton: true,
-                    confirmButtonColor: '#00bf7a',
-                    cancelButtonColor: '#f15252',
-                    confirmButtonText: 'Cerrar sesión!',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/check.gif',
-                            imageWidth: 300,
-                            imageHeight: 300,
-                            imageAlt: 'Sesion cerrada!',
-                            title: "Sesion cerrada!",
-                            text: "Seleccione 'Cerrando sesión su sesión actual.",
-                        })
-                        form.submit();
-                    }
-                })
-            });
+                <div id="content-wrapper" class="d-flex flex-column animated animated-sm bounceInUp @if(Route::is('disenio')) home-5-bg @endif">
 
-            $('.copia').select2({
-                placeholder: "Select",
-                allowClear: true
-            });
+                    <div id="content">
 
-        </script>
+                        @include('layouts.navbar')
 
-        @foreach ($tema as $key => $loader)
+                        <div class="container-fluid animated animated-sm bounceInUp" id="dato_modal">
+                            
+
+                            <div class="d-sm-flex align-items-center justify-content-between mb-2">
+                                @include('layouts.breadcrumb')
+                            </div>
+
+                            <main>
+                                {{ $slot }}
+                            </main>
+
+                        </div>
+                        @include('layouts.footer')
+
+                    </div>
+                </div>
+
+            </div>
+
+        @else
+
+            <main>
+                {{ $slot }}
+            </main>
+
+        @endif
+
+        @if(route::is('home'))
+
+            <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+            <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="{{ asset('vendor/datatables/jquery.Tables.js') }}"></script>
+            <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+            <script src="{{ asset('js/app/demo/datatables-demo.js') }}"></script>
+            <script src="{{ asset('assets/js/toyota_admin.js') }}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.all.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
             <script>
-                document.body.style.zoom = "{{ $loader->loader }}%";
+
+                $(document).ready(function () {
+                    $('[data-toggle="popover"]').popover({
+                        trigger: 'hover'
+                    });
+                });
+
+                $('.confirmar_salida').click(function(event) {
+                    var form =  $(this).closest("form");
+                    var name = $(this).data("name");
+                    event.preventDefault();
+                    Swal.fire({
+                        imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/salir.gif',
+                        title: "¿Listo para salir?",
+                        text: "Seleccione 'Cerrar sesión' para finalizar su sesión actual.",
+                        imageWidth: 400,
+                        imageHeight: 300,
+                        showCancelButton: true,
+                        confirmButtonColor: '#00bf7a',
+                        cancelButtonColor: '#f15252',
+                        confirmButtonText: 'Cerrar sesión!',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/check.gif',
+                                imageWidth: 300,
+                                imageHeight: 300,
+                                imageAlt: 'Sesion cerrada!',
+                                title: "Sesion cerrada!",
+                                text: "Seleccione 'Cerrando sesión su sesión actual.",
+                            })
+                            form.submit();
+                        }
+                    })
+                });
+
+                $('.copia').select2({
+                    placeholder: "Select",
+                    allowClear: true
+                });
+
             </script>
-        @endforeach
+
+            @foreach ($tema as $key => $loader)
+                <script>
+                    document.body.style.zoom = "{{ $loader->loader }}%";
+                </script>
+            @endforeach
+
+        @else
+
+            <!-- Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            @stack('scripts')
+        @endif
 
     </body>
 </html>

@@ -1,21 +1,7 @@
-<nav class="navbar navbar-expand nav-pills navbar-light topbar mb-4 static-top @if (Auth::user()->tipo_usuario == 'vendedor' || Auth::user()->tipo_usuario == 'operativo' || Auth::user()->tipo_usuario == 'cliente' || Auth::user()->tipo_usuario == 'usuario') bg-gradient-primary shadow-max @else bg-prt shadow @endif">
-    @if (Auth::user()->tipo_usuario == 'administrador')
-        @if (Auth::user()->tipo_usuario == 'administrador')
-            <button id="sidebarToggleTop" class="btn btn-light d-md-none rounded-circle mr-3">
-                <i class="fa fa-bars"></i>
-            </button>
-        @endif
-    @endif
-
-    @if(auth()->user() && auth()->user()->tipo_usuario === 'Coordinador' || auth()->user()->tipo_usuario === 'administrador')
-
-        <form class="d-flex col-md-4 anim-up anim-pause-1" role="search" id="form-busqueda">
-            <input class="form-control border-25" type="search" placeholder="Numero de Ticket o Asunto" aria-label="Search" name="Buscar" required>
-            <button class="btn btn-success border-25" id="btn-buscar" data-bs-toggle="tooltip" data-bs-placement="top" title="Escribe tu codigo de tiket para buscar informacion">Buscar</button><br>
-        </form>
-
-    @endif
-
+<nav class="navbar navbar-expand nav-pills navbar-light topbar mb-4 static-top bg-prt shadow">
+    <button id="sidebarToggleTop" class="btn btn-light d-md-none rounded-circle mr-3">
+        <i class="fa fa-bars"></i>
+    </button>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown no-arrow" data-toggle="popover" data-content="Menu del usuario">
             <a class="nav-link dropdown-toggle animated animated-sm bounceInUp" href="#" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -25,7 +11,7 @@
                 <img class="img-profile rounded-circle" id="img" src="{{ url('/assets/img/perfil/'.auth()->user()->perfil) }}">
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{{ route('perfil.edit') }}" data-toggle="popover" data-content="Acceso a cuenta">
+                <a class="dropdown-item" href="{{ url('perfil.edit') }}" data-toggle="popover" data-content="Acceso a cuenta">
                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

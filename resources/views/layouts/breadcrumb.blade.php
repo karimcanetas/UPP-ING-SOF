@@ -6,7 +6,7 @@
                 {{ __('Inicio de sesion') }}
             </li>
         @endif
-        @if(Route::is('home') ||
+        @if(Route::is('dashboard') ||
             Route::is('configuracion') ||
             Route::is('roles.create') ||
             Route::is('/') ||
@@ -27,8 +27,8 @@
                     </g>
                 </svg>
 
-                <a href="{{ route('home') }}">
-                    <b>{{ __('Servicio de Tickets') }}</b>
+                <a href="{{ route('dashboard') }}">
+                    <b>{{ __('Servicio de Vigilancia') }}</b>
                 </a>
             </li>
 
@@ -90,7 +90,7 @@
 
     @endif
 
-    @if(Route::is('home'))
+    @if(Route::is('dashboard'))
 
         <a class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1" data-toggle="modal" data-target="#exampleModal_empresa">
             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

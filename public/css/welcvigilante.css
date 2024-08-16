@@ -1,0 +1,264 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(45deg, #000000, #00073f, #000841, #000d70);
+    background-size: 300% 300%;
+    animation: gradient 6s ease infinite;
+    position: relative;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 100%;
+    }
+    50% {
+        background-position: 100% 0%;
+    }
+    100% {
+        background-position: 0% 100%;
+    }
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.card {
+    flex: 1 1 calc(33.333% - 40px);
+    background-color: #07002f;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 15px rgba(171, 171, 171, 0.985);
+    color: #fff;
+    animation: bounceIn 1s ease;
+    transition: transform 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    background-color: #5d82bd;
+}
+
+@media (max-width: 900px) {
+    .card {
+        flex: 1 1 calc(50% - 40px);
+    }
+}
+
+@media (max-width: 600px) {
+    .card {
+        flex: 1 1 100%;
+    }
+}
+
+.form-container {
+    background-color: #07002f;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgba(190, 190, 190, 0.523);
+    width: 100%;
+    max-width: 600px;
+    color: #fff;
+    animation: fadeIn 1s ease-in-out, popIn 0.8s ease;
+    transition: transform 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.form-group label {
+    font-weight: bold;
+    transition: color 0.5s ease;
+}
+
+.form-group label:hover {
+    color: #b31500;
+}
+
+.btn-primary {
+    background-color: #b31500;
+    border: none;
+    font-size: 1.3rem;
+    padding: 18px 36px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: btnPulse 2s infinite;
+    width: 100%;
+    max-width: 240px;
+    margin: 15px auto;
+    display: block;
+}
+
+@keyframes btnPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.btn-primary:hover {
+    background-color: #0047a4;
+    transform: translateY(-3px);
+}
+
+.btn-primary:active {
+    animation: buttonClick 0.2s ease-in-out;
+}
+
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #ffffff;
+    transition: opacity 1s ease, transform 1s ease;
+    animation: slideInFromTop 1.5s ease;
+    font-size: calc(1.5rem + 2vw);
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (min-width: 600px) {
+    .btn-container {
+        flex-direction: row;
+    }
+}
+
+.pulse-effect {
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 20px 40px;
+    cursor: pointer;
+    border-radius: 50px;
+    background-color: #b31500;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: pulse 2s infinite;
+    width: 100%;
+    max-width: 250px;
+    margin: 10px auto;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.pulse-effect:hover {
+    background-color: #ffffff;
+    color: #b31500;
+    transform: translateY(-3px);
+}
+
+.pulse-effect:active {
+    animation: buttonClick 0.2s ease-in-out;
+}
+
+.back-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button {
+    background-color: #b31500;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: btnPulse 2s infinite;
+}
+
+.back-button:hover {
+    background-color: #0047a4;
+    transform: translateY(-3px);
+}
+
+.back-button:active {
+    animation: buttonClick 0.2s ease-in-out;
+}
+
+.alert {
+    font-size: 1.2rem;
+    color: green;
+    text-align: center;
+    animation: fadeIn 2s ease;
+}
+
+.format-container {
+    border: 2px solid black;
+    padding: 20px;
+    text-align: center;
+    display: none;
+    margin-top: 20px;
+    transition: opacity 1s ease-in-out;
+}
+
+.format-container.show {
+    display: block;
+    opacity: 1;
+}
+
+.format-container.hidden {
+    opacity: 0;
+}

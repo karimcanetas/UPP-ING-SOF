@@ -26,7 +26,7 @@
 
                             <div class="col-md-12">
                                 <div class="p-5">
-                                    <form method="POST" class="user was-validated" id="loginForm">
+                                    <form method="POST" class="user was-validated" id="loginForm" action="{{ route('login') }}">
                                         @csrf
 
                                         <div class="anim-up anim-pause-1 mb-4 col-md-12">

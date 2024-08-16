@@ -4,7 +4,7 @@ use Illuminate\Support\Str;
 
 return [
 
-    'default' => env('mysql', 'mysql_2'),
+    'default' => env('DB_CONNECTION','mysql'),
 
     'connections' => [
 
@@ -28,7 +28,7 @@ return [
             ]) : [],
         ],
 
-        'mysql_2' => [
+         'mysql_2' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST_2', '127.0.0.1'),
             'port' => env('DB_PORT_2', '3306'),

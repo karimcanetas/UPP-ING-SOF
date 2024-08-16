@@ -12,7 +12,7 @@ class Empleados extends Model {
 
     use HasFactory;
 
-    protected $connection = 'mysql_2';
+    // protected $connection = 'mysql_2';
 
     protected $primaryKey = 'id_empleado';
 
