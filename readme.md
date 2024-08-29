@@ -1,1 +1,1 @@
-Proyecto para sistema de insidencias en casetas del grupo
+Proyecto para sistema de incidencias en casetas del grupo
