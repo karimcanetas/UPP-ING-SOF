@@ -13,14 +13,16 @@ class Incidencia extends Model
 
     public $timestamps = false; 
 
-        protected $fillable = [
-            'id_casetas',
-            'Detalles',
-            'id_formatos',
-            'fecha_hora',
-            'guardia',
-            'Nombre_vigilante',
-            'id_turnos',
+    protected $fillable = [
+        'id_casetas',
+        'Detalles',
+        'id_formatos',
+        'fecha_hora',
+        'guardia',
+        'Nombre_vigilante',
+        'id_turnos',
+        'lt_gasolina_inicial',
+        'lt_gasolina_final',
     ];
 
     // Relaciones

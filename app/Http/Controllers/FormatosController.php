@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Formato;
 use Illuminate\Http\Request;
 
-class TurnosController extends Controller
+class FormatosController extends Controller
 {
     public function index()
     {

@@ -27,4 +27,4 @@ function showForm(casetaNombre, id_caseta) {
 
 //function showForm(casetaNombre, id_caseta) {
 // Redireccion
-//window.location.href = `/incidencias/create?id_caseta=${id_caseta}`;
+//window.location.href = `/incidencias/create?id_caseta=${id_caseta}`;  

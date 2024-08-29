@@ -11,6 +11,7 @@ use App\Http\Controllers\TurnosController;
 
 
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -45,7 +46,6 @@ Route::get('/empresas/{id_empresa}/sucursales', [EmpresasController::class, 'get
 Route::get('/casetas/{id_sucursal}', [CasetasController::class, 'show']);
 Route::get('/incidencias/create', [IncidenciaController::class, 'create'])->name('incidencias.create');
 Route::post('/incidencias', [IncidenciaController::class, 'store'])->name('incidencias.store');
-Route::get('/incidencias', [IncidenciaController::class, 'update'])->name('incidencias.update');
 
 // Ruta para mostrar la vista con los turnos
 Route::get('/crear-incidencia', [TurnosController::class, 'index'])->name('crear-incidencia');

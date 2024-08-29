@@ -7,20 +7,24 @@ body {
     background: linear-gradient(45deg, #000000, #00073f, #000841, #000d70);
     background-size: 300% 300%;
     animation: gradient 6s ease infinite;
-    position: relative;
+    font-family: Arial, sans-serif;
 }
+
 
 @keyframes gradient {
     0% {
         background-position: 0% 100%;
     }
+
     50% {
         background-position: 100% 0%;
     }
+
     100% {
         background-position: 0% 100%;
     }
 }
+
 
 .container {
     width: 100%;
@@ -34,20 +38,73 @@ body {
     animation: fadeIn 1s ease-in-out;
 }
 
+
+
 .card {
     flex: 1 1 calc(33.333% - 40px);
+    max-height: 750px;
+    overflow-y: auto;
     background-color: #07002f;
     padding: 20px;
     border-radius: 20px;
+    color: #ffffff;
     box-shadow: 0px 0px 15px rgba(171, 171, 171, 0.985);
-    color: #fff;
-    animation: bounceIn 1s ease;
     transition: transform 0.5s ease-in-out, background-color 0.3s ease;
+}
+
+.card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.card::-webkit-scrollbar-thumb {
+    background-color: #ffffff49; 
+    border-radius: 10px;
+    border: 2px solid #ffffff4c; 
+}
+
+.card::-webkit-scrollbar-track {
+    background-color: #ffffff47; 
+    border-radius: 10px; 
+}
+
+.card {
+    scrollbar-width: thin;
+    scrollbar-color: #fefefe39 #f4f4f457; 
+}
+
+.form-row {
+    color: white;
+}
+
+
+/* card del formato */
+.horizontal-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 50px;
+    margin: 20px;
+}
+
+
+.horizontal-card .form-group {
+    flex: 5;
+}
+
+.horizontal-card .format-container {
+    text-align: center;
+    flex: 5 0 auto;
+}
+
+.hidden-but {
+    visibility: hidden;
 }
 
 .card:hover {
     transform: scale(1.05);
-    background-color: #5d82bd;
+    background-color: #264b86;
 }
 
 @media (max-width: 900px) {
@@ -56,28 +113,36 @@ body {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .card {
         flex: 1 1 100%;
     }
 }
 
 .form-container {
-    background-color: #07002f;
+    background-color: rgba(7, 0, 47, 0.9);
     padding: 50px;
     border-radius: 20px;
-    box-shadow: 0px 0px 20px rgba(190, 190, 190, 0.523);
+    box-shadow: 0px 0px 20px rgba(190, 190, 190, 0.5);
     width: 100%;
     max-width: 600px;
     color: #fff;
-    animation: fadeIn 1s ease-in-out, popIn 0.8s ease;
-    transition: transform 0.5s ease-in-out;
+    animation: fadeIn 1.5s ease-in-out, popIn 1.8s ease;
+    transition: transform 1.5s ease-in-out;
+    overflow: hidden;
 }
+
+.form-container:focus-within {
+    transform: perspective(1000px) rotateY(0deg);
+    background-color: rgba(7, 0, 47, 0.8);
+}
+
 
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -87,21 +152,40 @@ body {
     0% {
         transform: scale(0.9);
     }
+
     100% {
         transform: scale(1);
     }
 }
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+}
+
 .form-group label {
     font-weight: bold;
     transition: color 0.5s ease;
+    color: white;
 }
 
 .form-group label:hover {
     color: #b31500;
 }
 
-.btn-primary {
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border-radius: 20px;
+    border: 5px solid #ddd;
+    background-color: #fff;
+    color: #000;
+}
+
+.btn-primary,
+.pulse-effect,
+.back-button {
     background-color: #b31500;
     border: none;
     font-size: 1.3rem;
@@ -109,6 +193,8 @@ body {
     border-radius: 20px;
     transition: background-color 0.3s ease, transform 0.3s ease;
     animation: btnPulse 2s infinite;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     width: 100%;
     max-width: 240px;
     margin: 15px auto;
@@ -116,18 +202,17 @@ body {
 }
 
 @keyframes btnPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
 }
 
-.btn-primary:hover {
-    background-color: #0047a4;
-    transform: translateY(-3px);
-}
 
 .btn-primary:active {
     animation: buttonClick 0.2s ease-in-out;
@@ -137,9 +222,11 @@ body {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(0.95);
     }
+
     100% {
         transform: scale(1);
     }
@@ -154,11 +241,16 @@ h1 {
     font-size: calc(1.5rem + 2vw);
 }
 
+.blanco {
+    color: rgb(255, 255, 255);
+}
+
 @keyframes slideInFromTop {
     from {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -171,6 +263,14 @@ h1 {
     gap: 1rem;
     flex-wrap: wrap;
 }
+
+
+.btn-primary:active,
+.pulse-effect:active,
+.back-button:active {
+    animation: buttonClick 0.2s ease-in-out;
+}
+
 
 @media (min-width: 600px) {
     .btn-container {
@@ -194,19 +294,17 @@ h1 {
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
 }
 
-.pulse-effect:hover {
-    background-color: #ffffff;
-    color: #b31500;
-    transform: translateY(-3px);
-}
 
 .pulse-effect:active {
     animation: buttonClick 0.2s ease-in-out;
@@ -227,12 +325,25 @@ h1 {
     font-size: 1.5rem;
     transition: background-color 0.3s ease, transform 0.3s ease;
     animation: btnPulse 2s infinite;
+
 }
 
+.btn-primary:hover,
+.pulse-effect:hover,
 .back-button:hover {
-    background-color: #0047a4;
+    background-color: #ffffff;
     transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+
 }
+
+.btn-primary:active,
+.pulse-effect:active,
+.back-button:active {
+    animation: buttonClick 0.2s ease-in-out;
+}
+
 
 .back-button:active {
     animation: buttonClick 0.2s ease-in-out;
@@ -261,4 +372,100 @@ h1 {
 
 .format-container.hidden {
     opacity: 0;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        padding: 20px;
+        transform: perspective(1000px) rotateY(0deg);
+    }
+}
+
+/* chceckbox */
+
+.radio-section {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+/* Ocultar el radio button */
+.radio-item [type="radio"] {
+	display: none;
+}
+
+/* Separación entre radio items */
+.radio-item + .radio-item {
+	margin-top: 1rem;
+}
+
+/* Estilo del label del radio */
+.radio-item label {
+	display: block;
+	padding: 1rem 2.5rem;
+	background: #1d1d42;
+	border: 5px solid rgba(255, 255, 255, 0);
+	border-radius: 100px;
+	cursor: pointer;
+	font-size: 0.8rem; /* Ajuste de tamaño de fuente */
+	font-weight: 400;
+	min-width: 200px; /* Ajuste del ancho mínimo */
+	white-space: nowrap;
+	position: relative;
+	transition: 0.5s ease-in-out;
+}
+
+/* Estilo del círculo externo */
+.radio-item label:after,
+.radio-item label:before {
+	content: "";
+	position: absolute;
+	border-radius: 100%;
+}
+
+/* Estilo del círculo sin seleccionar */
+.radio-item label:after {
+	height: 0.9rem;
+	width: 1rem;
+	border: 1px solid #524eee;
+	left: 1.1rem;
+	
+}
+
+/* Estilo del círculo seleccionado */
+.radio-item label:before {
+	background: #5751fa;
+	height: 1rem;
+	width: 1rem;
+	left: 1.1rem;
+	top: calc(50%-0.25rem);
+	transform: scale(4);
+	opacity: 0;
+	visibility: hidden;
+	transition: 0.4s ease-in-out;
+}
+
+/* Cambiar color del borde cuando está seleccionado */
+.radio-item [type="radio"]:checked ~ label {
+	border-color: #524eee;
+}
+
+/* Mostrar el círculo interno cuando está seleccionado */
+.radio-item [type="radio"]:checked ~ label::before {
+	opacity: 1;
+	visibility: visible;
+	transform: scale(1);
+}
+/* Estilo personalizado para el contenedor de SweetAlert */
+.my-swal-container {
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+}
+
+/* Estilo personalizado para el popup de SweetAlert */
+.my-swal-popup {
+    background-color: #000; /* Fondo negro para el popup */
+    color: #ffffff; /* Texto blanco para contraste */
 }

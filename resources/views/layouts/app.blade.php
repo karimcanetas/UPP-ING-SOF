@@ -10,7 +10,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        @if(Route::is('home') )
+        @if(Route::is('dashboard') )
 
             <title>{{ config('app.name', 'Sistema administrativo de Vigilancia') }}</title>
 
@@ -49,6 +49,8 @@
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
             <!-- css -->
             <link rel="stylesheet" href="{{ asset('css/welcvigilante.css') }}">
+            
+
 
         @endif
         <!-- JS-->
@@ -69,7 +71,7 @@
     </head>
     <body id="page-top" class="scroll-bar-toyota sidebar-toggled">
 
-        @if(route::is('home'))
+        @if(route::is('dashboard'))
 
             <div class="progress" style="height: 6.5px; border-rodius: 0px;">
                 <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -116,7 +118,7 @@
 
         @endif
 
-        @if(route::is('home'))
+        @if(route::is('dashboard'))
 
             <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
             <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -184,10 +186,16 @@
         @else
 
             <!-- Bootstrap JS -->
+            <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+            <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+            <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
             <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             @stack('scripts')
+
         @endif
 
     </body>
