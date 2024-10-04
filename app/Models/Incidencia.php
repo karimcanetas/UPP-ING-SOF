@@ -23,6 +23,8 @@ class Incidencia extends Model
         'id_turnos',
         'lt_gasolina_inicial',
         'lt_gasolina_final',
+        'folio_Salida_definitiva',
+        'id_unidad'
     ];
 
     // Relaciones
@@ -30,5 +32,11 @@ class Incidencia extends Model
     {
         return $this->belongsTo(Caseta::class, 'id_casetas');
     }
-
+    public function formatos()
+    {
+        return $this->hasMany(Formato::class, 'id_incidencia');
+    }
+    
 }
+
+

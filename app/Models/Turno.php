@@ -23,4 +23,17 @@ class Turno extends Model
     {
         return $this->hasMany(Incidencia::class, 'id_turnos', 'id_turnos');
     }
+
+    public function casetas()
+    {
+        return $this->belongsToMany(Caseta::class, 'formato_caseta', 'id_turnos', 'id_casetas')
+            ->withPivot('id_formatos');
+    }
+
+    public function formatos()
+    {
+        return $this->belongsToMany(Formato::class, 'formato_caseta', 'id_turnos', 'id_formatos')
+            ->withPivot('id_casetas');
+    }
 }
+    

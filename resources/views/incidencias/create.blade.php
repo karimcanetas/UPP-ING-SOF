@@ -1,11 +1,13 @@
 <x-app-layout>
     <!-- contenido -->
     <div class="back-button-container">
-        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+        <button id="btnAtras" class="back-button"><i class="fas fa-arrow-left"></i></button>
     </div>
 
+
+
     <div class="form-container" id="primeraEtapa">
-        <h1 class="question">Iniciar sesión</h1>
+        <h1 class="primera">Iniciar sesión</h1>
 
         @if ($message = Session::get('success'))
             <div class="alert alert-success">
@@ -38,22 +40,25 @@
                 <input type="text" class="form-control" id="Nombre_vigilante" name="Nombre_vigilante" required>
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="guardia">Guardia:</label>
                 <input type="text" class="form-control" id="guardia" name="guardia" required>
-            </div>
+            </div> --}}
 
             <div class="form-group">
                 <label for="id_turnos">Turno:</label>
                 <select class="form-control" id="id_turnos" name="id_turnos" required>
                     <option value="" disabled selected>Seleccione un turno</option>
                     @foreach ($turnos as $turno)
-                        <option value="{{ $turno->id_turnos }}">{{ $turno->turno }} ({{ $turno->Hora_inicio }} -
-                            {{ $turno->Hora_Fin }})</option>
+                        <option value="{{ $turno->id_turnos }}" data-nombre="{{ $turno->turno }}">
+                            {{ $turno->turno }} ({{ $turno->Hora_inicio }} - {{ $turno->Hora_Fin }})
+                        </option>
                     @endforeach
                 </select>
             </div>
-            
+            <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" class="form-control" id="fecha_hora"
+                name="fecha_hora" readonly>
+
             <div class="form-group text-center">
                 <button type="button" id="crearIncidenciaBtn" class="btn btn-primary"
                     onclick="mostrarSegundaEtapa()">Iniciar sesión</button>
@@ -61,19 +66,15 @@
         </form>
     </div>
 
+
     <form id="detallesForm" style="display:none; background-color: transparent;"
         action="{{ route('incidencias.store') }}" method="POST">
         @csrf
-
         <!-- Primer Card -->
         <div class="card horizontal-card d-none">
             <div class="form-group">
                 <label for="id_casetas">Caseta:</label>
                 <input type="text" class="form-control" name="id_casetas" id="caseta_detalles" readonly>
-            </div>
-            <div class="form-group">
-                <label for="id_turnos">Guardia:</label>
-                <input type="text" class="form-control" name="guardia" id="guardia_detalles" readonly>
             </div>
             <div class="form-group">
                 <label for="id_turnos">Turno:</label>
@@ -84,652 +85,302 @@
                 <input type="text" class="form-control" name="Nombre_vigilante" id="Nombre_vigilante_detalles"
                     readonly>
             </div>
+            <div class="form-group">
+                <label for="fecha_hora">Fecha y hora del envio:</label>
+                <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_detalles" readonly>
+            </div>
         </div>
 
         <!-- Segundo Card -->
-        <di class="card">
+        <div class="card">
             <div class="select-format-container">
                 <div class="form-group">
-    <label for="id_formatos" class="text-white">Formatos:</label>
-    <select class="form-control" id="id_formatos" name="id_formatos" required>
-        <option value="" disabled selected>Seleccione un formato</option>
-        @foreach ($formatos as $formato)
-            <option value="{{ $formato->id_formatos }}">{{ $formato->Tipo }}</option>
-        @endforeach
-    </select>
-</div>
-
-                <div class="format-container" id="formatoDisplay">
-                    <!-- Formulario de Novedades -->
-                    <div class="form-group">
-                        <label for="Detalles">Detalles:</label>
-                        <textarea id="Detalles" name="Detalles" class="blanco" required></textarea>
-                    </div>
-
-                    <!-- si la caseta es "Encierro" este se mostrará -->
-                    @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Encierro')
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="lt_gasolina_inicial">Lt Gasolina Inicial:</label>
-                                <input type="number" step="0.01" class="form-control" id="lt_gasolina_inicial"
-                                    name="lt_gasolina_inicial" required>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="lt_gasolina_final">Lt Gasolina Final:</label>
-                                <input type="number" step="0.01" class="form-control" id="lt_gasolina_final"
-                                    name="lt_gasolina_final" required>
-                            </div>
-                        </div>
-                    @endif
+                    <label for="id_formatos" class="text-white">Formatos:</label>
+                    <select class="form-control" id="id_formatos" name="id_formatos" required>
+                        <option value="" disabled selected>Seleccione un formato</option>
+                        @foreach ($formatos as $formato)
+                            <option value="{{ $formato->id_formatos }}">{{ $formato->Tipo }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <!-- Formulario de Control de unidades -->
-                @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-                    <div id="controlUnidades" style="display: none;">
-                        <div class="form-group">
-                            <label for="folio_salida">Folio/Salida definitiva:</label>
-                            <input type="text" class="form-control" id="folio_salida" name="folio_salida">
-                        </div>
-                        <div class="form-group">
-                            <label for="unidad">Unidad:</label>
-                            <input type="text" class="form-control" id="unidad" name="unidad">
-                        </div>
-                        <div class="form-group">
-                            <label for="color">Color:</label>
-                            <input type="text" class="form-control" id="color" name="color">
-                        </div>
-                        <div class="form-group">
-                            <label for="vin">VIN(6 últimos digitos):</label>
-                            <input type="number" class="form-control" id="vin" name="vin">
-                        </div>
-                        <div class="form-group">
-                            <label for="asesor">Asesor:</label>
-                            <input type="text" class="form-control" id="asesor" name="asesor">
-                        </div>
-                        <div class="form-group">
-                            <label for="fecha">Fecha:</label>
-                            <input type="date" class="form-control" id="fecha" name="fecha">
-                        </div>
-                        <div class="form-group">
-                            <label for="hora">Hora:</label>
-                            <input type="time" class="form-control" id="hora" name="hora">
-                        </div>
-                @endif
-            </div>
-
-            <!-- Formulario de Control de proveedores TOT'S -->
-            @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-                <div id="controlProv" style="display: none;">
-                    <div class="form-group">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" class="form-control" id="fecha" name="fecha">
-                    </div>
-                    <div class="form-group">
-                        <label for="hora">Hora:</label>
-                        <input type="time" class="form-control" id="hora" name="hora">
-                    </div>
-                    <div class="form-group">
-                        <label for="color">Nombre Taller:</label>
-                        <input type="text" class="form-control" id="color" name="color">
-                    </div>
-                    <div class="form-group">
-                        <label for="proveedor">Persona (Proveedor):</label>
-                        <input type="text" class="form-control" id="proveedor" name="proveedor">
-                    </div>
-                    <div class="form-group">
-                        <label for="unidad">Unidad:</label>
-                        <input type="text" class="form-control" id="unidad" name="unidad">
-                    </div>
-                    <div class="form-group">
-                        <label for="vin">VIN (6 últimos digitos):</label>
-                        <input type="number" class="form-control" id="vin" name="vin">
-                    </div>
-                    <div class="form-group">
-                        <label for="folio">Folio / Num de pase:</label>
-                        <input type="text" class="form-control" id="folio" name="folio">
-                    </div>
-            @endif
-        </div>
-
-        <!-- Formulario de USO UNIDADES DEMOS (PRUEBAS DE MANEJO Y/O DILIGENCIAS) -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-            <div id="controlDemos" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="hora">Hora:</label>
-                    <input type="time" class="form-control" id="hora" name="hora">
-                </div>
-                <div class="form-group">
-                    <label for="color">Persona(Cliente - Asociado)</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="asesor">Asesor:</label>
-                    <input type="text" class="form-control" id="asesor" name="asesor">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de Revisión de Instalaciones -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-            <div id="instalaciones" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="hora">Hora:</label>
-                    <input type="time" class="form-control" id="hora" name="hora">
-                </div>
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>Puerta</h2>
-                        <div class="radio-item"><input name="puerta" id="abierta" type="radio"><label
-                                for="abierta">Abierta</label></div>
-                        <div class="radio-item"><input name="puerta" id="cerrada" type="radio"><label
-                                for="cerrada">Cerrada</label></div>
-                    </div>
-                </section>
-
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>Luces</h2>
-                        <div class="radio-item"><input name="luces" id="encendido" type="radio"><label
-                                for="encendido">Encendido</label></div>
-                        <div class="radio-item"><input name="luces" id="apagado" type="radio"><label
-                                for="apagado">Apagado</label></div>
-                    </div>
-                </section>
-
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>Aire Acondicionado</h2>
-                        <div class="radio-item"><input name="aire" id="encendido1" type="radio"><label
-                                for="encendido1">Encendido</label></div>
-                        <div class="radio-item"><input name="aire" id="apagado1" type="radio"><label
-                                for="apagado1">Apagado</label></div>
-                    </div>
-                </section>
-
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>TV:</h2>
-                        <div class="radio-item"><input name="tv" id="encendido2" type="radio"><label
-                                for="encendido2">Encendido</label></div>
-                        <div class="radio-item"><input name="tv" id="apagado2" type="radio"><label
-                                for="apagado2">Apagado</label></div>
-                    </div>
-                </section>
-
-                <div class="form-group">
-                    <label for="otro">Otro:</label>
-                    <input type="text" class="form-control" id="otro" name="otro">
-                </div>
-            </div>
-            </div>
-        @endif
-
-        <!-- Formulario de INVENTARIO DE UNIDADES EN EXHIBICION) -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-            <div id="unidades" style="display: none;">
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <br>
-                        <h4>Inventario de unidades en exhibición:</h4>
-                        <div class="radio-item"><input name="ubicacion_uni" id="piso" type="radio"><label
-                                for="piso">PISO</label></div>
-                        <div class="radio-item"><input name="ubicacion_uni" id="exterior" type="radio"><label
-                                for="exterior">EXTERIOR</label></div>
-                        <div class="radio-item"><input name="ubicacion_uni" id="demos" type="radio"><label
-                                for="demos">DEMOS</label></div>
-                    </div>
-                </section>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN(6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>Condición de seguridad de la unidad:</h2>
-                        <div class="radio-item"><input name="condicion_segu" id="abierto1" type="radio"><label
-                                for="abierto1">Abierto</label></div>
-                        <div class="radio-item"><input name="condicion_segu" id="cerrado1" type="radio"><label
-                                for="cerrado1">Cerrado</label></div>
-                    </div>
-                </section>
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h2>Condición de daños de la unidad:</h2>
-                        <div class="radio-item"><input name="daños_unidad" id="golpes" type="radio"><label
-                                for="golpes">Golpes</label></div>
-                        <div class="radio-item"><input name="daños_unidad" id="rayones" type="radio"><label
-                                for="rayones">Rayones</label></div>
-                    </div>
-                </section>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones / Comentarios:</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de CONTROL DE ACCESO A PROVEEDORES -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-            <div id="controlProveedores" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="hora_entrada">Hora de entrada:</label>
-                    <input type="time" class="form-control" id="hora_entrada" name="hora_entrada">
-                </div>
-                <div class="form-group">
-                    <label for="nombre_empresa">Nombre de la empresa visitante:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="nombre_persona">Nombre de la persona visitante:</label>
-                    <input type="text" class="form-control" id="nombre_persona" name="nombre_persona">
-                </div>
-                <div class="form-group">
-                    <label for="motivo_visita">Asunto - Motivo visita:</label>
-                    <input type="text" class="form-control" id="motivo_visita" name="motivo_visita">
-                </div>
-                <div class="form-group">
-                    <label for="hora_salida">Hora de salida:</label>
-                    <input type="time" class="form-control" id="hora_salida" name="hora_salida">
-                </div>
-                <div class="form-group">
-                    <label for="firma">Firma:</label>
-                    <input type="text" class="form-control" id="firma" name="firma">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de ACCESO Y SALIDA DE UNIDADES SINIESTRADAS -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Encierro')
-            <div id="acceso_salida" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="hora_entrada">Hora de entrada:</label>
-                    <input type="time" class="form-control" id="hora_entrada" name="hora_entrada">
-                </div>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-            </div>
-        @endif
-        
-
-        <!-- Formulario de ENTRADA Y SALIDA DE UNIDADES DEL ENCIERRO -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Encierro')
-            <div id="unidades_encierro" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <section class="form-group ">
-                    <div class="radio-list">
-                        <h4>Situacion</h4>
-                        <div class="radio-item"><input name="situacion" id="baja" type="radio"><label
-                                for="baja">Baja</label></div>
-                        <div class="radio-item"><input name="situacion" id="ingreso" type="radio"><label
-                                for="ingreso">Ingreso</label></div>
-                    </div>
-                </section>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos)</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones / Comentarios:</label>
-                    <input type="text   " class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de INVENTARIO DE UNIDADES NUEVAS EN ENCIERRO / PATIO -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Encierro')
-            <div id="inventario_unidades" style="display: none;">
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones / Comentarios:</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones  ">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de CONTROL  DE ACEITE Y RESIDUOS DEL TALLER -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="control_taller" style="display: none;">
-                <div class="form-group">
-                    <label for="control_aceite">Control aceite Bahía 1-2:</label>
-                    <input type="number" class="form-control" id="control_aceite" name="control_aceite">
-                </div>
-                <div class="form-group">
-                    <label for="control_3">Control aceite Bahía 3-4:</label>
-                    <input type="number" class="form-control" id="contorl_bahia" name="control_bahia">
-                </div>
-                <div class="form-group">
-                    <label for="control_5">Control aceite Bahía 5-6:</label>
-                    <input type="number" class="form-control" id="control_5" name="control_5">
-                </div>
-                <div class="form-group">
-                    <label for="control_7">Control aceite Bahía 7-8:</label>
-                    <input type="number" class="form-control" id="control_7" name="control_7">
-                </div>
-                <div class="form-group">
-                    <label for="bodega_residuos">Bodega residuos: (No aclarado)</label>
-                    <input type="text" class="form-control" id="bodega_residuos" name="bodega_residuos">
-                </div>
-                <div class="form-group">
-                    <label for="recepcion_aceite">Recepción de aceite</label>
-                    <input type="text" class="form-control" id="recepcion_aceite" name="recepcion_aceite">
-                </div>
-                <div class="form-group">
-                    <label for="recepcion_trailer">Recepción de trailer</label>
-                    <input type="text" class="form-control" id="recepcion_trailer" name="recepcion_trailer">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de REGISTRO DE UNIDADES SINIESTRADAS EN ESTACIONAMIENTO FUERA DE HORARIO LABORAL -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="registro_unidades" style="display: none;">
-                <div class="form-group">
-                    <label for="marca">Marca:</label>
-                    <input type="text" class="form-control" id="marca" name="marca">
-                </div>
-                <div class="form-group">
-                    <label for="modelo">Modelo:</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN(6 últimos digitos)</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="placas">Placas</label>
-                    <input type="text" class="form-control" id="placas" name="placas">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de REGISTRO DE UNIDADES SEMINUEVAS EN ESTACIONAMIENTO PARA EXHIBICION -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="registro_exhibicion" style="display: none;">
-                <div class="form-group">
-                    <label for="marca">Marca:</label>
-                    <input type="text" class="form-control" id="marca" name="marca">
-                </div>
-                <div class="form-group">
-                    <label for="modelo">Modelo:</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN(6 últimos digitos)</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="placas">Placas</label>
-                    <input type="text" class="form-control" id="placas" name="placas">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de REGISTRO DE OTRAS UNIDADES EN ESTACIONAMIENTOS DE CLIENTES -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="registro_clientes" style="display: none;">
-                <div class="form-group">
-                    <label for="marca">Marca:</label>
-                    <input type="text" class="form-control" id="marca" name="marca">
-                </div>
-                <div class="form-group">
-                    <label for="modelo">Modelo:</label>
-                    <input type="text" class="form-control" id="modelo" name="modelo">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN(6 últimos digitos)</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="placas">Placas</label>
-                    <input type="text" class="form-control" id="placas" name="placas">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de UNIDADES ESTADIA EN TALLER -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="estadia_taller" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="placas">Placas:</label>
-                    <input type="text" class="form-control" id="placas" name="placas">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="area">Area</label>
-                    <input type="text" class="form-control" id="area" name="area">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de UNIDADES ESTADIA EN AZOTEA -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="estadia_azotea" style="display: none;">
-                <div class="form-group">
-                    <label for="fecha">Fecha:</label>
-                    <input type="date" class="form-control" id="fecha" name="fecha">
-                </div>
-                <div class="form-group">
-                    <label for="unidad">Unidad:</label>
-                    <input type="text" class="form-control" id="unidad" name="unidad">
-                </div>
-                <div class="form-group">
-                    <label for="color">Color:</label>
-                    <input type="text" class="form-control" id="color" name="color">
-                </div>
-                <div class="form-group">
-                    <label for="placas">Placas:</label>
-                    <input type="text" class="form-control" id="placas" name="placas">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="area">Area</label>
-                    <input type="text" class="form-control" id="area" name="area">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de CONTROL DE ACCESO DE UNIDADES POR EL ÁREA DE TALLER POSTVENTA -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="taller_postventa" style="display: none;">
-                <div class="form-group">
-                    <label for="hora_entrada">Hora de entrada:</label>
-                    <input type="time" class="form-control" id="hora_entrada" name="hora_entrda">
-                </div>
-                <div class="form-group">
-                    <label for="nombre_cliente">Nombre de cliente:</label>
-                    <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente">
-                </div>
-                <div class="form-group">
-                    <label for="auto">Auto:</label>
-                    <input type="text" class="form-control" id="auto" name="auto">
-                </div>
-                <div class="form-group">
-                    <label for="cono">Cono:</label>
-                    <input type="text" class="form-control" id="cono" name="cono">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de VEHICULOS POR SINIESTROS (ORDENES TIPO B SEGUROS) -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="vehiculos_siniestros" style="display: none;">
-                <div class="form-group">
-                    <label for="hora_entrada">Hora de entrada:</label>
-                    <input type="time" class="form-control" id="hora_entrada" name="hora_entrada">
-                </div>
-                <div class="form-group">
-                    <label for="nombre_cliente">Nombre de cliente:</label>
-                    <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente">
-                </div>
-                <div class="form-group">
-                    <label for="auto">Auto:</label>
-                    <input type="text" class="form-control" id="auto" name="auto">
-                </div>
-                <div class="form-group">
-                    <label for="cono">Cono:</label>
-                    <input type="text" class="form-control" id="cono" name="cono">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-        <!-- Formulario de VEHICULO PARA LAVADO (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS) -->
-        @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
-            <div id="vehiculo_lavado" style="display: none;">
-                <div class="form-group">
-                    <label for="hora_entrada">Hora de entrada:</label>
-                    <input type="time" class="form-control" id="hora_entrada" name="hora_entrada">
-                </div>
-                <div class="form-group">
-                    <label for="nombre_cliente">Nombre de cliente:</label>
-                    <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente">
-                </div>
-                <div class="form-group">
-                    <label for="auto">Auto:</label>
-                    <input type="text" class="form-control" id="auto" name="auto">
-                </div>
-                <div class="form-group">
-                    <label for="cono">Cono:</label>
-                    <input type="text" class="form-control" id="cono" name="cono">
-                </div>
-                <div class="form-group">
-                    <label for="vin">VIN (6 últimos digitos):</label>
-                    <input type="number" class="form-control" id="vin" name="vin">
-                </div>
-                <div class="form-group">
-                    <label for="observaciones">Observaciones</label>
-                    <input type="text" class="form-control" id="observaciones" name="observaciones">
-                </div>
-        @endif
-        </div>
-
-
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </div>
-        </div>
-        </div>
-
-        <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" class="form-control" id="fecha_hora"
-            name="fecha_hora" readonly>
     </form>
+
+
+
+    <!-- Formulario Novedades >! -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="Novedades_unidades">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.Novedades')
+    </form>
+
+    <!-- Formulario de Control de unidades -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="area_unidades">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.controlunidades')
+    </form>
+
+    <!-- Formulario de Control de proveedores TOT'S -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="area_TOTs">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.control_proveedoresTOTs')
+    </form>
+
+    <!-- Formulario de USO UNIDADES DEMOS (PRUEBAS DE MANEJO Y/O DILIGENCIAS) -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="area_demos">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.unidades_demos')
+    </form>
+
+
+    <!-- Formulario de Revisión de Instalaciones -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="revision_demos">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.revision_instalaciones')
+    </form>
+
+    <!-- Formulario de INVENTARIO DE UNIDADES EN EXHIBICION) -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="exhibicion_demos">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.unidades_exhibicion')
+    </form>
+
+    <!-- Formulario de CONTROL DE ACCESO A PROVEEDORES -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="proveedores_demos">
+        @csrf
+        @include('Toyota.Cancún.Área de demos.control_acceso_proveedores')
+    </form>
+
+    <!-- Formulario Novedades Encierro >! -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_encierro">
+        @csrf
+        @include('Toyota.Cancún.Encierro.NovedadesEncierro')
+    </form>
+
+    <!-- Formulario de ACCESO Y SALIDA DE UNIDADES SINIESTRADAS -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="siniestradas_encierro">
+        @csrf
+        @include('Toyota.Cancún.Encierro.acceso_salida_siniestradas')
+    </form>
+
+    <!-- Formulario de ENTRADA Y SALIDA DE UNIDADES DEL ENCIERRO -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="entrada_salida_encierro">
+        @csrf
+        @include('Toyota.Cancún.Encierro.entrada_salida_encierro')
+    </form>
+
+    <!-- Formulario de INVENTARIO DE UNIDADES NUEVAS EN ENCIERRO / PATIO -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="inventario_nuevas">
+        @csrf
+        @include('Toyota.Cancún.Encierro.inventario_nuevas_encierro')
+    </form>
+
+    <!--Formulatio de Noveadades postventa -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_post">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.Novedades')
+    </form>
+
+    <!-- Formulario de CONTROL DE ACEITE Y RESIDUOS DEL TALLER -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="control_aceite_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.control_aceite')
+    </form>
+
+
+    <!-- Formulario de REGISTRO DE UNIDADES SINIESTRADAS EN ESTACIONAMIENTO FUERA DE HORARIO LABORAL -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="registro_unidades_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.registro_unidades')
+    </form>
+
+
+    <!-- Formulario de REGISTRO DE UNIDADES SEMINUEVAS EN ESTACIONAMIENTO PARA EXHIBICION -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="unidades_seminuevas_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.registro_unidades_seminuevas')
+    </form>
+
+
+    <!-- Formulario de REGISTRO DE OTRAS UNIDADES EN ESTACIONAMIENTOS DE CLIENTES -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="estacionamiento_clientes_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.registro_estacionamiento_clientes')
+    </form>
+
+    <!-- Formulario de UNIDADES ESTADIA EN TALLER -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="estadia_taller_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.unidades_estadia_taller')
+    </form>
+
+    <!-- Formulario de UNIDADES ESTADIA EN AZOTEA -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="estadia_azotea_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.unidades_estadia_azotea')
+    </form>
+
+    <!-- Formulario de CONTROL DE ACCESO DE UNIDADES POR EL ÁREA DE TALLER POSTVENTA -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="control_acceso_postventa">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.control_acceso_area_taller')
+    </form>
+
+
+    <!-- Formulario de VEHICULOS POR SINIESTROS (ORDENES TIPO B SEGUROS) -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="siniestros">
+        @csrf
+        @include('Toyota.Cancún.PostVenta.vehiculos_siniestros')
+    </form>
+
+    <form action="{{ route('incidencias.store') }}" method="POST" id="lavados">
+        @csrf
+        <!-- Formulario de VEHICULO PARA LAVADO (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS) -->
+        @include('Toyota.Cancún.PostVenta.vehiculo_lavado')
+    </form>
+
+
+
+    <!-- FORMATOS PARA LA SUCURSAL TOYOTA MONTEJO -->
+
+    <!-- NOVEDADES-->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_servcio">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Novedades')
+    </form>
+
+    <!-- CONTROL DE ENTREGA DE UNIDADES EN POSTVENTA -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="entrega_unidades">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Control_postventa')
+    </form>
+
+    <!-- SALIDA UNIDADES TOT'S SUBARU -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="salida_tots_subaru">
+        @csrf
+        @include('Toyota.Montejo.Caseta Subaru.Salida_TOTs')
+    </form>
+
+    <!-- Control de unidades en estacionamiento TOYOTA -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="estacionamiento_toyota_servicio">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Control_estacionamiento')
+    </form>
+
+    <!-- CONTROL DE ACCESO A PROVEEDORES MONTEJO CASETA SERVICIO-->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="acceso_proveedores_montejo_servicio">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Control_acceso')
+    </form>
+
+    <!-- CONTROL DE ACCESO A PROVEEDORES MONTEJO CASETA SUBARU-->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="control_acceso">
+        @csrf
+        @include('Toyota.Montejo.Caseta Subaru.Control_acceso')
+    </form>
+
+    <!-- POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS-->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="aceite_bahias_servicio">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Bitacora_bahias')
+    </form>
+
+    <!-- POSTVENTA -POSTVENTA - BITACORA DE ACEITE GRANEL -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="bitacora_granel">
+        @csrf
+        @include('Toyota.Montejo.Caseta Servicio.Bitacora_granel')
+    </form>
+
+    <!-- NOVEDADES SUBARU -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_subaru">
+        @csrf
+        @include('Toyota.Montejo.Caseta Subaru.Novedades')
+    </form>
+
+
+
+    <!--FORMULARIO PARA LA EMPRESA SUBARU SUCURSAL MONTEJO-->
+
+    <!-- EMPRESA SUBARU-->
+
+    <!-- NOVEDADES
+    
+        ES EL MISMO QUE EL DE LA CASETA SUBARU DE MONTEJO
+
+    -->
+
+    <!-- CONTROL DE ENTREGA DE UNIDADES EN POSTVENTA -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="Control_entrega">
+        @csrf
+        @include('Subaru.Montejo.Caseta Subaru.Control_entrega')
+    </form>
+
+    <!-- SALIDA UNIDADES TOT'S SUBARU -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="salida_unidad_empresasubaru">
+        @csrf
+        @include('Subaru.Montejo.Caseta Subaru.Salida_TOTs')
+    </form>
+
+
+    <!-- Control de unidades en estacionamiento SUBARU -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="unidadaes_estacionamiento_empresasubaru">
+        @csrf
+        @include('Subaru.Montejo.Caseta Subaru.Control_estacionamiento')
+    </form>
+
+
+    <!-- FORMATOS TOYOTA SUCURSAL ALTABRISA -->
+
+    <!--
+    
+        SE UTILIZO EL FORMULARIO DE NOVEDADADES DE LA CASETA SERVICIO EN LA SUCURSAL DE MONTEJO
+
+
+    -->
+
+    <!-- NOVEDADES DE CASETA PORTÓN ROJO -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_porton">
+        @csrf
+        @include('Toyota.Altabrisa.Caseta portón rojo.Novedades')
+    </form>
+
+    <!-- BITACORA DE CONTROL DE ACCESO PERSONAL Y VEHICULAR -->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="bitacora_acceso_porton">
+        @csrf
+        @include('Toyota.Altabrisa.Caseta portón rojo.bitacora_acceso')
+    </form>
+
+    <!-- INVENTARIO DE UNIDADES EN LAS INSTALACIONES (ESTE FORMATO ES COMPARTIDO CON CASETA SERVICIOS)-->
+    <form action="{{ route('incidencias.store') }}" method="POST" id="inventario_unidades_altabrisa">
+        @csrf
+        @include('Toyota.Altabrisa.Caseta portón rojo.inventario_instalaciones')
+    </form>
+
+    <!-- BITÁCORA DE CONTROL DE VEHÍCULOS UTILITARIOS -->
+    @include('Toyota.Altabrisa.Caseta portón rojo.bitacora_utilitarios')
+
+    <!-- FORMATO CONTROL DE INGRESO/SALIDA DE UNIDADES B&P -->
+    @include('Toyota.Altabrisa.Caseta portón rojo.control_unidades_ingreso_salida')
+
+    <!-- POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS-->
+    @include ('Toyota.Altabrisa.Caseta Servicio.bitacora_bahias')
+
+    <!-- FORMATO POSTVENTA - BITACORA ACCESO VEHICULOS A SERVICIO SIN CITA -->
+    @include ('Toyota.Altabrisa.Caseta Servicio.bitacora_sin_cita')
+
+    <!-- CONTROL DE ENTREGA DE UNIDADES EN POSTVENTA -->
+    @include('Toyota.Altabrisa.Caseta Servicio.control_postventa')
+
+
+
+
+    {{-- <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </div> --}}
+
+
+    </div>
 
     <!-- js -->
     <script src="{{ asset('js/incidencias/incidencias.js') }}"></script>

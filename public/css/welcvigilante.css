@@ -1,10 +1,42 @@
+/* 
+css goBack
+*/
+
+.question,
+.btn-container,
+.incoming {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.visible {
+    opacity: 1;
+}
+
+.btn-container2 {
+
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+}
+
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background: linear-gradient(45deg, #000000, #00073f, #000841, #000d70);
+    background: linear-gradient(45deg, #b1b0b0, #aaaaaa, #a6a6a6, #8f8f8f);
     background-size: 300% 300%;
     animation: gradient 6s ease infinite;
     font-family: Arial, sans-serif;
@@ -42,9 +74,10 @@ body {
 
 .card {
     flex: 1 1 calc(33.333% - 40px);
-    max-height: 750px;
+    max-height: 650px;
+    max-width: 750px;
     overflow-y: auto;
-    background-color: #07002f;
+    background-color: rgb(63 63 63 / 90%);
     padding: 20px;
     border-radius: 20px;
     color: #ffffff;
@@ -52,28 +85,53 @@ body {
     transition: transform 0.5s ease-in-out, background-color 0.3s ease;
 }
 
+/* @media (min-width: 1200px) {
+    .card {
+        width: 30%;
+        margin: 20px;
+        padding: 30px;
+    }
+
+    .card-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+} */
+
 .card::-webkit-scrollbar {
-    width: 8px;
+    width: 50px;
 }
 
 .card::-webkit-scrollbar-thumb {
-    background-color: #ffffff49; 
+    background-color: #ffffff49;
     border-radius: 10px;
-    border: 2px solid #ffffff4c; 
+    border: 2px solid #ffffff4c;
 }
 
 .card::-webkit-scrollbar-track {
-    background-color: #ffffff47; 
-    border-radius: 10px; 
+    background-color: #ffffff47;
+    border-radius: 10px;
 }
 
 .card {
     scrollbar-width: thin;
-    scrollbar-color: #fefefe39 #f4f4f457; 
+    scrollbar-color: #fefefe39 #f4f4f457;
 }
 
 .form-row {
     color: white;
+}
+
+label {
+    display: contents;
+    width: 200px;
+}
+
+.bahia {
+    margin-bottom: 20px;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 
@@ -104,7 +162,7 @@ body {
 
 .card:hover {
     transform: scale(1.05);
-    background-color: #264b86;
+    background-color: rgb(63 63 63 / 90%);
 }
 
 @media (max-width: 900px) {
@@ -120,7 +178,7 @@ body {
 }
 
 .form-container {
-    background-color: rgba(7, 0, 47, 0.9);
+    background-color: rgb(63 63 63 / 90%);
     padding: 50px;
     border-radius: 20px;
     box-shadow: 0px 0px 20px rgba(190, 190, 190, 0.5);
@@ -134,7 +192,7 @@ body {
 
 .form-container:focus-within {
     transform: perspective(1000px) rotateY(0deg);
-    background-color: rgba(7, 0, 47, 0.8);
+    background-color: rgb(86, 86, 86);
 }
 
 
@@ -162,17 +220,21 @@ body {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
+    font-size: 0.95rem;
 }
 
 .form-group label {
     font-weight: bold;
     transition: color 0.5s ease;
     color: white;
+    font-size: 25px;
 }
 
 .form-group label:hover {
     color: #b31500;
 }
+
+
 
 .form-group input,
 .form-group textarea {
@@ -241,6 +303,12 @@ h1 {
     font-size: calc(1.5rem + 2vw);
 }
 
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+}
+
 .blanco {
     color: rgb(255, 255, 255);
 }
@@ -273,7 +341,9 @@ h1 {
 
 
 @media (min-width: 600px) {
-    .btn-container {
+
+    .btn-container,
+    .btn-container2 {
         flex-direction: row;
     }
 }
@@ -384,88 +454,130 @@ h1 {
 /* chceckbox */
 
 .radio-section {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100vh;
-	padding: 1rem;
-	box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
 /* Ocultar el radio button */
 .radio-item [type="radio"] {
-	display: none;
+    display: none;
 }
 
 /* Separación entre radio items */
-.radio-item + .radio-item {
-	margin-top: 1rem;
+.radio-item+.radio-item {
+    margin-top: 1rem;
 }
 
 /* Estilo del label del radio */
 .radio-item label {
-	display: block;
-	padding: 1rem 2.5rem;
-	background: #1d1d42;
-	border: 5px solid rgba(255, 255, 255, 0);
-	border-radius: 100px;
-	cursor: pointer;
-	font-size: 0.8rem; /* Ajuste de tamaño de fuente */
-	font-weight: 400;
-	min-width: 200px; /* Ajuste del ancho mínimo */
-	white-space: nowrap;
-	position: relative;
-	transition: 0.5s ease-in-out;
+    display: block;
+    padding: 1rem 2.5rem;
+    background: #1d1d42;
+    border: 5px solid rgba(255, 255, 255, 0);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: 400;
+    min-width: 400px;
+    white-space: nowrap;
+    position: relative;
+    transition: 0.5s ease-in-out;
 }
 
 /* Estilo del círculo externo */
 .radio-item label:after,
 .radio-item label:before {
-	content: "";
-	position: absolute;
-	border-radius: 100%;
+    content: "";
+    position: absolute;
+    border-radius: 100%;
 }
 
 /* Estilo del círculo sin seleccionar */
 .radio-item label:after {
-	height: 0.9rem;
-	width: 1rem;
-	border: 1px solid #524eee;
-	left: 1.1rem;
-	
+    height: 0.9rem;
+    width: 1rem;
+    border: 1px solid #524eee;
+    left: 1.1rem;
+
 }
 
 /* Estilo del círculo seleccionado */
 .radio-item label:before {
-	background: #5751fa;
-	height: 1rem;
-	width: 1rem;
-	left: 1.1rem;
-	top: calc(50%-0.25rem);
-	transform: scale(4);
-	opacity: 0;
-	visibility: hidden;
-	transition: 0.4s ease-in-out;
+    background: #5751fa;
+    height: 1rem;
+    width: 1rem;
+    left: 1.1rem;
+    top: calc(50%-0.25rem);
+    transform: scale(4);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.4s ease-in-out;
 }
 
 /* Cambiar color del borde cuando está seleccionado */
-.radio-item [type="radio"]:checked ~ label {
-	border-color: #524eee;
+.radio-item [type="radio"]:checked~label {
+    border-color: #524eee;
 }
 
 /* Mostrar el círculo interno cuando está seleccionado */
-.radio-item [type="radio"]:checked ~ label::before {
-	opacity: 1;
-	visibility: visible;
-	transform: scale(1);
+.radio-item [type="radio"]:checked~label::before {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
 }
+
 /* Estilo personalizado para el contenedor de SweetAlert */
 .my-swal-container {
-    background-color: rgba(0, 0, 0, 0.6); /* Fondo negro semitransparente */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Fondo negro semitransparente */
 }
 
 /* Estilo personalizado para el popup de SweetAlert */
 .my-swal-popup {
-    background-color: #000; /* Fondo negro para el popup */
-    color: #ffffff; /* Texto blanco para contraste */
+    background-color: #000;
+    /* Fondo negro para el popup */
+    color: #ffffff;
+    /* Texto blanco para contraste */
+}
+
+/* Animaciones de desvanecimiento */
+.fade-out {
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+}
+
+.fade-out.hidden {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+.fade-in.visible {
+    opacity: 1;
+}
+
+/* Animaciones de deslizamiento */
+.slide-out {
+    transform: translateX(0);
+    transition: transform 0.3s ease-out;
+}
+
+.slide-out.hidden {
+    transform: translateX(-100%);
+}
+
+.slide-in {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in;
+}
+
+.slide-in.visible {
+    transform: translateX(0);
 }

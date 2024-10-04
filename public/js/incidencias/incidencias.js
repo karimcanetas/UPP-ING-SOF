@@ -1,56 +1,21 @@
-document.getElementById('crearIncidenciaBtn').addEventListener('click', function () {
-    // capturar la fecha y hora con la zona horaria
-    const now = new Date();
-    const opciones = { timeZone: 'America/Mexico_City', hour12: false };
+document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
+    const now = new Date().toLocaleString('es-ES', { timeZone: 'America/Mexico_City', hour12: false }).replace(/,/g, '').split(' ');
+    const [dia, mes, año] = now[0].split('/');
+    const fechaHora = `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')} ${now[1]}`;
 
-    // se eliminara cualquier caracter ","
-    const fechaISO = now.toLocaleString('es-ES', opciones).replace(/,/g, '');
+    const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
 
-    // separdor
-    const [fecha, hora] = fechaISO.split(' ');
-
-    // cambiar el formato a "YYYY-MM-DD"
-    const [dia, mes, año] = fecha.split('/');
-    const fechaFormateada = `${año}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
-
-    // combina fecha y hora
-    const fechaHoraFormateada = `${fechaFormateada} ${hora}`;
-
-    document.getElementById('fecha_hora').value = fechaHoraFormateada;
-    document.getElementById('fecha_hora').redOnly = true;
-
-    //validar turno
-    const turnoSeleccionado = document.getElementById('id_turnos').value;
-
-    if (turnoSeleccionado) {
-        mostrarSegundaEtapa(); // Continúa si un turno ha sido seleccionado
-    } else {
-        // mostrar una alerta si no selecciono
-        Swal.fire({
-            icon: 'warning',
-            title: '¡Atención!',
-            text: 'Por favor, seleccione un turno para continuar.',
-            confirmButtonText: 'Aceptar'
-        }).then(() => {
-            location.reload(); // Recarga la página después de cerrar la alerta
-        });
-    }
-
-    // recoger los datos ingresados en la primera etapa
-    const casetaNombre = document.getElementById('id_casetas').value;
-    const guardia = document.getElementById('guardia').value;
     const turno = document.getElementById('id_turnos').value;
-    const Nombre_vigilante = document.getElementById('Nombre_vigilante').value;
+    const caseta = document.getElementById('id_casetas').value;
+    const vigilante = document.getElementById('Nombre_vigilante').value;
 
+    if (!turno) return Swal.fire({ icon: 'warning', title: '¡Atención!', text: 'Por favor, seleccione un turno.', confirmButtonText: 'Aceptar' }).then(() => location.reload());
 
-    // mostrar los datos en la segunda etapa
-    document.getElementById('caseta_detalles').value = casetaNombre;
-    document.getElementById('guardia_detalles').value = guardia;
-    document.getElementById('turno_detalles').value = turno;
-    document.getElementById('Nombre_vigilante_detalles').value = Nombre_vigilante;
+    ['fecha_hora', 'fecha_hora_detalles', 'fecha_hora_tots', 'fecha_hora_demos', 'fecha_hora_control', 'fecha_hora_revision', 'fecha_hora_unidades', 'fecha_hora_proveedores', 'fecha_hora_salida', 'fecha_hora_entrada', 'fecha_hora_inventario', 'fecha_hora_novedades', 'fecha_hora_nov_encierro', 'fecha_hora_post', 'fecha_hora_siniestradas', 'fecha_hora_lavados', 'fecha_hora_taller', 'fecha_hora_fuera', 'fecha_hora_exhibicion', 'fecha_hora_clientes', 'fecha_hora_azotea', 'fecha_hora_estadia', 'fecha_hora_servicios', 'fecha_hora_entrega', 'fecha_hora_servicio', 'fecha_hora_acceso', 'fecha_hora_altabrisa_servicio', 'fecha_hora_granel', 'fecha_hora_subaru', 'fecha_hora_subarutot', 'fecha_hora_m', 'fecha_hora_empresasub', 'fecha_hora_salidasubaru', 'fecha_hora_estacionamientosub', 'fecha_hora_porton', 'fecha_hora_acceso', 'fecha_hora_invaltabrisa'].forEach(id => setField(id, fechaHora));
+    ['caseta_detalles', 'caseta_tots', 'caseta_demos', 'caseta_control', 'caseta_revision', 'caseta_unidades', 'caseta_proveedores', 'caseta_salida', 'caseta_entrada', 'caseta_inventario', 'caseta_novedades', 'caseta_nov_encierro', 'caseta_post', 'caseta_siniestradas', 'caseta_lavados', 'caseta_taller', 'caseta_fuera', 'caseta_exhibicion', 'caseta_clientes', 'caseta_azotea', 'caseta_estadia', 'caseta_servicios', 'caseta_entrega', 'caseta_servicio', 'caseta_acceso', 'caseta_altabrisa_servicio', 'caseta_granel', 'caseta_subaru', 'caseta_subaru_tot', 'caseta_subaru_m', 'caseta_empresasub', 'caseta_salida_subaru', 'caseta_estacionamiento_sub', 'caseta_porton', 'caseta_acceso', 'caseta_inventario_altabrisa'].forEach(id => setField(id, caseta));
+    ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa'].forEach(id => setField(id, turno));
+    ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa'].forEach(id => setField(id, vigilante));
 
-
-    // ocultar el formulario de la primera etapa y mostrar el de la segunda
     document.getElementById('incidenciaForm').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'block';
 });
@@ -59,38 +24,254 @@ function mostrarSegundaEtapa() {
     document.getElementById('primeraEtapa').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'none';
 }
-//Formatos
-// mostrar el formato al seleccionar uno
-document.getElementById('id_formatos').addEventListener('change', function () {
-    const formatContainer = document.getElementById('formatoDisplay');
-    formatContainer.classList.remove('hidden');
-    formatContainer.classList.add('show');
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('id_formatos').addEventListener('change', function () {
+        const formatos = this.value;
+        // const detallesValue = document.getElementById('Detalles').value;
+        // const ltinicial = document.getElementById('lt_gasolina_inicial').value;
+        // const ltfinal = document.getElementById('lt_gasolina_final').value;
+
+        if (!formatos) {
+            alert('Por favor, selecciona un formato.');
+            return;
+        }
+
+        const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
+
+        ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa'].forEach(id => setField(id, formatos));
+        // ['Detalles_tots', 'Detalles_demos', 'Detalles_control', 'Detalles_revision', 'Detalles_unidades', 'Detalles_proveedores', 'Detalles_salida', 'Detalles_entrada', 'Detalles_inventario'].forEach(id => setField(id, detallesValue));
+        // ['lt_gasolina_inicial_encierro', 'lt_gasolina_inicial_entrada', 'lt_gasolina_inicial_inventario'].forEach(id => setField(id, ltinicial));
+        // ['lt_gasolina_final_encierro', 'lt_gasolina_final_entrada', 'lt_gasolina_final_inventario'].forEach(id => setField(id, ltfinal));
+
+        document.getElementById('incidenciaForm').style.display = 'none';
+        document.getElementById('detallesForm').style.display = 'block';
+    });
 });
 
-document.getElementById('id_formatos').addEventListener('change', function () {
-    var selectedFormat = this.options[this.selectedIndex].text;
-    var formatoDisplay = document.getElementById('formatoDisplay');
-    var ltGasolinaFields = document.getElementById('ltGasolinaFields');
+function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
 
-    if (selectedFormat === 'Novedades') {
-        formatoDisplay.style.display = 'block';
-        if (ltGasolinaFields) {
-            ltGasolinaFields.style.display = 'block';
-        }
-    } else {
-        formatoDisplay.style.display = 'none';
-        if (ltGasolinaFields) {
-            ltGasolinaFields.style.display = 'none';
-        }
-    }
+function toggleOtroUnidad(selectElement) {
+    const container = document.getElementById('otroUnidadContainer');
+    container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
+    container.querySelector('input').required = selectElement.value === 'OTRO';
+}
 
+document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
+    select.addEventListener('change', function () {
+        this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
+    });
 });
 
-////////Area de demos
-document.getElementById('id_formatos').addEventListener('change', function () {
-    var formatoSeleccionado = this.options[this.selectedIndex].text;
 
-    var formularios = {
+function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
+
+function toggleOtroUnidad(selectElement) {
+    const container = document.getElementById('otroUnidadContainer');
+    container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
+    container.querySelector('input').required = selectElement.value === 'OTRO';
+}
+
+document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
+    select.addEventListener('change', function () {
+        this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
+    });
+});
+
+
+// function calcularTotal() {
+//     // Calcular consumo por bahía y total surtido
+//     const bahia12 = document.getElementById('bahia12Fin').value - document.getElementById('bahia12Inicio').value;
+//     const bahia34 = document.getElementById('bahia34Fin').value - document.getElementById('bahia34Inicio').value;
+//     const bahia56 = document.getElementById('bahia56Fin').value - document.getElementById('bahia56Inicio').value;
+//     const bahia78 = document.getElementById('bahia78Fin').value - document.getElementById('bahia78Inicio').value;
+//     const bahia910 = document.getElementById('bahia910Fin').value - document.getElementById('bahia910Inicio').value;
+
+//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
+
+//     document.getElementById('totalSurtido').value = total.toFixed(2);
+// }
+
+// function calcular() {
+//     // Calcular consumo por bahía y total surtido
+//     const bahia12 = document.getElementById('bahia1-2Fin').value - document.getElementById('bahia1-2Inicio').value;
+//     const bahia34 = document.getElementById('bahia3-4Fin').value - document.getElementById('bahia3-4Inicio').value;
+//     const bahia56 = document.getElementById('bahia5-6Fin').value - document.getElementById('bahia5-6Inicio').value;
+//     const bahia78 = document.getElementById('bahia7-8Fin').value - document.getElementById('bahia7-8Inicio').value;
+//     const bahia910 = document.getElementById('bahia9-10Fin').value - document.getElementById('bahia9-10Inicio').value;
+
+//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
+
+//     document.getElementById('total').value = total.toFixed(2);
+// }
+
+// function calcularSurtido() {
+//     // Calcular consumo por bahía y total surtido
+//     const bahia12 = document.getElementById('bahia1-2F').value - document.getElementById('bahia1-2I').value;
+//     const bahia34 = document.getElementById('bahia3-4F').value - document.getElementById('bahia3-4I').value;
+//     const bahia56 = document.getElementById('bahia5-6F').value - document.getElementById('bahia5-6I').value;
+//     const bahia78 = document.getElementById('bahia7-8F').value - document.getElementById('bahia7-8I').value;
+//     const bahia910 = document.getElementById('bahia9-10F').value - document.getElementById('bahia9-10I').value;
+
+//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
+
+//     document.getElementById('surtido').value = total.toFixed(2);
+// }
+
+
+// //Formatos
+// // mostrar el formato al seleccionar uno    
+// document.getElementById('id_formatos').addEventListener('change', function () {
+//     const formatContainer = document.getElementById('formatoDisplay');
+//     formatContainer.classList.remove('hidden');
+//     formatContainer.classList.add('show');
+// });
+
+// document.getElementById('id_formatos').addEventListener('change', function () {
+//     var selectedFormat = this.options[this.selectedIndex].text;
+//     var formatoDisplay = document.getElementById('formatoDisplay');
+//     var ltGasolinaFields = document.getElementById('ltGasolinaFields');
+
+//     if (selectedFormat === 'Novedades') {
+//         formatoDisplay.style.display = 'block';
+//         if (ltGasolinaFields) {
+//             ltGasolinaFields.style.display = 'block';
+//         }
+//     } else {
+//         formatoDisplay.style.display = 'none';
+//         if (ltGasolinaFields) {
+//             ltGasolinaFields.style.display = 'none';
+//         }
+//     }
+
+// });
+
+
+document.getElementById('id_turnos').addEventListener('change', function () {
+    const turno = this.options[this.selectedIndex].dataset.nombre;
+    const casetaSeleccionada = document.getElementById('id_casetas').value;  // Obtener el ID de la caseta seleccionada
+    const formatos = document.getElementById('id_formatos').options;
+
+    const formatosPorCasetaYTurno = {
+        '3': { // ID de la caseta Área de demos
+            'Matutino': [
+                'Novedades',
+                'Control de Unidades',
+                'Control de proveedores TOTs',
+                'Uso Unidades demos (pruebas de manejo y/o diligencias)'
+            ],
+            'Nocturno': [
+                'Novedades',
+                'Revisión de instalaciones',
+                'Inventario de unidades en exhibición',
+                'Control de acceso a proveedores'
+            ]
+        },
+        '9': { // ID de la caseta Encierro
+            'Matutino': [
+                'Novedades.',
+                'Acceso y salida de unidades siniestradas',
+                'Entrada y salida de unidades del encierro'
+            ],
+            'Nocturno': [
+                'Novedades.',
+                'Inventario de unidades nuevas en encierro / patio'
+            ]
+        },
+        '16': { // ID de la caseta Postventa
+            'Matutino': [
+                'Novedades Postventa',
+                'Control de acceso de unidades por el área de taller postventa',
+                'Vehículos por siniestros (ORDENES TIPO B SEGUROS)',
+                'Vehículo para lavado (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS)'
+            ],
+            'Nocturno': [
+                'Control de aceite y residuos de taller',
+                'Registro de unidades siniestradas en estacionamiento fuera de horario laboral',
+                'Registro de unidades seminuevas en estacionamiento para exhibición',
+                'Registro de otras unidades en estacionamientos de clientes',
+                'Unidades estadía en taller',
+                'Unidades estadía en azotea'
+            ],
+        },
+        '1': {// ID caseta servicio
+            'Matutino': [
+                'Novedades Servicios',
+                'Control de acceso a proveedores Montejo',
+
+            ],
+            'Nocturno': [
+                'Novedades Servicios',
+                'Control de entrega de unidades en postventa',
+                'Control de unidades en estacionamiento TOYOTA',
+                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS',
+                'POSTVENTA - BITACORA DE ACEITE GRANEL'
+
+            ]
+        },
+        '7': {// ID caseta subaru 
+            'Matutino': [
+                'Novedades Subaru',
+                'Salida Unidades TOTs',
+                'Control de acceso a proveedores Subaru'
+            ],
+            'Nocturno': [
+                'Novedades Subaru',
+                'Control de acceso a proveedores Subaru'
+            ]
+        },
+        '5': {// ID Caseta subaru Empresa SUBARU Sucursal Mérida
+            'Matutino': [
+                'Novedades Subaru',
+                'Control de entrega de unidades en Postventa Subaru',
+                'SALIDA UNIDADES TOTs SUBARU'
+            ],
+            'Nocturno': [
+                'Novedades Subaru',
+                'Control de unidades en estacionamiento SUBARU'
+            ]
+        },
+        '2': { //ID Caseta Servicio Empresa TOYOTA Sucursal Altabrisa
+            'Matutino': [
+                'Novedades Servicios',
+
+            ],
+            'Nocturno': [
+                'Novedades Servicios',
+            ]
+        },
+        '8': {// ID Caseta Portón rojo empresa TOYOTA sucursal Altabrisa
+            'Matutino': [
+                'Novedades Portón rojo',
+                'Bitacora de control de acceso personal y vehicular',
+            ],
+            'Nocturno': [
+                'Novedades Portón rojo',
+                'Bitacora de control de acceso personal y vehicular',
+                'Inventario de unidades en las instalaciones'
+            ]
+
+        }
+    };
+
+    // Obtener los formatos correspondientes según la caseta y el turno seleccionados
+    const formatosPorTurnoYCaseta = formatosPorCasetaYTurno[casetaSeleccionada] && formatosPorCasetaYTurno[casetaSeleccionada][turno] || [];
+
+    // Mostrar solo los formatos que coincidan con la combinación de caseta y turno seleccionados
+    Array.from(formatos).forEach(opcion => {
+        opcion.style.display = formatosPorTurnoYCaseta.includes(opcion.text) ? '' : 'none';
+    });
+});
+document.getElementById('id_formatos').addEventListener('change', function () {
+    const formatoSeleccionado = this.options[this.selectedIndex].text;
+
+    const formularios = {
+        //SUCURSAL TOYOTA CANCÚN
+
+        // Caseta Área de demos
+        'Novedades': 'Novedades_demos',
+        'Novedades Postventa': 'Novedades_post',
         'Control de Unidades': 'controlUnidades',
         'Control de proveedores TOTs': 'controlProv',
         'Uso Unidades demos (Pruebas de manejo y/o diligencias)': 'controlDemos',
@@ -98,46 +279,14 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'Inventario de unidades en exhibición': 'unidades',
         'Control de acceso a proveedores': 'controlProveedores',
 
-    };
 
-    //ocultar
-    for (var key in formularios) {
-        document.getElementById(formularios[key]).style.display = 'none';
-    }
-
-    // mostrar solo el formulario seleccionado
-    if (formatoSeleccionado in formularios) {
-        document.getElementById(formularios[formatoSeleccionado]).style.display = 'block';
-    }
-});
-
-//////////Encierro
-document.getElementById('id_formatos').addEventListener('change', function () {
-    var formatoSeleccionado = this.options[this.selectedIndex].text;
-
-    var formularios = {
+        // Caseta Encierro
+        'Novedades.': 'Novedades_encierro',
         'Acceso y salida de unidades siniestradas': 'acceso_salida',
         'Entrada y salida de unidades del encierro': 'unidades_encierro',
         'Inventario de unidades nuevas en encierro / patio': 'inventario_unidades',
 
-    };
-
-    //ocultar
-    for (var key in formularios) {
-        document.getElementById(formularios[key]).style.display = 'none';
-    }
-
-    // mostrar solo el formulario seleccionado
-    if (formatoSeleccionado in formularios) {
-        document.getElementById(formularios[formatoSeleccionado]).style.display = 'block';
-    }
-});
-
-//////////PostVenta
-document.getElementById('id_formatos').addEventListener('change', function () {
-    var formatoSeleccionado = this.options[this.selectedIndex].text;
-
-    var formularios = {
+        // Caseta PostVenta
         'Control de aceite y residuos de taller': 'control_taller',
         'Registro de unidades siniestradas en estacionamiento fuera de horario laboral': 'registro_unidades',
         'Registro de unidades seminuevas en estacionamiento para exhibición': 'registro_exhibicion',
@@ -146,23 +295,103 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'Unidades estadía en azotea': 'estadia_azotea',
         'Control de acceso de unidades por el área de taller postventa': 'taller_postventa',
         'Vehículos por siniestros (ORDENES TIPO B SEGUROS)': 'vehiculos_siniestros',
-        'Vehículo para lavado (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS)': 'vehiculo_lavado'
+        'Vehículo para lavado (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS)': 'vehiculo_lavado',
+
+        //SUCURSAL TOYOTA MONTEJO
+
+        //Caseta Servicio
+        'Novedades Servicios': 'novedad_servicio',
+        'Control de entrega de unidades en postventa': 'Control_entrega_servicio',
+        'Control de unidades en estacionamiento TOYOTA': 'Control_toyota_servicio',
+        'Control de acceso a proveedores Montejo': 'control_acceso_proveedores',
+        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS': 'controlAceite',
+        'POSTVENTA - BITACORA DE ACEITE GRANEL': 'BitacoraAceite',
+
+        //SUCURSAL TOYOTA ALTABRISA
+        'Novedades Servicios': 'novedad_servicio',
+        'Novedades Portón rojo': 'Novedades_porton_rojo',
+        'Bitacora de control de acceso personal y vehicular': 'bitacora_acceso',
+        'Inventario de unidades en las instalaciones': 'inventario_instalaciones',
+        'Postventa - Bitácora acceso vehículos a servicio sin cita': 'bitacora_servicio',
+
+        // Caseta Subaru
+        'Salida Unidades TOTs': 'salida_unidades_subaru',
+        'Control de acceso a proveedores Subaru': 'control_acceso_subaru',
+
+        //EMPRESA SUBARU SUCURSAL MÉRIDA 
+        //CASETA SUBARU
+        'Novedades Subaru': 'novedad_subaru',
+        'SALIDA UNIDADES TOTs SUBARU': 'unidades_subaru',
+        'Control de unidades en estacionamiento SUBARU': 'Control_subaru_servicio',
+        'Bitácora de control de vehículos utilitarios': 'control_vehiculos',
+        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS': 'bitacora_bahias',
+        'CONTROL DE INGRESO/SALIDA DE UNIDADES B&P': 'control_ingreso_salida',
+        'Control de entrega de unidades en Postventa Subaru': 'control_subaru',
+        'Control de entrega de unidades en Postventa': 'entrega_unidades_altabrisa'
+
+
+
 
     };
 
-    //ocultar
-    for (var key in formularios) {
-        document.getElementById(formularios[key]).style.display = 'none';
-    }
+    Object.values(formularios).forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.style.display = 'none';
+    });
 
-    // mostrar solo el formulario seleccionado
-    if (formatoSeleccionado in formularios) {
-        document.getElementById(formularios[formatoSeleccionado]).style.display = 'block';
-    }
+    const seleccionar = document.getElementById(formularios[formatoSeleccionado]);
+    if (seleccionar) seleccionar.style.display = 'block';
+});
+
+document.getElementById('empleadoSelect').addEventListener('change', function () {
+    var puestoInput = document.getElementById('puestoInput');
+    var selectedOption = this.options[this.selectedIndex];
+    puestoInput.value = selectedOption.getAttribute('data-puesto');
 });
 
 
-function goBack() {
-    window.history.back();
 
-}
+// btn atras
+document.getElementById('btnAtras').addEventListener('click', function () {
+    const primeraEtapa = document.getElementById('primeraEtapa');
+    const incidenciaForm = document.getElementById('incidenciaForm');
+    const detallesForm = document.getElementById('detallesForm');
+
+
+    if (window.history.length > 1 && detallesForm.style.display === 'block') {
+        detallesForm.classList.add('fade-out');
+
+        setTimeout(function () {
+            detallesForm.style.display = 'none';
+            detallesForm.classList.remove('fade-out');
+
+
+            primeraEtapa.style.display = 'block';
+            incidenciaForm.style.display = 'block';
+            primeraEtapa.classList.add('fade-in');
+
+        }, 300);
+
+    } else {
+        document.body.classList.add('fade-out');
+        setTimeout(function () {
+            window.history.back();
+        }, 300);
+    }
+});
+
+//estilo
+document.addEventListener('DOMContentLoaded', function () {
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .fade-in {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+    `;
+    document.head.appendChild(style);
+});

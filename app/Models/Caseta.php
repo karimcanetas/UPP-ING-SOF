@@ -23,11 +23,13 @@ class Caseta extends Model
 
     public function formatos()
     {
-        return $this->belongsToMany(Formato::class, 'formato_caseta', 'id_casetas', 'id_formatos');
+        return $this->belongsToMany(Formato::class, 'formato_caseta', 'id_casetas', 'id_formatos')
+            ->withPivot('id_turnos');
     }
 
     public function turnos()
     {
-        return $this->belongsToMany(Turno::class, 'id_turnos', 'turno', 'Hora_inicio', 'Hora_Fin');
+        return $this->belongsToMany(Turno::class, 'formato_caseta', 'id_casetas', 'id_turnos')
+            ->withPivot('id_formatos');
     }
 }

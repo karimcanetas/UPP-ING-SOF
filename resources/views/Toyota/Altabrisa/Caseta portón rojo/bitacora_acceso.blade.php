@@ -1,0 +1,78 @@
+@if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Caseta Portón rojo')
+    <div id="bitacora_acceso" style="display: none;">
+
+        <div class="card horizontal-card d-none">
+            <div class="form-group">
+                <label for="id_casetas">Caseta:</label>
+                <input type="text" class="form-control" name="id_casetas" id="caseta_acceso" readonly>
+            </div>
+            <div class="form-group">
+                <label for="id_turnos">Turno:</label>
+                <input type="text" class="form-control" name="id_turnos" id="turno_acceso" readonly>
+            </div>
+            <div class="form-group">
+                <label for="Nombre_vigilante">Nombre de Vigilante:</label>
+                <input type="text" class="form-control" name="Nombre_vigilante" id="Nombre_vigilante_acceso"
+                    readonly>
+            </div>
+            <div>
+                <label for="fecha_hora">Fecha y hora del envio</label>
+                <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_acceso" readonly>
+            </div>
+        </div>
+        <input type="hidden" name="formulario" value="control_proveedores_TOTs">
+        <div class="card horizontal-card d-none">
+            <div class="form_group">
+                <label for="id_formatos">Formato</label>
+                <input type="text" class="form-control" name="id_formatos" id="formatos_acceso" readonly>
+            </div>
+        </div>
+
+        @foreach (['Nombre asociado interno', 'Puesto', 'Hora de entrada', 'Hora de salidas', 'Unidad - Vehiculo personal', 'Placas', 'Observaciones / Comentarios'] as $campoNombre)
+            @if ($campo = $campos->firstWhere('campo', $campoNombre))
+                <div class="form-group">
+                    <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
+
+                    @if ($campoNombre == 'Nombre asociado interno')
+                        <select name="campos[{{ $campo->id_campo }}]" id="empleadoSelect" class="form-control" required>
+                            <option value="" disabled {{ old('campos.' . $campo->id_campo) ? '' : 'selected' }}>
+                                Selecciona un empleado</option>
+                            @foreach ($empleados as $empleado)
+                                <option value="{{ $empleado->id }}" data-puesto="{{ $empleado->puesto->nombre }}"
+                                    {{ old('campos.' . $campo->id_campo) == $empleado->id ? 'selected' : '' }}>
+                                    {{ $empleado->nombres }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @elseif ($campoNombre == 'Puesto')
+                        <input type="text" class="form-control" id="puestoInput"
+                            name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                            required>
+                    @elseif ($campoNombre == 'Hora de entrada')
+                        <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                            required>
+                    @elseif ($campoNombre == 'Hora de salida')
+                        <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                            required>
+                    @elseif ($campoNombre == 'Unidad - Vehiculo personal')
+                        <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                            required>
+                    @elseif($campoNombre == 'Placas')
+                        <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
+                            required>
+                    @elseif ($campoNombre == 'Observaciones / Comentarios')
+                        <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                            rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                    @endif
+                </div>
+            @endif
+        @endforeach
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
+    </div>
+@endif

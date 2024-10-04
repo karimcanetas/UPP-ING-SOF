@@ -33,7 +33,7 @@ Route::get('/empresas', [EmpresasController::class, 'index']);
 Route::get('/empresas/{id_empresa}/sucursales', [EmpresasController::class, 'getSucursales']);
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 
 
@@ -49,17 +49,3 @@ Route::post('/incidencias', [IncidenciaController::class, 'store'])->name('incid
 
 // Ruta para mostrar la vista con los turnos
 Route::get('/crear-incidencia', [TurnosController::class, 'index'])->name('crear-incidencia');
-
-
-
-
-
-
-
-
-
-
-
-
-
-

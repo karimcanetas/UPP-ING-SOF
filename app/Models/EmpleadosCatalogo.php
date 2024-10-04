@@ -1,0 +1,49 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class EmpleadosCatalogo extends Model
+{
+    use HasFactory;
+    protected $connection = 'mysql'; //bd Concentradora
+
+    protected $table = 'empleados';
+
+    protected $primaryKey = 'id_empleado';
+
+    protected $fillable = [
+        'n_empleado',
+        'nombres',
+        'apellido_p',
+        'apellido_m',
+        'fecha_nacimiento',
+        'fecha_ingreso',
+        'rfc',
+        'curp',
+        'nss',
+        'correo_personal',
+        'celular_personal',
+        'id_tipo_asociado',
+        'id_puesto',
+        'observaciones',
+        'fecha_baja',
+        'motivo_baja',
+        'created_at',
+        'created_user',
+        'updated_at',
+        'updated_user',
+        'status'
+    ];
+    public function incidencias()
+    {
+        return $this->hasMany(Incidencia::class, 'id_motivo', 'id_motivo');
+    }
+
+    public function puesto()
+    {
+        return $this->belongsTo(Puestos::class, 'id_puesto', 'id_puesto');
+    }
+}

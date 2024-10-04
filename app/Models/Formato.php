@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 
 class Formato extends Model
 {
@@ -24,11 +26,17 @@ class Formato extends Model
     // Relación de la tabla relacional formato_casetas
     public function casetas()
     {
-        return $this->belongsToMany(Caseta::class, 'formato_caseta', 'id_formatos', 'id_casetas');
+        return $this->belongsToMany(Caseta::class, 'formato_caseta', 'id_formatos', 'id_casetas')
+            ->withPivot('id_turnos');
     }
 
     public function turnos()
     {
-        return $this->belongsToMany(Turno::class, 'id_turnos', 'turno', 'Hora_inicio', 'Hora_Fin');
+        return $this->belongsToMany(Turno::class, 'formato_caseta', 'id_formatos', 'id_turnos')
+            ->withPivot('id_casetas');
+    }
+    public function campos()
+    {
+        return $this->belongsToMany(Campo::class, 'formato_campo', 'id_formatos', 'id_campo');
     }
 }
