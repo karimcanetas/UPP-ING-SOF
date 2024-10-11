@@ -8,31 +8,23 @@ use App\Models\Empresa;
 
 class SucursalesController extends Controller
 {
-    public function getSucursales($empresa)
+    public function getSucursales($id_empresa)
     {
-        $empresa = Empresa::where('nombre', $empresa)->first();
+        // Encuentra la empresa por su ID y carga sus sucursales
+        $empresa = Empresa::with('sucursales')->find($id_empresa);
 
-        if ($empresa) {
-            $sucursales = $empresa->sucursales;
-            return response()->json($sucursales);
-        } else {
-            return response()->json(['error' => 'Empresa no encontrada'], 404);
-        }
+        return $empresa
+            ? response()->json($empresa->sucursales)
+            : response()->json(['error' => 'Empresa no encontrada'], 404);
     }
 
     public function show($id)
     {
-        // Encuentra la sucursal en la base de datos principal
-        $sucursal = Sucursal::on('mysql')->find($id);
+        // Encuentra la sucursal en la base de datos principal junto con sus casetas
+        $sucursal = Sucursal::on('mysql')->with('casetas')->find($id);
 
-        if ($sucursal) {
-            // Obtiene todas las casetas
-            $casetas = $sucursal->casetas;
-            
-            // Devuelve una vista con los datos
-            return view('sucursal.show', compact('sucursal', 'casetas'));
-        }
-
-        return abort(404, 'Sucursal no encontrada');
+        return $sucursal
+            ? view('sucursal.show', compact('sucursal'))
+            : abort(404, 'Sucursal no encontrada');
     }
 }

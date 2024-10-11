@@ -11,10 +11,10 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
 
     if (!turno) return Swal.fire({ icon: 'warning', title: '¡Atención!', text: 'Por favor, seleccione un turno.', confirmButtonText: 'Aceptar' }).then(() => location.reload());
 
-    ['fecha_hora', 'fecha_hora_detalles', 'fecha_hora_tots', 'fecha_hora_demos', 'fecha_hora_control', 'fecha_hora_revision', 'fecha_hora_unidades', 'fecha_hora_proveedores', 'fecha_hora_salida', 'fecha_hora_entrada', 'fecha_hora_inventario', 'fecha_hora_novedades', 'fecha_hora_nov_encierro', 'fecha_hora_post', 'fecha_hora_siniestradas', 'fecha_hora_lavados', 'fecha_hora_taller', 'fecha_hora_fuera', 'fecha_hora_exhibicion', 'fecha_hora_clientes', 'fecha_hora_azotea', 'fecha_hora_estadia', 'fecha_hora_servicios', 'fecha_hora_entrega', 'fecha_hora_servicio', 'fecha_hora_acceso', 'fecha_hora_altabrisa_servicio', 'fecha_hora_granel', 'fecha_hora_subaru', 'fecha_hora_subarutot', 'fecha_hora_m', 'fecha_hora_empresasub', 'fecha_hora_salidasubaru', 'fecha_hora_estacionamientosub', 'fecha_hora_porton', 'fecha_hora_acceso', 'fecha_hora_invaltabrisa'].forEach(id => setField(id, fechaHora));
-    ['caseta_detalles', 'caseta_tots', 'caseta_demos', 'caseta_control', 'caseta_revision', 'caseta_unidades', 'caseta_proveedores', 'caseta_salida', 'caseta_entrada', 'caseta_inventario', 'caseta_novedades', 'caseta_nov_encierro', 'caseta_post', 'caseta_siniestradas', 'caseta_lavados', 'caseta_taller', 'caseta_fuera', 'caseta_exhibicion', 'caseta_clientes', 'caseta_azotea', 'caseta_estadia', 'caseta_servicios', 'caseta_entrega', 'caseta_servicio', 'caseta_acceso', 'caseta_altabrisa_servicio', 'caseta_granel', 'caseta_subaru', 'caseta_subaru_tot', 'caseta_subaru_m', 'caseta_empresasub', 'caseta_salida_subaru', 'caseta_estacionamiento_sub', 'caseta_porton', 'caseta_acceso', 'caseta_inventario_altabrisa'].forEach(id => setField(id, caseta));
-    ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa'].forEach(id => setField(id, turno));
-    ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa'].forEach(id => setField(id, vigilante));
+    ['fecha_hora', 'fecha_hora_detalles', 'fecha_hora_tots', 'fecha_hora_demos', 'fecha_hora_control', 'fecha_hora_revision', 'fecha_hora_unidades', 'fecha_hora_proveedores', 'fecha_hora_salida', 'fecha_hora_entrada', 'fecha_hora_inventario', 'fecha_hora_novedades', 'fecha_hora_nov_encierro', 'fecha_hora_post', 'fecha_hora_siniestradas', 'fecha_hora_lavados', 'fecha_hora_taller', 'fecha_hora_fuera', 'fecha_hora_exhibicion', 'fecha_hora_clientes', 'fecha_hora_azotea', 'fecha_hora_estadia', 'fecha_hora_servicios', 'fecha_hora_entrega', 'fecha_hora_servicio', 'fecha_hora_acceso', 'fecha_hora_altabrisa_servicio', 'fecha_hora_granel', 'fecha_hora_subaru', 'fecha_hora_subarutot', 'fecha_hora_m', 'fecha_hora_empresasub', 'fecha_hora_salidasubaru', 'fecha_hora_estacionamientosub', 'fecha_hora_porton', 'fecha_hora_acceso', 'fecha_hora_invaltabrisa', 'fecha_hora_vehiculos', 'fecha_hora_bitacora', 'fecha_hora_ingreso', 'fecha_hora_aceite'].forEach(id => setField(id, fechaHora));
+    ['caseta_detalles', 'caseta_tots', 'caseta_demos', 'caseta_control', 'caseta_revision', 'caseta_unidades', 'caseta_proveedores', 'caseta_salida', 'caseta_entrada', 'caseta_inventario', 'caseta_novedades', 'caseta_nov_encierro', 'caseta_post', 'caseta_siniestradas', 'caseta_lavados', 'caseta_taller', 'caseta_fuera', 'caseta_exhibicion', 'caseta_clientes', 'caseta_azotea', 'caseta_estadia', 'caseta_servicios', 'caseta_entrega', 'caseta_servicio', 'caseta_acceso', 'caseta_altabrisa_servicio', 'caseta_granel', 'caseta_subaru', 'caseta_subaru_tot', 'caseta_subaru_m', 'caseta_empresasub', 'caseta_salida_subaru', 'caseta_estacionamiento_sub', 'caseta_porton', 'caseta_acceso', 'caseta_inventario_altabrisa', 'caseta_vehiculos', 'caseta_bitacora', 'caseta_ingreso', 'caseta_aceite'].forEach(id => setField(id, caseta));
+    ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa', 'turno_vehiculos', 'turno_bitacora', 'turno_ingreso', 'turno_aceite'].forEach(id => setField(id, turno));
+    ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa', 'Nombre_vigilante_vehiculos', 'Nombre_vigilante_bitacora', 'Nombre_vigilante_ingreso', 'Nombre_vigilante_aceite'].forEach(id => setField(id, vigilante));
 
     document.getElementById('incidenciaForm').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'block';
@@ -29,21 +29,12 @@ function mostrarSegundaEtapa() {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('id_formatos').addEventListener('change', function () {
         const formatos = this.value;
-        // const detallesValue = document.getElementById('Detalles').value;
-        // const ltinicial = document.getElementById('lt_gasolina_inicial').value;
-        // const ltfinal = document.getElementById('lt_gasolina_final').value;
-
         if (!formatos) {
             alert('Por favor, selecciona un formato.');
             return;
         }
-
         const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
-
-        ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa'].forEach(id => setField(id, formatos));
-        // ['Detalles_tots', 'Detalles_demos', 'Detalles_control', 'Detalles_revision', 'Detalles_unidades', 'Detalles_proveedores', 'Detalles_salida', 'Detalles_entrada', 'Detalles_inventario'].forEach(id => setField(id, detallesValue));
-        // ['lt_gasolina_inicial_encierro', 'lt_gasolina_inicial_entrada', 'lt_gasolina_inicial_inventario'].forEach(id => setField(id, ltinicial));
-        // ['lt_gasolina_final_encierro', 'lt_gasolina_final_entrada', 'lt_gasolina_final_inventario'].forEach(id => setField(id, ltfinal));
+        ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa', 'formatos_vehiculos', 'formatos_bitacora', 'formatos_ingreso', 'formatos_aceite'].forEach(id => setField(id, formatos));
 
         document.getElementById('incidenciaForm').style.display = 'none';
         document.getElementById('detallesForm').style.display = 'block';
@@ -52,101 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
 
-function toggleOtroUnidad(selectElement) {
-    const container = document.getElementById('otroUnidadContainer');
-    container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
-    container.querySelector('input').required = selectElement.value === 'OTRO';
-}
-
-document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
-    select.addEventListener('change', function () {
-        this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
-    });
-});
-
-
-function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
-
-function toggleOtroUnidad(selectElement) {
-    const container = document.getElementById('otroUnidadContainer');
-    container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
-    container.querySelector('input').required = selectElement.value === 'OTRO';
-}
-
-document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
-    select.addEventListener('change', function () {
-        this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
-    });
-});
-
-
-// function calcularTotal() {
-//     // Calcular consumo por bahía y total surtido
-//     const bahia12 = document.getElementById('bahia12Fin').value - document.getElementById('bahia12Inicio').value;
-//     const bahia34 = document.getElementById('bahia34Fin').value - document.getElementById('bahia34Inicio').value;
-//     const bahia56 = document.getElementById('bahia56Fin').value - document.getElementById('bahia56Inicio').value;
-//     const bahia78 = document.getElementById('bahia78Fin').value - document.getElementById('bahia78Inicio').value;
-//     const bahia910 = document.getElementById('bahia910Fin').value - document.getElementById('bahia910Inicio').value;
-
-//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
-
-//     document.getElementById('totalSurtido').value = total.toFixed(2);
+// function toggleOtroUnidad(selectElement) {
+//     const container = document.getElementById('otroUnidadContainer');
+//     container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
+//     container.querySelector('input').required = selectElement.value === 'OTRO';
 // }
 
-// function calcular() {
-//     // Calcular consumo por bahía y total surtido
-//     const bahia12 = document.getElementById('bahia1-2Fin').value - document.getElementById('bahia1-2Inicio').value;
-//     const bahia34 = document.getElementById('bahia3-4Fin').value - document.getElementById('bahia3-4Inicio').value;
-//     const bahia56 = document.getElementById('bahia5-6Fin').value - document.getElementById('bahia5-6Inicio').value;
-//     const bahia78 = document.getElementById('bahia7-8Fin').value - document.getElementById('bahia7-8Inicio').value;
-//     const bahia910 = document.getElementById('bahia9-10Fin').value - document.getElementById('bahia9-10Inicio').value;
-
-//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
-
-//     document.getElementById('total').value = total.toFixed(2);
-// }
-
-// function calcularSurtido() {
-//     // Calcular consumo por bahía y total surtido
-//     const bahia12 = document.getElementById('bahia1-2F').value - document.getElementById('bahia1-2I').value;
-//     const bahia34 = document.getElementById('bahia3-4F').value - document.getElementById('bahia3-4I').value;
-//     const bahia56 = document.getElementById('bahia5-6F').value - document.getElementById('bahia5-6I').value;
-//     const bahia78 = document.getElementById('bahia7-8F').value - document.getElementById('bahia7-8I').value;
-//     const bahia910 = document.getElementById('bahia9-10F').value - document.getElementById('bahia9-10I').value;
-
-//     const total = bahia12 + bahia34 + bahia56 + bahia78 + bahia910;
-
-//     document.getElementById('surtido').value = total.toFixed(2);
-// }
-
-
-// //Formatos
-// // mostrar el formato al seleccionar uno    
-// document.getElementById('id_formatos').addEventListener('change', function () {
-//     const formatContainer = document.getElementById('formatoDisplay');
-//     formatContainer.classList.remove('hidden');
-//     formatContainer.classList.add('show');
+// document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
+//     select.addEventListener('change', function () {
+//         this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
+//     });
 // });
 
-// document.getElementById('id_formatos').addEventListener('change', function () {
-//     var selectedFormat = this.options[this.selectedIndex].text;
-//     var formatoDisplay = document.getElementById('formatoDisplay');
-//     var ltGasolinaFields = document.getElementById('ltGasolinaFields');
+// function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
 
-//     if (selectedFormat === 'Novedades') {
-//         formatoDisplay.style.display = 'block';
-//         if (ltGasolinaFields) {
-//             ltGasolinaFields.style.display = 'block';
-//         }
-//     } else {
-//         formatoDisplay.style.display = 'none';
-//         if (ltGasolinaFields) {
-//             ltGasolinaFields.style.display = 'none';
-//         }
-//     }
+// function toggleOtroUnidad(selectElement) {
+//     const container = document.getElementById('otroUnidadContainer');
+//     container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
+//     container.querySelector('input').required = selectElement.value === 'OTRO';
+// }
 
+// document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
+//     select.addEventListener('change', function () {
+//         this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
+//     });
 // });
-
 
 document.getElementById('id_turnos').addEventListener('change', function () {
     const turno = this.options[this.selectedIndex].dataset.nombre;
@@ -159,7 +80,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Novedades',
                 'Control de Unidades',
                 'Control de proveedores TOTs',
-                'Uso Unidades demos (pruebas de manejo y/o diligencias)'
+                'Uso Unidades demos (Pruebas de manejo y/o diligencias)'
             ],
             'Nocturno': [
                 'Novedades',
@@ -235,21 +156,29 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         '2': { //ID Caseta Servicio Empresa TOYOTA Sucursal Altabrisa
             'Matutino': [
                 'Novedades Servicios',
+                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA',
+                'Postventa - Bitácora acceso vehículos a servicio sin cita',
+                'Control de entrega de unidades en postventa'
 
             ],
             'Nocturno': [
                 'Novedades Servicios',
+                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA'
             ]
         },
         '8': {// ID Caseta Portón rojo empresa TOYOTA sucursal Altabrisa
             'Matutino': [
                 'Novedades Portón rojo',
                 'Bitacora de control de acceso personal y vehicular',
+                'Bitácora de control de vehículos utilitarios',
+                'CONTROL DE INGRESO/SALIDA DE UNIDADES B&P'
+
             ],
             'Nocturno': [
                 'Novedades Portón rojo',
                 'Bitacora de control de acceso personal y vehicular',
                 'Inventario de unidades en las instalaciones'
+
             ]
 
         }
@@ -263,6 +192,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         opcion.style.display = formatosPorTurnoYCaseta.includes(opcion.text) ? '' : 'none';
     });
 });
+
 document.getElementById('id_formatos').addEventListener('change', function () {
     const formatoSeleccionado = this.options[this.selectedIndex].text;
 
@@ -324,7 +254,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'SALIDA UNIDADES TOTs SUBARU': 'unidades_subaru',
         'Control de unidades en estacionamiento SUBARU': 'Control_subaru_servicio',
         'Bitácora de control de vehículos utilitarios': 'control_vehiculos',
-        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS': 'bitacora_bahias',
+        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA': 'bitacora_bahias',
         'CONTROL DE INGRESO/SALIDA DE UNIDADES B&P': 'control_ingreso_salida',
         'Control de entrega de unidades en Postventa Subaru': 'control_subaru',
         'Control de entrega de unidades en Postventa': 'entrega_unidades_altabrisa'
@@ -342,14 +272,6 @@ document.getElementById('id_formatos').addEventListener('change', function () {
     const seleccionar = document.getElementById(formularios[formatoSeleccionado]);
     if (seleccionar) seleccionar.style.display = 'block';
 });
-
-document.getElementById('empleadoSelect').addEventListener('change', function () {
-    var puestoInput = document.getElementById('puestoInput');
-    var selectedOption = this.options[this.selectedIndex];
-    puestoInput.value = selectedOption.getAttribute('data-puesto');
-});
-
-
 
 // btn atras
 document.getElementById('btnAtras').addEventListener('click', function () {
@@ -395,3 +317,117 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     document.head.appendChild(style);
 });
+// // Función para mostrar u ocultar el textarea según la opción seleccionada
+// function toggleOtroArea(selectElement) {
+//     const selectedValue = selectElement.value;
+//     const otrosTextareaContainer = selectElement.nextElementSibling; // Asegúrate de que el textarea esté justo después del select
+//     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
+
+//     if (selectedValue === 'otro') {
+//         otrosTextareaContainer.style.display = 'block';
+//         otrosTextarea.value = ''; // Limpiar el textarea
+//     } else {
+//         otrosTextareaContainer.style.display = 'none';
+//         otrosTextarea.value = selectedValue; // Asignar el valor del select al textarea
+//     }
+// }
+
+// // Función para ajustar el valor del campo de "Área / Departamento" antes de enviar el formulario
+// function ajustarValorCampo(form) {
+//     // Seleccionar todos los elementos select en el formulario
+//     const selectElements = form.querySelectorAll('select[name^="campos["]');
+//     let valid = true; // Variable para verificar la validez
+
+//     selectElements.forEach((selectElement) => {
+//         const otrosTextarea = selectElement.nextElementSibling.querySelector('textarea');
+
+//         // Verificar si el valor seleccionado es "otro"
+//         if (selectElement.value === 'otro') {
+//             selectElement.value = otrosTextarea.value.trim(); // Asigna el valor del textarea
+//         }
+
+//         // Verifica que el textarea tenga un valor si se selecciona "OTRO"
+//         if (selectElement.value === '' && otrosTextarea.value.trim() === '') {
+//             alert('Por favor, especifica otra área o departamento.');
+//             valid = false; // Marcar como inválido
+//         }
+//     });
+
+//     return valid; // Retorna true si todos los campos son válidos
+// }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const empleadoSelect = document.getElementById('empleadoSelect');
+    const puestoInput = document.getElementById('puestoInput');
+
+    if (empleadoSelect) {
+        empleadoSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const puesto = selectedOption.getAttribute('data-puesto');
+
+            puestoInput.value = puesto || '';
+        });
+    } else {
+        console.warn('elemento empleadoSelect no encontrado');
+    }
+});
+
+function toggleOtroUnidad(select) {
+    // Obtener el elemento del campo de texto "otroUnidad"
+    const otraunidad = select.value;
+    const textunidad = select.nextElementSibling;
+    const otrotextunidad = textunidad.querySelector('textarea');
+
+    // Si la opción seleccionada es "otro", mostrar el campo de texto, de lo contrario, ocultarlo
+    if (select.value === 'otro') {
+        textunidad.style.display = 'block';
+        otrotextunidad.value = '';  // Hacer el campo obligatorio cuando se muestra
+    } else {
+        textunidad.style.display = 'none';
+        otrotextunidad.value = otraunidad; // No obligatorio cuando está oculto
+    }
+}
+function toggleOtroArea(selectElement) {
+    const selectedValue = selectElement.value;
+    const otrosTextareaContainer = selectElement.nextElementSibling; // Asegúrate de que el textarea esté justo después del select
+    const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
+
+    if (selectedValue === 'otro') {
+        otrosTextareaContainer.style.display = 'block';
+        otrosTextarea.value = ''; // Limpiar el textarea
+    } else {
+        otrosTextareaContainer.style.display = 'none';
+        otrosTextarea.value = selectedValue; // Asignar el valor del select al textarea
+    }
+}
+
+
+
+
+// Función para ajustar el valor del campo de "Unidad" antes de enviar el formulario
+function ajustarValorCampo(form) {
+    const selectElements = form.querySelectorAll('select[name^="campos["]');
+    let valid = true; // Variable para verificar la validez
+
+    selectElements.forEach((selectElement) => {
+        const otrosTextarea = selectElement.nextElementSibling.querySelector('textarea');
+
+        // Verificar si el valor seleccionado es "otro"
+        if (selectElement.value === 'otro') {
+            selectElement.value = otrosTextarea.value.trim(); // Asigna el valor del textarea
+        }
+
+        // Verifica que el textarea tenga un valor si se selecciona "OTRO"
+        if (selectElement.value === '' && otrosTextarea.value.trim() === '') {
+            alert('Por favor, especifica otra unidad.');
+            valid = true; // Marcar como inválido
+        }
+    });
+
+    return true; // Retorna true si todos los campos son válidos
+}
+
+
+
+
+

@@ -71,7 +71,7 @@ class IncidenciaController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
+        //dd($request->all());
         // Validar datos generales del formulario
         $request->validate([
             'id_casetas' => 'required',
@@ -84,7 +84,7 @@ class IncidenciaController extends Controller
             'lt_gasolina_final' => 'nullable',
             'folio_Salida_definitiva' => 'nullable',
             'id_unidad' => 'nullable',
-            'otroUnidad' => 'nullable|string', // solo requerido si 'campos.unidad' es 'otro'
+            // 'otroUnidad' => 'nullable|string', // 
 
         ]);
 
@@ -97,13 +97,13 @@ class IncidenciaController extends Controller
             case 'control_unidades':
                 // Lógica específica para el formulario de "Control de Unidades"
                 // Verificar si el usuario seleccionó "Otro" en el campo de unidad
-                $unidad = $request->input('campos.' . $request->input('campos_unidad'));
-                if ($unidad === 'otro') {
-                    $unidad = $request->input('otroUnidad');
-                }
+                // $unidad = $request->input('campos.' . $request->input('campos_unidad'));
+                // if ($unidad === 'otro') {
+                //     $unidad = $request->input('otroUnidad');
+                // }
 
                 // Crear una nueva incidencia con la unidad seleccionada o ingresada
-                $incidencia = Incidencia::create(array_merge($request->all(), ['unidad' => $unidad]));
+                $incidencia = Incidencia::create($request->all());
                 break;
 
             case 'control_proveedores_TOTs':

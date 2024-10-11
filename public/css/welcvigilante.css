@@ -355,8 +355,8 @@ h1 {
     cursor: pointer;
     border-radius: 50px;
     background-color: #b31500;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 25px;
+    transition: background-color 0.4s ease, transform 0.4s ease;
     animation: pulse 2s infinite;
     width: 100%;
     max-width: 250px;

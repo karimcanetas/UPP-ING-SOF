@@ -1,3 +1,5 @@
+<form action="{{ route('incidencias.store') }}" method="POST" id="proveedores_demos">
+    @csrf
 @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
     <div id="controlProveedores" style="display: none;">
 
@@ -68,3 +70,4 @@
         </div>
     </div>
 @endif
+</form>
