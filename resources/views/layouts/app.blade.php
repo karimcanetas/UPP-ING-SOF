@@ -10,6 +10,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/select2-custom.css') }}">
 
     @if (Route::is('dashboard'))
 
@@ -146,6 +148,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
+
         <script>
             $(document).ready(function() {
                 $('[data-toggle="popover"]').popover({
@@ -207,6 +210,57 @@
         @stack('scripts')
 
     @endif
+
+
+
+    @yield('content')
+
+    <!-- Incluye jQuery y Select2 JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Inicialización de Select2 -->
+    <script>
+        $(document).ready(function() {
+            $('.js-example-tokenizer').select2({
+                tags: true,
+                tokenSeparators: [',', ' '],
+                width: '100%',
+            });
+        });
+    </script>
+
+    <!-- puestos dinamicos -->
+    <script>
+        $(document).ready(function() {
+            $('#empleadoNoRegistrado').on('change', function() {
+                // Obtener el empleado seleccionado
+                var selectedOption = $(this).find('option:selected');
+                var empleadoNombre = selectedOption.data('nombres');
+                var puestoId = selectedOption.data('puesto-id'); // Obtener el ID del puesto
+
+                // Rellenar el campo de texto con el nombre del empleado
+                $('#empleadoNombre').val(empleadoNombre);
+                // Rellenar el campo de puesto con el nombre correspondiente
+                var puestoNombre = '';
+                // Buscar el nombre del puesto basado en el ID
+                @foreach ($puestos as $puesto)
+                    if (puestoId == {{ $puesto->id_puesto }}) {
+                        puestoNombre =
+                            '{{ $puesto->nombre }}';
+                    }
+                @endforeach
+                $('#puestoInput').val(puestoNombre);
+                if (selectedOption.val()) {
+
+                    $('#campoAsociadoInterno').hide();
+                } else {
+                    $('#campoAsociadoInterno').show();
+                }
+            });
+        });
+    </script>
+
 
 </body>
 

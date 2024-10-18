@@ -35,6 +35,22 @@
             });
         @endif
 
+        // Muestra de éxito al agregar un empleado
+        @if ($message = Session::get('empleado_success'))
+            Swal.fire({
+                imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/check.gif',
+                imageWidth: 300,
+                imageHeight: 300,
+                title: "¡Empleado agregado!",
+                text: "{{ $message }}",
+                confirmButtonColor: '#00bf7a',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.history.back(); // Retrocede a lo anterior
+                }
+            });
+        @endif
 
         // Muestra de errores de incidencia
         @if ($errors->any())
@@ -50,11 +66,5 @@
                 confirmButtonText: 'Aceptar'
             });
         @endif
-
-        // // Inicializar select2
-        // $('.copia').select2({
-        //     placeholder: "Seleccionar",
-        //     allowClear: true
     });
-    // });
 </script>

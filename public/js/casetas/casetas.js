@@ -15,20 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function goBack() {
-    // Verificar si hay historial en la navegación
     if (window.history.length > 1) {
-        // Añadir una animación antes de volver
         document.body.classList.add('fade-out');
         setTimeout(function() {
             window.history.back();
-        }, 300); // Tiempo para la animación (300 ms)
+        }, 300); 
     } else {
-        // Si no hay historial, redirige a una página por defecto
-        window.location.href = '/'; // Cambia '/' a la URL de la página a la que quieras redirigir
+        window.location.href = '/'; 
     }
 }
 
-// Añadir la animación de desvanecimiento en CSS
+
 document.addEventListener('DOMContentLoaded', function() {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -40,12 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 });
 
-    // Redireccion
-function showForm(casetaNombre, id_caseta) {
+// Redireccion
+
+function showForm(casetaNombre, id_caseta) { 
     document.getElementById('caseta-buttons').style.display = 'visible';
-    window.location.href = '/incidencias/create?id_caseta='+ id_caseta;
-    
+    window.location.href = '/incidencias/create?id_caseta=' + id_caseta + '&caseta_nombre=' + encodeURIComponent(casetaNombre);
 }
+
+
+
+// function showForm(casetaNombre, id_caseta) {
+//     document.getElementById('caseta-buttons').style.display = 'visible';
+//     window.location.href = '/incidencias/create?id_caseta='+ id_caseta;
+    
+// }
 
 //function showForm(casetaNombre, id_caseta) {
 // Redireccion

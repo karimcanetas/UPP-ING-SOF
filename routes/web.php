@@ -6,6 +6,7 @@ use App\Http\Controllers\SucursalesController;
 use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\CasetasController;
 use App\Http\Controllers\IncidenciaController;
+use App\Http\Controllers\EmpleadosCatologoController;
 
 // Ruta de la vista Welcome
 Route::get('/', function () {
@@ -46,6 +47,13 @@ Route::controller(IncidenciaController::class)->group(function () {
     Route::get('/incidencias/create', 'create')->name('incidencias.create');
     Route::post('/incidencias', 'store')->name('incidencias.store');
 });
+
+// Ruta para crear una incidencia
+Route::get('/incidencias/create', [IncidenciaController::class, 'create'])->name('incidencias.create');
+
+// Ruta para almacenar empleados
+Route::post('/empleados/store', [EmpleadosCatologoController::class, 'store'])->name('empleados.store');
+
 
 // Autenticacion
 require __DIR__ . '/auth.php';

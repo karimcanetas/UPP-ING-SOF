@@ -18,6 +18,8 @@ use App\Models\Campo;
 use App\Models\CampoIncidencia;
 use App\Models\EmpleadosCatalogo;
 use App\Models\Puestos;
+use App\Models\TipoAsociado;
+use App\Models\EmpleadosNoRegistrados;
 
 class IncidenciaController extends Controller
 {
@@ -35,8 +37,10 @@ class IncidenciaController extends Controller
         $condicion_salida = Condicionsalida::all();
         $motivo_visita = Motivovisita::all();
         $campos = Campo::all();
-        $puetos = Puestos::all();
+        $puestos = Puestos::all();
         $empleados = EmpleadosCatalogo::all();
+        $tiposAsociados = TipoAsociado::all();
+        $empleadosNoRegistrados = EmpleadosNoRegistrados::all();
 
         // Capturar el id_caseta desde la URL
         $id_caseta = $request->query('id_caseta');
@@ -64,15 +68,17 @@ class IncidenciaController extends Controller
             'condicion_salida',
             'motivo_visita',
             'campos',
-            'empleados'
+            'empleados',
+            'puestos',
+            'tiposAsociados',
+            'empleadosNoRegistrados'
         ));
     }
 
     public function store(Request $request)
     {
 
-        //dd($request->all());
-        // Validar datos generales del formulario
+        dd($request->all());
         $request->validate([
             'id_casetas' => 'required',
             'Detalles' => 'nullable',

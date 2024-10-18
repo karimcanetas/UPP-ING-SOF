@@ -360,10 +360,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
     const puestoInput = document.getElementById('puestoInput');
 
+    // Inicializa Select2
     if (empleadoSelect) {
-        empleadoSelect.addEventListener('change', function () {
+        $(empleadoSelect).select2({
+            tags: true,
+            tokenSeparators: [',', ' '],
+            width: '100%',
+            placeholder: "Selecciona un empleado",
+            allowClear: true
+        }).on('change', function () {
             const selectedOption = this.options[this.selectedIndex];
-            const puesto = selectedOption.getAttribute('data-puesto');
+            const puesto = selectedOption ? selectedOption.getAttribute('data-puesto') : '';
 
             puestoInput.value = puesto || '';
         });
@@ -372,24 +379,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
+$(document).ready(function () {
+    $('#empleadoNoRegistrado').on('change', function () {
+        // Obtener el valor seleccionado
+        var selectedValue = $(this).val();
+
+        // ¿hay un empleado seleccionado?
+        if (selectedValue) {
+            // ocultar si se selcciona
+            $('#campoAsociadoInterno').hide();
+        } else {
+           //mostrar si no se selcciona
+            $('#campoAsociadoInterno').show();
+        }
+    });
+});
+
+
+
+
 function toggleOtroUnidad(select) {
-    // Obtener el elemento del campo de texto "otroUnidad"
+
     const otraunidad = select.value;
     const textunidad = select.nextElementSibling;
     const otrotextunidad = textunidad.querySelector('textarea');
 
-    // Si la opción seleccionada es "otro", mostrar el campo de texto, de lo contrario, ocultarlo
     if (select.value === 'otro') {
         textunidad.style.display = 'block';
-        otrotextunidad.value = '';  // Hacer el campo obligatorio cuando se muestra
+        otrotextunidad.value = '';  
     } else {
         textunidad.style.display = 'none';
-        otrotextunidad.value = otraunidad; // No obligatorio cuando está oculto
+        otrotextunidad.value = otraunidad; 
     }
 }
 function toggleOtroArea(selectElement) {
     const selectedValue = selectElement.value;
-    const otrosTextareaContainer = selectElement.nextElementSibling; // Asegúrate de que el textarea esté justo después del select
+    const otrosTextareaContainer = selectElement.nextElementSibling; 
     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
 
     if (selectedValue === 'otro') {
@@ -397,37 +422,68 @@ function toggleOtroArea(selectElement) {
         otrosTextarea.value = ''; // Limpiar el textarea
     } else {
         otrosTextareaContainer.style.display = 'none';
-        otrosTextarea.value = selectedValue; // Asignar el valor del select al textarea
+        otrosTextarea.value = selectedValue; 
     }
 }
 
 
 
 
-// Función para ajustar el valor del campo de "Unidad" antes de enviar el formulario
 function ajustarValorCampo(form) {
     const selectElements = form.querySelectorAll('select[name^="campos["]');
-    let valid = true; // Variable para verificar la validez
-
+    let valid = true; 
     selectElements.forEach((selectElement) => {
         const otrosTextarea = selectElement.nextElementSibling.querySelector('textarea');
 
-        // Verificar si el valor seleccionado es "otro"
+      
         if (selectElement.value === 'otro') {
-            selectElement.value = otrosTextarea.value.trim(); // Asigna el valor del textarea
+            selectElement.value = otrosTextarea.value.trim(); 
         }
 
-        // Verifica que el textarea tenga un valor si se selecciona "OTRO"
         if (selectElement.value === '' && otrosTextarea.value.trim() === '') {
             alert('Por favor, especifica otra unidad.');
-            valid = true; // Marcar como inválido
+            valid = true; 
         }
     });
 
-    return true; // Retorna true si todos los campos son válidos
+    return true; 
 }
 
 
+
+function toggleForm(showSelect) {
+    var formNuevoEmpleado = document.getElementById('formNuevoEmpleado');
+    var selectEmpleados = document.getElementById('selectEmpleadosNoRegistrados');
+
+    if (showSelect) {
+        formNuevoEmpleado.style.display = 'none';
+        selectEmpleados.style.display = 'block';
+        $('#empleadoNoRegistrado').select2('open');
+
+    } else {
+
+        selectEmpleados.style.display = 'none';
+        formNuevoEmpleado.style.display = 'block';
+    }
+}
+
+$(document).ready(function () {
+    // Inicializar Select2
+    $('#empleadoNoRegistrado').select2({
+        placeholder: "Selecciona un empleado",
+        allowClear: true
+    });
+
+    // Manejar el cambio en el select
+    $('#empleadoNoRegistrado').on('change', function () {
+        // Obtener el empleado seleccionado
+        var selectedOption = $(this).find('option:selected');
+        var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
+
+        // Rellenar el campo de texto con el nombre del empleado
+        $('#empleadoNombre').val(empleadoNombre);
+    });
+});
 
 
 

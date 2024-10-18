@@ -9,8 +9,6 @@ class Puestos extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql'; //bd Concentradora
-
     protected $table = 'puestos';
 
     protected $primaryKey = 'id_puesto';
@@ -23,4 +21,9 @@ class Puestos extends Model
         'updated_at',
         'status'
     ];
+
+    public function setConnectionDynamic($connection)
+    {
+        $this->setConnection($connection);
+    }
 }

@@ -9,3 +9,7 @@
                 @endforeach
             </select>
         </div>
+
+        {{-- <script> 
+            $('#id_formatos').select2();
+        </script> --}}

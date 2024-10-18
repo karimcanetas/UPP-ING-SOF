@@ -30,48 +30,63 @@
                 </div>
             </div>
 
-            @foreach (['Nombre asociado interno', 'Puesto', 'Hora de entrada', 'Hora de salidas', 'Unidad - Vehiculo personal', 'Placas', 'Observaciones / Comentarios'] as $campoNombre)
+            @foreach (['Nombre asociado interno', 'Empleado no registrado', 'Puesto', 'Hora de entrada', 'Hora de salidas', 'Unidad - Vehiculo personal', 'Placas', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
 
+
                         @if ($campoNombre == 'Nombre asociado interno')
-                            <select name="campos[{{ $campo->id_campo }}]" id="empleadoSelect" class="form-control"
-                                required>
-                                <option value="" disabled
-                                    {{ old('campos.' . $campo->id_campo) ? '' : 'selected' }}>
-                                    Selecciona un empleado</option>
-                                @foreach ($empleados as $empleado)
-                                    <option value="{{ $empleado->nombres }}"
-                                        data-puesto="{{ $empleado->puesto->nombre }}"
-                                        {{ old('campos.' . $campo->id_campo) == $empleado->id ? 'selected' : '' }}>
-                                        {{ $empleado->nombres }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        @elseif ($campoNombre == 'Puesto')
-                            <input type="text" class="form-control" id="puestoInput"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Hora de entrada')
-                            <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Hora de salida')
-                            <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Unidad - Vehiculo personal')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif($campoNombre == 'Placas')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Observaciones / Comentarios')
-                            <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                            <div class="align-items-center" id="campoAsociadoInterno">
+                                <select name="campos[{{ $campo->id_campo }}]" id="empleadoSelect"
+                                    class="form-control js-example-tokenizer"
+                                    style="width: 100%; text-transform: uppercase;">
+                                    <option value="" selected disabled>Selecciona un empleado</option>
+                                    @foreach ($empleados as $empleado)
+                                        <option value="{{ $empleado->id }}"
+                                            data-puesto="{{ $empleado->puesto->nombre }}"
+                                            {{ old('campos.' . $campo->id_campo) == $empleado->id ? 'selected' : '' }}
+                                            style="text-transform: uppercase;">
+                                            {{ strtoupper($empleado->nombres) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <br>
+                            <div class="d-flex align-items-center">
+                                <button type="button" class="btn btn-outline-primary mr-2" data-toggle="modal"
+                                    data-target="#agregarEmpleadoModal" aria-label="Agregar nuevo empleado"
+                                    style="font-size: 18px; padding: 10px 20px;">
+                                    <i class="fas fa-user-plus"></i> Agregar Empleado
+                                </button>
+                            @elseif ($campoNombre == 'Empleado no registrado')
+                                <input type="text" class="form-control" id="empleadoNombre"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}">
+                            @elseif ($campoNombre == 'Puesto')
+                                <input type="text" class="form-control" id="puestoInput"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            @elseif ($campoNombre == 'Hora de entrada')
+                                <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            @elseif ($campoNombre == 'Hora de salida')
+                                <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            @elseif ($campoNombre == 'Unidad - Vehiculo personal')
+                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            @elseif($campoNombre == 'Placas')
+                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos. ' . $campo->id_campo) }}" required>
+                            @elseif ($campoNombre == 'Observaciones / Comentarios')
+                                <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @endif
                     </div>
                 @endif
@@ -82,3 +97,21 @@
         </div>
     @endif
 </form>
+
+
+{{-- 
+
+<script>
+    $('.js-example-tokenizer').select2({
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
+</scrip> --}}
+
+{{-- <script>
+    $(".js-example-tokenizer").select2({
+        etiquetas: true,
+        tokenSeparators: [',', ' '],
+        width: '100%'
+    })
+</script> --}}

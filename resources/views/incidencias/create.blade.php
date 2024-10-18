@@ -173,3 +173,5 @@
     <script src="{{ asset('js/incidencias/incidencias.js') }}"></script>
 
 </x-app-layout>
+
+<x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleados="$empleadosNoRegistrados" />
