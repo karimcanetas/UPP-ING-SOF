@@ -12,20 +12,20 @@ return new class extends Migration
     protected $connection = 'mysql_2'; //bd vigilancia
     public function up(): void
     {
-        Schema::create('campo_incidencias', function(Blueprint $table) {
+        Schema::create('campo_incidencias', function (Blueprint $table) {
             $table->id('id_campo_incidencias');
-            $table->integer('id_incidencias');
-            $table->integer('id_campo');
-            $table->integer('id_formatos');
+            $table->unsignedBigInteger('id_incidencias');
+            $table->unsignedBigInteger('id_campo');
+            $table->unsignedBigInteger('id_formatos');
             $table->integer('valor')->nullable();
-
-            //clave foranea
+    
+            //claves foraneas
             $table->foreign('id_incidencias')->references('id_incidencias')->on('incidencias')->onDelete('cascade');
             $table->foreign('id_campo')->references('id_campo')->on('campos')->onDelete('cascade');
             $table->foreign('id_formatos')->references('id_formatos')->on('formatos')->onDelete('cascade');
-            
         });
     }
+    
 
     /**
      * Reverse the migrations.

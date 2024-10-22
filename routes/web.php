@@ -7,6 +7,10 @@ use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\CasetasController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\EmpleadosCatologoController;
+use App\Http\Controllers\CorreosController;
+use App\Http\Controllers\FormatosController;
+use App\Models\CorreosFormatos;
+use App\Models\Formato;
 
 // Ruta de la vista Welcome
 Route::get('/', function () {
@@ -48,11 +52,21 @@ Route::controller(IncidenciaController::class)->group(function () {
     Route::post('/incidencias', 'store')->name('incidencias.store');
 });
 
-// Ruta para crear una incidencia
-Route::get('/incidencias/create', [IncidenciaController::class, 'create'])->name('incidencias.create');
+// ruta incidencias
+Route::controller(IncidenciaController::class)->group(function () {
+    Route::get('/incidencias/create', 'create')->name('incidencias.create');
+    Route::post('/incidencias', 'store')->name('incidencias.store');
+});
 
-// Ruta para almacenar empleados
-Route::post('/empleados/store', [EmpleadosCatologoController::class, 'store'])->name('empleados.store');
+//ruta de Empleados
+Route::controller(EmpleadosCatologoController::class)->group(function () {
+    Route::post('/empleados/store', 'store')->name('empleados.store');
+});
+
+//ruta de correos
+Route::resource('correos', CorreosController::class);
+Route::get('/correos/{id}', [FormatosController::class, 'getCorreos']);
+
 
 
 // Autenticacion

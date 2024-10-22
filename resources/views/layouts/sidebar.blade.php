@@ -101,6 +101,22 @@
         </a>
     </li>
 
+
+
+    <li class="nav-item anim-left anim-pause-1 @if(Route::is('correos.index')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('correos.index') }}" data-toggle="popover" data-content="Pulsar para ir al módulo de correos">
+            <svg @if(Route::is('correos.index')) width="80px" height="80px" @else width="40px" height="40px" @endif viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="30" width="80" height="40" rx="5" ry="5" fill="none" stroke="#ffffff" stroke-width="5" opacity="0.8"/>
+                <polyline points="10,30 50,60 90,30" fill="none" stroke="#ffffff" stroke-width="5" opacity="0.8"/>
+                <line x1="50" y1="85" x2="80" y2="85" stroke="#ffffff" stroke-width="5" />
+                <polyline points="70,75 80,85 70,95" fill="none" stroke="#ffffff" stroke-width="5"/>
+                <path d="M10 30L50 55L90 30" stroke="#ffffff" stroke-width="5" opacity="0.5"/>
+                <rect x="10" y="30" width="80" height="40" rx="5" ry="5" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
+            </svg>
+            <span>{{ __('Enviar correos') }}</span>
+        </a>
+    </li>
+
     <li class="nav-item anim-left anim-pause-1 @if(Route::is('dashboard') || Route::is('dashboard')) font-weight-bold active @endif">
         <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
             <svg @if(Route::is('dashboard') || Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

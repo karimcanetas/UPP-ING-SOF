@@ -34,7 +34,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.css">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css' rel='stylesheet'>
-        <link href="{{ url('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+        {{-- <link href="{{ url('assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet"> --}}
         <link href="{{ url('css/toyota_style.css') }}" rel="stylesheet">
         <link href="{{ url('css/animacion.css') }}" rel="stylesheet">
         <link href="{{ url('css/loader.css') }}" rel="stylesheet">
@@ -68,7 +68,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    {{-- <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script> --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.0.1/dist/progressbar.min.js"></script>
     <script src="{{ asset('assets/js/turn/turn.js') }}"></script>
@@ -98,7 +98,7 @@
                 class="d-flex flex-column animated animated-sm bounceInUp @if (Route::is('disenio')) home-5-bg @endif">
 
                 <div id="content">
-
+                
                     @include('layouts.navbar')
 
                     <div class="container-fluid animated animated-sm bounceInUp" id="dato_modal">
@@ -131,9 +131,9 @@
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="{{ asset('vendor/datatables/jquery.Tables.js') }}"></script>
+        {{-- <script src="{{ asset('vendor/datatables/jquery.Tables.js') }}"></script>
         <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('js/app/demo/datatables-demo.js') }}"></script>
+        <script src="{{ asset('js/app/demo/datatables-demo.js') }}"></script> --}}
         <script src="{{ asset('assets/js/toyota_admin.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.all.min.js"></script>
@@ -150,11 +150,11 @@
 
 
         <script>
-            $(document).ready(function() {
-                $('[data-toggle="popover"]').popover({
-                    trigger: 'hover'
-                });
-            });
+            // $(document).ready(function() {
+            //     $('[data-toggle="popover"]').popover({
+            //         trigger: 'hover'
+            //     });
+            // });
 
             $('.confirmar_salida').click(function(event) {
                 var form = $(this).closest("form");
@@ -232,33 +232,27 @@
 
     <!-- puestos dinamicos -->
     <script>
-        $(document).ready(function() {
-            $('#empleadoNoRegistrado').on('change', function() {
-                // Obtener el empleado seleccionado
-                var selectedOption = $(this).find('option:selected');
-                var empleadoNombre = selectedOption.data('nombres');
-                var puestoId = selectedOption.data('puesto-id'); // Obtener el ID del puesto
+   // Manejar el cambio en el select de empleados no registrados
+$('#empleadoNoRegistrado').on('change', function () {
+    // Obtener el empleado seleccionado
+    var selectedOption = $(this).find('option:selected');
+    var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
+    var puestoNombre = selectedOption.data('puesto-nombre'); // Obtener el nombre del puesto
 
-                // Rellenar el campo de texto con el nombre del empleado
-                $('#empleadoNombre').val(empleadoNombre);
-                // Rellenar el campo de puesto con el nombre correspondiente
-                var puestoNombre = '';
-                // Buscar el nombre del puesto basado en el ID
-                @foreach ($puestos as $puesto)
-                    if (puestoId == {{ $puesto->id_puesto }}) {
-                        puestoNombre =
-                            '{{ $puesto->nombre }}';
-                    }
-                @endforeach
-                $('#puestoInput').val(puestoNombre);
-                if (selectedOption.val()) {
+    // Rellenar el campo de texto con el nombre del empleado
+    $('#empleadoNombre').val(empleadoNombre);
 
-                    $('#campoAsociadoInterno').hide();
-                } else {
-                    $('#campoAsociadoInterno').show();
-                }
-            });
-        });
+    // Rellenar el campo de puesto con el nombre del puesto
+    $('#puestoInput').val(puestoNombre); // Rellenar el campo de puesto
+
+    // Manejar la visibilidad de campo asociado interno
+    if (selectedOption.val()) {
+        $('#campoAsociadoInterno').hide();
+    } else {
+        $('#campoAsociadoInterno').show();
+    }
+});
+
     </script>
 
 

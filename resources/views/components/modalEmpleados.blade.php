@@ -14,22 +14,22 @@
                 @csrf
                 <div class="modal-body">
 
-                    <!-- Pregunta si ya ha visitado -->
+                    <!-- pregunta si ya ha visitado -->
                     <div class="check-group">
                         <label for="visita_previa" class="modal-text font-weight-bold">
                             <i class="fas fa-question-circle"></i> ¿El empleado ya visitó con anterioridad?
                         </label>
                         <div>
-                            <input type="radio" class="btn-check" id="visita_si" name="visita_previa" value="si"
-                                onclick="toggleForm(false)">
+                            <input type="radio" class="btn-check visita" id="visita_si" name="visita_previa"
+                                value="si" onclick="toggleForm(true)" style="opacity: 0;">
                             <label class="btn btn-outline-success" for="visita_si">Sí</label>
 
-                            <input type="radio" class="btn-check" id="visita_no" name="visita_previa" value="no"
-                                onclick="toggleForm(true)">
+                            <input type="radio" class="btn-check visita" id="visita_no" name="visita_previa"
+                                value="no" onclick="toggleForm(false)" style="opacity: 0;">
                             <label class="btn btn-outline-danger" for="visita_no">No</label>
                         </div>
-
                     </div>
+
 
                     <div class="label-group" id="selectEmpleadosNoRegistrados" style="display: none;">
                         <label for="empleados_no_registrados" class="modal-text font-weight-bold">
@@ -107,15 +107,21 @@
                     </div> --}}
 
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                            style="border-radius: 5px;">
-                            <i class="fas fa-times"></i> Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary" id="guardarBtn" style="border-radius: 5px;">
-                            <i class="fas fa-save"></i> Guardar Empleado
-                        </button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                style="border-radius: 5px;">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                            <div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="guardarBtn">
+                                        <i class="fas fa-save"></i> Guardar Empleado
+                                        <span class="spinner-border spinner-border-sm" role="status"
+                                            aria-hidden="true" style="display: none;"></span> 
+                                    </button>
+                                </div>
+
+
             </form>
         </div>
     </div>
@@ -172,4 +178,33 @@
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
+
+
+
+    input.visita:checked+label {
+        background-color: darkgreen;
+        color: white;
+        border-color: darkgreen;
+    }
+
+    input#visita_no:checked+label {
+        background-color: darkred;
+        color: white;
+        border-color: darkred;
+    }
+
+    input#visita_si:hover+label {
+        background-color: #28a745;
+    }
+
+    input#visita_no:hover+label {
+        background-color: #dc3545;
+    }
+
+    #guardarBtn {
+    border-radius: 3px; 
+    padding: 5px 10px; 
+    font-size: 1.3rem; 
+}
+
 </style>

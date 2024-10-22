@@ -14,9 +14,9 @@ return new class extends Migration
     {
         Schema::create('incidencias', function (Blueprint $table) {
             $table->id('id_incidencias');
-            $table->integer('id_casetas');
-            $table->integer('id_formatos');
-            $table->integer('id_turnos');
+            $table->unsignedBigInteger('id_casetas');
+            $table->unsignedBigInteger('id_formatos');
+            $table->unsignedBigInteger('id_turnos');
             $table->string('Nombre_vigilante');
             $table->string('guardia')->nullable();
             $table->dateTime('fecha_hora');

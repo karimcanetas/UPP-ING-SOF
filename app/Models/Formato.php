@@ -12,6 +12,8 @@ class Formato extends Model
     protected $table = 'formatos';
     protected $primaryKey = 'id_formatos';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'Tipo',
         'Fecha_de_creacion',
@@ -39,4 +41,9 @@ class Formato extends Model
     {
         return $this->belongsToMany(Campo::class, 'formato_campo', 'id_formatos', 'id_campo');
     }
+    public function correos()
+    {
+        return $this->belongsToMany(Correos::class, 'correos_formatos', 'id_formatos', 'id_correo');
+    }
+    
 }

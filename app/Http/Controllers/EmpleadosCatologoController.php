@@ -41,6 +41,14 @@ class EmpleadosCatologoController extends Controller
 
         $empleado->save();
 
-        return redirect()->route('incidencias.create')->with('empleado_success', 'Empleado agregado exitosamente.');
+        $puesto = Puestos::find($empleado->id_puesto);
+        return response()->json([
+            'id_empleado' => $empleado->id_empleado,
+            'nombres' => $empleado->nombres,
+            'id_puesto' => $empleado->id_puesto,
+            'puestoNombre' => $puesto ? $puesto->nombre : '',
+            'message' => 'Empleado agregado exitosamente.',
+        ]);
+        // return redirect()->route('incidencias.create')->with('empleado_success', 'Empleado agregado exitosamente.');
     }
 }

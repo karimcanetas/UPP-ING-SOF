@@ -38,13 +38,15 @@ class AuthenticatedSessionController extends Controller
 
             Alert::html(
                 '<b> Bienvenido <u class="text-primary">' . Auth::user()->empleado->nombres . '</u> </b>',
-                " Al <b class='text-danger'> Sistema de Ticket's Digitales</b>",
+                " Al <b class='text-danger'> Sistema de Vigilancia PRT</b>",
                 'success'
             );
 
-            return response()->json(['success' => true]);
+            return redirect()->route('dashboard');
         } else {
-            return response()->json(['success' => false, 'message' => 'Credenciales inválidas.']);
+            // Si las credenciales son inválidas
+            Alert::error('Error', 'Credenciales inválidas.');
+            return redirect()->back()->withInput(); // Redirige de vuelta con los datos del formulario
         }
     }
 

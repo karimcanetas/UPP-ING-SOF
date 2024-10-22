@@ -41,19 +41,18 @@ class EmpleadosCatalogo extends Model
     {
         return $this->hasMany(Incidencia::class, 'id_motivo', 'id_motivo');
     }
-
-    // public function puesto()
-    // {
-    //     return $this->belongsTo(Puestos::class, 'id_puesto', 'id_puesto')
-    //                 ->on('mysql_2'); // Especificar la conexión a la otra base de datos
-    // }
     public function tipoAsociado()
     {
         return $this->belongsTo(TipoAsociado::class, 'id_tipo_asociado', 'id_tipo_asociado');
     }
     public function puesto()
     {
-        // Definir la relación con el modelo Puestos, usando 'mysql'
+
         return $this->belongsTo(Puestos::class, 'id_puesto', 'id_puesto')->withDefault();
+    }
+
+    public function correos()
+    {
+        return $this->belongsTo(Correos::class, 'id_correo', 'id_correo')->withDefault();
     }
 }

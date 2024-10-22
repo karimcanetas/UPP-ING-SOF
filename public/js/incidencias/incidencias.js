@@ -355,12 +355,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //     return valid; // Retorna true si todos los campos son válidos
 // }
-
 document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
     const puestoInput = document.getElementById('puestoInput');
+    const nuevoEmpleadoForm = document.getElementById('nuevoEmpleadoForm');
+    const empleadoNoRegistradoContainer = document.getElementById('empleadoNoRegistradoContainer');
+    const agregarEmpleadoBtn = document.getElementById('agregarEmpleadoBtn');
+    const empleadoNoRegistradoSelect = $('#empleadoNoRegistrado');
 
-    // Inicializa Select2
+    // Inicializa Select2 solo si el elemento existe
     if (empleadoSelect) {
         $(empleadoSelect).select2({
             tags: true,
@@ -368,122 +371,147 @@ document.addEventListener('DOMContentLoaded', function () {
             width: '100%',
             placeholder: "Selecciona un empleado",
             allowClear: true
-        }).on('change', function () {
-            const selectedOption = this.options[this.selectedIndex];
-            const puesto = selectedOption ? selectedOption.getAttribute('data-puesto') : '';
+        }).on('change', updatePuestoInput);
+    }
 
-            puestoInput.value = puesto || '';
+    // Actualiza el input de puesto basado en la seleccion
+    function updatePuestoInput() {
+        const selectedOption = this.options[this.selectedIndex];
+        puestoInput.value = selectedOption ? selectedOption.getAttribute('data-puesto') : '';
+    }
+
+    // Maneja el evento de envio del nuevo empleado
+    if (nuevoEmpleadoForm) {
+        nuevoEmpleadoForm.addEventListener('submit', handleNewEmployeeSubmit);
+    }
+
+    function handleNewEmployeeSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const guardarBtn = document.getElementById('guardarBtn');
+        const spinner = guardarBtn.querySelector('.spinner-border');
+
+        guardarBtn.disabled = true;
+        spinner.style.display = 'inline-block';
+
+        fetch(this.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al guardar el empleado');
+                }
+                return response.json();
+            })
+            .then(data => addNewEmployeeOption(data))
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+
+                spinner.style.display = 'none';
+                guardarBtn.disabled = false;
+            });
+    }
+
+    function addNewEmployeeOption(data) {
+        const newOption = new Option(data.nombres, data.id_empleado, false, true);
+        newOption.setAttribute('data-nombres', data.nombres);
+        newOption.setAttribute('data-puesto-nombre', data.puestoNombre);
+
+        empleadoNoRegistradoSelect.append(newOption).trigger('change');
+        empleadoNoRegistradoSelect.val(data.id_empleado).trigger('change');
+
+        $('#empleadoNombre').val(data.nombres);
+        puestoInput.value = data.puestoNombre;
+        alert(data.message || 'Empleado agregado exitosamente.');
+        nuevoEmpleadoForm.reset(); // Reinicia el formulario
+    }
+
+    // Cambia el campo asociado interno al cambiar el select de no registrados
+    empleadoNoRegistradoSelect.on('change', function () {
+        const selectedValue = $(this).val();
+        $('#campoAsociadoInterno').toggle(!selectedValue);
+        const empleadoNombre = $(this).find('option:selected').data('nombres');
+        $('#empleadoNombre').val(empleadoNombre);
+    });
+
+    // Muestra el campo de empleado no registrado
+    if (agregarEmpleadoBtn) {
+        agregarEmpleadoBtn.addEventListener('click', () => {
+            empleadoNoRegistradoContainer.style.display = 'block'; // Muestra el campo
         });
-    } else {
-        console.warn('elemento empleadoSelect no encontrado');
     }
 });
 
-$(document).ready(function () {
-    $('#empleadoNoRegistrado').on('change', function () {
-        // Obtener el valor seleccionado
-        var selectedValue = $(this).val();
+// Función para alternar el formulario
+function toggleForm(showSelect) {
+    const formNuevoEmpleado = document.getElementById('formNuevoEmpleado');
+    const selectEmpleados = document.getElementById('selectEmpleadosNoRegistrados');
 
-        // ¿hay un empleado seleccionado?
-        if (selectedValue) {
-            // ocultar si se selcciona
-            $('#campoAsociadoInterno').hide();
-        } else {
-           //mostrar si no se selcciona
-            $('#campoAsociadoInterno').show();
-        }
-    });
-});
+    formNuevoEmpleado.style.display = showSelect ? 'none' : 'block';
+    selectEmpleados.style.display = showSelect ? 'block' : 'none';
 
+    if (showSelect) {
+        $('#empleadoNoRegistrado').select2('open');
+    }
+}
 
-
-
+// Otras funciones
 function toggleOtroUnidad(select) {
-
-    const otraunidad = select.value;
     const textunidad = select.nextElementSibling;
     const otrotextunidad = textunidad.querySelector('textarea');
 
-    if (select.value === 'otro') {
-        textunidad.style.display = 'block';
-        otrotextunidad.value = '';  
-    } else {
-        textunidad.style.display = 'none';
-        otrotextunidad.value = otraunidad; 
-    }
+    textunidad.style.display = (select.value === 'otro') ? 'block' : 'none';
+    if (select.value !== 'otro') otrotextunidad.value = select.value;
 }
+
 function toggleOtroArea(selectElement) {
-    const selectedValue = selectElement.value;
-    const otrosTextareaContainer = selectElement.nextElementSibling; 
+    const otrosTextareaContainer = selectElement.nextElementSibling;
     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
 
-    if (selectedValue === 'otro') {
+    if (selectElement.value === 'otro') {
         otrosTextareaContainer.style.display = 'block';
         otrosTextarea.value = ''; // Limpiar el textarea
     } else {
         otrosTextareaContainer.style.display = 'none';
-        otrosTextarea.value = selectedValue; 
+        otrosTextarea.value = selectElement.value;
     }
 }
 
-
-
-
 function ajustarValorCampo(form) {
     const selectElements = form.querySelectorAll('select[name^="campos["]');
-    let valid = true; 
-    selectElements.forEach((selectElement) => {
+    let valid = true;
+
+    selectElements.forEach(selectElement => {
         const otrosTextarea = selectElement.nextElementSibling.querySelector('textarea');
 
-      
         if (selectElement.value === 'otro') {
-            selectElement.value = otrosTextarea.value.trim(); 
+            selectElement.value = otrosTextarea.value.trim();
         }
 
         if (selectElement.value === '' && otrosTextarea.value.trim() === '') {
             alert('Por favor, especifica otra unidad.');
-            valid = true; 
+            valid = false;
         }
     });
 
-    return true; 
+    return valid;
 }
 
+// Función para actualizar el nombre de la foto seleccionada
+function updatePhotoName(input, type) {
+    const fileName = input.files[0] ? input.files[0].name : '';
+    const message = type === 'subida' ? 'Foto subida: ' : 'Foto tomada: ';
+    const mensajeFoto = document.getElementById('mensaje-foto');
 
-
-function toggleForm(showSelect) {
-    var formNuevoEmpleado = document.getElementById('formNuevoEmpleado');
-    var selectEmpleados = document.getElementById('selectEmpleadosNoRegistrados');
-
-    if (showSelect) {
-        formNuevoEmpleado.style.display = 'none';
-        selectEmpleados.style.display = 'block';
-        $('#empleadoNoRegistrado').select2('open');
-
+    if (fileName) {
+        mensajeFoto.innerText = message + fileName;
+        mensajeFoto.style.display = 'block';
     } else {
-
-        selectEmpleados.style.display = 'none';
-        formNuevoEmpleado.style.display = 'block';
+        mensajeFoto.style.display = 'none';
     }
 }
-
-$(document).ready(function () {
-    // Inicializar Select2
-    $('#empleadoNoRegistrado').select2({
-        placeholder: "Selecciona un empleado",
-        allowClear: true
-    });
-
-    // Manejar el cambio en el select
-    $('#empleadoNoRegistrado').on('change', function () {
-        // Obtener el empleado seleccionado
-        var selectedOption = $(this).find('option:selected');
-        var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
-
-        // Rellenar el campo de texto con el nombre del empleado
-        $('#empleadoNombre').val(empleadoNombre);
-    });
-});
-
-
-

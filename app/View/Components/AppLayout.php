@@ -30,6 +30,9 @@ class AppLayout extends Component
         return view('layouts.app', [
             'puestos' => $this->puestos,
             'tiposAsociados' => $this->tiposAsociados,
+
+            
         ]);
+       
     }
 }

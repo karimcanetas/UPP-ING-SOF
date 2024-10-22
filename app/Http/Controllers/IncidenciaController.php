@@ -56,6 +56,8 @@ class IncidenciaController extends Controller
             $formatos = collect();
         }
 
+        $incidencias = Incidencia::with('caseta', 'turnos', 'formatos')->get();
+
         return view('incidencias.create', compact(
             'casetas',
             'turnos',
@@ -71,14 +73,15 @@ class IncidenciaController extends Controller
             'empleados',
             'puestos',
             'tiposAsociados',
-            'empleadosNoRegistrados'
+            'empleadosNoRegistrados',
+            'incidencias'
         ));
     }
 
     public function store(Request $request)
     {
 
-        dd($request->all());
+        //dd($request->all());
         $request->validate([
             'id_casetas' => 'required',
             'Detalles' => 'nullable',
@@ -90,11 +93,22 @@ class IncidenciaController extends Controller
             'lt_gasolina_final' => 'nullable',
             'folio_Salida_definitiva' => 'nullable',
             'id_unidad' => 'nullable',
+            'foto_upload' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto_camara' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             // 'otroUnidad' => 'nullable|string', // 
 
         ]);
 
-        $formato = $request->input('id_formatos');
+        if ($request->hasFile('foto_upload')) {
+            $archivo = $request->file('foto_upload');
+            $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
+        } elseif ($request->hasFile('foto_camara')) {
+            $archivo = $request->file('foto_camara');
+            $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
+        }
+
+        $incidencia = Incidencia::create(array_merge($request->all(), ['foto_path' => $rutaFoto]));
+        // $formato = $request->input('id_formatos');
         // Determinar qué formulario fue enviado
         $formulario = $request->input('formulario'); // Campo oculto que indica el formulario
 
@@ -127,13 +141,17 @@ class IncidenciaController extends Controller
         // Insertar datos en campo_incidencias
         $campos = $request->input('campos', []);
         foreach ($campos as $id_campo => $valor) {
-            CampoIncidencia::create([
-                'id_incidencias' => $incidencia->id_incidencias,
-                'id_campo' => $id_campo,
-                'id_formatos' => $request->input('id_formatos'),
-                'valor' => $valor
-            ]);
+            // Verifica si el valor no es nulo o vacío
+            if ($valor !== null && $valor !== '') {
+                CampoIncidencia::create([
+                    'id_incidencias' => $incidencia->id_incidencias,
+                    'id_campo' => $id_campo,
+                    'id_formatos' => $request->input('id_formatos'),
+                    'valor' => $valor
+                ]);
+            }
         }
+
 
         // Redireccionar según el formulario procesado
         return redirect()->route('incidencias.create')->with('success', 'Incidencia creada exitosamente.');

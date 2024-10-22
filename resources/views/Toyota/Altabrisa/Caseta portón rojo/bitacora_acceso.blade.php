@@ -43,9 +43,9 @@
                                     style="width: 100%; text-transform: uppercase;">
                                     <option value="" selected disabled>Selecciona un empleado</option>
                                     @foreach ($empleados as $empleado)
-                                        <option value="{{ $empleado->id }}"
+                                        <option value="{{ $empleado->id_empleado }}"
                                             data-puesto="{{ $empleado->puesto->nombre }}"
-                                            {{ old('campos.' . $campo->id_campo) == $empleado->id ? 'selected' : '' }}
+                                            {{ old('campos.' . $campo->id_campo) == $empleado->id_empleado ? 'selected' : '' }}
                                             style="text-transform: uppercase;">
                                             {{ strtoupper($empleado->nombres) }}
                                         </option>
@@ -57,13 +57,17 @@
                             <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-outline-primary mr-2" data-toggle="modal"
                                     data-target="#agregarEmpleadoModal" aria-label="Agregar nuevo empleado"
-                                    style="font-size: 18px; padding: 10px 20px;">
+                                    style="font-size: 18px; padding: 10px 20px;" id="agregarEmpleadoBtn">
                                     <i class="fas fa-user-plus"></i> Agregar Empleado
                                 </button>
+                            </div>
+                            
                             @elseif ($campoNombre == 'Empleado no registrado')
-                                <input type="text" class="form-control" id="empleadoNombre"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}">
+                                <div id="empleadoNoRegistradoContainer" style="display: none;">
+                                    <input type="text" class="form-control" id="empleadoNombre"
+                                        name="campos[{{ $campo->id_campo }}]"
+                                        value="{{ old('campos.' . $campo->id_campo) }}">
+                                </div>
                             @elseif ($campoNombre == 'Puesto')
                                 <input type="text" class="form-control" id="puestoInput"
                                     name="campos[{{ $campo->id_campo }}]"

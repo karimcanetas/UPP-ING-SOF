@@ -9,9 +9,9 @@ class Incidencia extends Model
     protected $connection = 'mysql_2'; // bd vigilancia
     protected $table = 'incidencias';
 
-    protected $primaryKey = 'id_incidencias'; 
+    protected $primaryKey = 'id_incidencias';
 
-    public $timestamps = false; 
+    public $timestamps = false;
 
     protected $fillable = [
         'id_casetas',
@@ -32,11 +32,20 @@ class Incidencia extends Model
     {
         return $this->belongsTo(Caseta::class, 'id_casetas');
     }
+    public function formato()
+    {
+        return $this->hasMany(Formato::class, 'id_formatos');
+    }
     public function formatos()
     {
-        return $this->hasMany(Formato::class, 'id_incidencia');
+        return $this->hasMany(Formato::class, 'id_formatos');
     }
-    
+    public function turnos()
+    {
+        return $this->belongsTo(Turno::class, 'id_turnos'); // Cambia 'id_turno' si tu clave foránea tiene otro nombre
+    }
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'id_turnos'); // Cambia 'id_turno' si tu clave foránea tiene otro nombre
+    }
 }
-
-

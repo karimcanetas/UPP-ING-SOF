@@ -9,14 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    protected $connection = 'mysql'; //bd concentradora
+    protected $connection = 'mysql_2'; //bd vigilancia 
     public function up(): void
-    {
-        Schema::create('niveles', function(Blueprint $table) {
-            $table->id('id');
-            $table->string('nombre');
-            $table->integer('orden');
-            $table->integer('status');
+    {   
+        Schema::create('empleados_no_registrados', function(Blueprint $table) {
+            $table->id('id_empleado');
+            $table->string('nombres');
+            $table->string('apellido_p');
+            $table->string('apellido_m');
+            $table->timestamps();
+
         });
     }
 
