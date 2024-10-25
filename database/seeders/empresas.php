@@ -11,7 +11,7 @@ class empresas extends Seeder
     /**
      * Run the database seeds.
      */
-    protected $connection = 'mysql';
+    protected $connection = 'mysql'; //bd concentradora
     public function run(): void
     {
         DB::table('empresas')->insert([

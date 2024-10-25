@@ -8,6 +8,7 @@ use App\Http\Controllers\CasetasController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\EmpleadosCatologoController;
 use App\Http\Controllers\CorreosController;
+use App\Http\Controllers\CorreosFormatosController;
 use App\Http\Controllers\FormatosController;
 use App\Models\CorreosFormatos;
 use App\Models\Formato;
@@ -66,6 +67,19 @@ Route::controller(EmpleadosCatologoController::class)->group(function () {
 //ruta de correos
 Route::resource('correos', CorreosController::class);
 Route::get('/correos/{id}', [FormatosController::class, 'getCorreos']);
+Route::get('/empresas/{id_empresa}/sucursales', [EmpresasController::class, 'getSucursales']);
+Route::get('/empresas', [EmpresasController::class, 'index'])->name('empresas.index');
+// Ruta para obtener las casetas de una sucursal
+Route::get('/sucursales/{id}/casetas', [CasetasController::class, 'getCasetas'])->name('sucursales.casetas');
+
+// Ruta para obtener los formatos de una caseta
+Route::get('/casetas/{id}/formatos', [CasetasController::class, 'getFormatos'])->name('casetas.formatos');
+Route::post('/correos', [CorreosController::class, 'store'])->name('correos.store');
+Route::post('/correos_formatos', [CorreosFormatosController::class, 'store'])->name('correos_formatos.store');
+Route::get('/correos', [CorreosController::class, 'index'])->name('correos.index');
+Route::post('/correos_formatos', [CorreosFormatos::class, 'store']);
+Route::post('/correos_formatos', [CorreosFormatosController::class, 'store'])->name('correos_formatos.store');
+Route::get('/correos_formatos',[CorreosFormatosController::class, 'store']);
 
 
 

@@ -10,6 +10,7 @@ return new class extends Migration
      * Run the migrations.
      */
     
+     protected $connection = 'mysql_2';
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {

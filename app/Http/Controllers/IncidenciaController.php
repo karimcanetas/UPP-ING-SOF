@@ -20,6 +20,7 @@ use App\Models\EmpleadosCatalogo;
 use App\Models\Puestos;
 use App\Models\TipoAsociado;
 use App\Models\EmpleadosNoRegistrados;
+use App\Models\Empresa;
 
 class IncidenciaController extends Controller
 {
@@ -41,6 +42,7 @@ class IncidenciaController extends Controller
         $empleados = EmpleadosCatalogo::all();
         $tiposAsociados = TipoAsociado::all();
         $empleadosNoRegistrados = EmpleadosNoRegistrados::all();
+        $empresas = Empresa::all();
 
         // Capturar el id_caseta desde la URL
         $id_caseta = $request->query('id_caseta');
