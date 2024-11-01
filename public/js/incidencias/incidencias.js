@@ -279,19 +279,11 @@ document.getElementById('btnAtras').addEventListener('click', function () {
     const incidenciaForm = document.getElementById('incidenciaForm');
     const detallesForm = document.getElementById('detallesForm');
 
-
     if (window.history.length > 1 && detallesForm.style.display === 'block') {
         detallesForm.classList.add('fade-out');
 
         setTimeout(function () {
-            detallesForm.style.display = 'none';
-            detallesForm.classList.remove('fade-out');
-
-
-            primeraEtapa.style.display = 'block';
-            incidenciaForm.style.display = 'block';
-            primeraEtapa.classList.add('fade-in');
-
+            location.reload();
         }, 300);
 
     } else {
@@ -301,6 +293,33 @@ document.getElementById('btnAtras').addEventListener('click', function () {
         }, 300);
     }
 });
+// document.getElementById('btnAtras').addEventListener('click', function () {
+//     const primeraEtapa = document.getElementById('primeraEtapa');
+//     const incidenciaForm = document.getElementById('incidenciaForm');
+//     const detallesForm = document.getElementById('detallesForm');
+
+
+//     if (window.history.length > 1 && detallesForm.style.display === 'block') {
+//         detallesForm.classList.add('fade-out');
+
+//         setTimeout(function () {
+//             detallesForm.style.display = 'none';
+//             detallesForm.classList.remove('fade-out');
+
+
+//             primeraEtapa.style.display = 'block';
+//             incidenciaForm.style.display = 'block';
+//             primeraEtapa.classList.add('fade-in');
+
+//         }, 300);
+
+//     } else {
+//         document.body.classList.add('fade-out');
+//         setTimeout(function () {
+//             window.history.back();
+//         }, 300);
+//     }
+// });
 
 //estilo
 document.addEventListener('DOMContentLoaded', function () {
@@ -501,6 +520,12 @@ function ajustarValorCampo(form) {
 
     return valid;
 }
+
+document.addEventListener('alertaAbierta', function () {
+    // Resetea los campos de detallesForm
+    document.getElementById('detallesForm').reset();
+});
+
 
 // Función para actualizar el nombre de la foto seleccionada
 function updatePhotoName(input, type) {

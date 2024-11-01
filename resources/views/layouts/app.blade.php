@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/select2-custom.css') }}">
 
-    @if (Route::is('dashboard'))
+    @if (Route::is('dashboard', 'send.index', 'CorreoFormato.index'))
 
         <title>{{ config('app.name', 'Sistema administrativo de Vigilancia') }}</title>
 
@@ -41,7 +41,7 @@
         <link href="{{ url('css/style.css') }}" rel="stylesheet">
         <link href="{{ url('css/sucursal.css') }}" rel="stylesheet">
 
-        @if (Route::is('disenio') || Route::is('dashboard'))
+        @if (Route::is('disenio') || Route::is('dashboard', 'send.index', 'CorreoFormato.index'))
             <link href="{{ url('css/app.css') }}" rel="stylesheet">
         @endif
     @else
@@ -80,7 +80,7 @@
 
 <body id="page-top" class="scroll-bar-toyota sidebar-toggled">
 
-    @if (route::is('dashboard'))
+    @if (route::is('dashboard', 'send.index', 'CorreoFormato.index'))
         <div class="progress" style="height: 6.5px; border-rodius: 0px;">
             <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0"
                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -98,7 +98,7 @@
                 class="d-flex flex-column animated animated-sm bounceInUp @if (Route::is('disenio')) home-5-bg @endif">
 
                 <div id="content">
-                
+
                     @include('layouts.navbar')
 
                     <div class="container-fluid animated animated-sm bounceInUp" id="dato_modal">
@@ -125,7 +125,7 @@
         </main>
     @endif
 
-    @if (route::is('dashboard'))
+    @if (route::is('dashboard', 'send.index', 'CorreoFormato.index'))
 
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -146,8 +146,6 @@
 
         <!-- Incluir Select2 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-
 
         <script>
             // $(document).ready(function() {
@@ -232,27 +230,26 @@
 
     <!-- puestos dinamicos -->
     <script>
-   // Manejar el cambio en el select de empleados no registrados
-$('#empleadoNoRegistrado').on('change', function () {
-    // Obtener el empleado seleccionado
-    var selectedOption = $(this).find('option:selected');
-    var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
-    var puestoNombre = selectedOption.data('puesto-nombre'); // Obtener el nombre del puesto
+        // Manejar el cambio en el select de empleados no registrados
+        $('#empleadoNoRegistrado').on('change', function() {
+            // Obtener el empleado seleccionado
+            var selectedOption = $(this).find('option:selected');
+            var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
+            var puestoNombre = selectedOption.data('puesto-nombre'); // Obtener el nombre del puesto
 
-    // Rellenar el campo de texto con el nombre del empleado
-    $('#empleadoNombre').val(empleadoNombre);
+            // Rellenar el campo de texto con el nombre del empleado
+            $('#empleadoNombre').val(empleadoNombre);
 
-    // Rellenar el campo de puesto con el nombre del puesto
-    $('#puestoInput').val(puestoNombre); // Rellenar el campo de puesto
+            // Rellenar el campo de puesto con el nombre del puesto
+            $('#puestoInput').val(puestoNombre); // Rellenar el campo de puesto
 
-    // Manejar la visibilidad de campo asociado interno
-    if (selectedOption.val()) {
-        $('#campoAsociadoInterno').hide();
-    } else {
-        $('#campoAsociadoInterno').show();
-    }
-});
-
+            // Manejar la visibilidad de campo asociado interno
+            if (selectedOption.val()) {
+                $('#campoAsociadoInterno').hide();
+            } else {
+                $('#campoAsociadoInterno').show();
+            }
+        });
     </script>
 
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Mail\ReporteMailable;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SucursalesController;
 use App\Http\Controllers\EmpresasController;
@@ -10,8 +11,8 @@ use App\Http\Controllers\EmpleadosCatologoController;
 use App\Http\Controllers\CorreosController;
 use App\Http\Controllers\CorreosFormatosController;
 use App\Http\Controllers\FormatosController;
-use App\Models\CorreosFormatos;
-use App\Models\Formato;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\CampoIncidenciasController;
 
 // Ruta de la vista Welcome
 Route::get('/', function () {
@@ -23,9 +24,32 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+Route::get('/index', function () {
+    return view('send.index');
+})->middleware(['auth', 'verified'])->name('index');
+
+Route::get('/send/index', function () {
+    return view('send.index');
+})->middleware(['auth', 'verified'])->name('send.index');
+
+
+Route::get('/index', function () {
+    return view('CorreoFormato.index');
+})->middleware(['auth', 'verified'])->name('index');
+
+Route::get('/CorreoFormato/index', function () {
+    return view('CorreoFormato.index');
+})->middleware(['auth', 'verified'])->name('CorreoFormato.index');
+
+Route::get('/emails', function () {
+    return view('layouts.emails.index');
+})->middleware(['auth', 'verified'])->name('emails.index');
+
+
 // Ruta del acceso al perfil en el login
 Route::middleware('auth')->controller(ProfileController::class)->group(function () {
-    Route::get('/profile', 'edit')->name('profile.edit');
+    Route::get('/profile', 'edit')->name(name: 'profile.edit');
     Route::patch('/profile', 'update')->name('profile.update');
     Route::delete('/profile', 'destroy')->name('profile.destroy');
 });
@@ -38,6 +62,7 @@ Route::controller(SucursalesController::class)->group(function () {
     Route::get('/sucursales/{id_sucursal}', 'getSucursales');
 });
 
+//RUTA EMPRESAS
 Route::controller(EmpresasController::class)->group(function () {
     Route::get('/empresas', 'index');
     Route::get('/empresas/{id_empresa}/sucursales', 'getSucursales');
@@ -64,23 +89,45 @@ Route::controller(EmpleadosCatologoController::class)->group(function () {
     Route::post('/empleados/store', 'store')->name('empleados.store');
 });
 
-//ruta de correos
-Route::resource('correos', CorreosController::class);
-Route::get('/correos/{id}', [FormatosController::class, 'getCorreos']);
-Route::get('/empresas/{id_empresa}/sucursales', [EmpresasController::class, 'getSucursales']);
-Route::get('/empresas', [EmpresasController::class, 'index'])->name('empresas.index');
-// Ruta para obtener las casetas de una sucursal
-Route::get('/sucursales/{id}/casetas', [CasetasController::class, 'getCasetas'])->name('sucursales.casetas');
+// Rutas 'correos'
+Route::resource('correos', CorreosController::class)->names([
+    'index' => 'correos.index',
+    'store' => 'correos.store',
+]);
+// Route::get('/correos/{id}', [FormatosController::class, 'getCorreos']);
 
-// Ruta para obtener los formatos de una caseta
-Route::get('/casetas/{id}/formatos', [CasetasController::class, 'getFormatos'])->name('casetas.formatos');
-Route::post('/correos', [CorreosController::class, 'store'])->name('correos.store');
-Route::post('/correos_formatos', [CorreosFormatosController::class, 'store'])->name('correos_formatos.store');
-Route::get('/correos', [CorreosController::class, 'index'])->name('correos.index');
-Route::post('/correos_formatos', [CorreosFormatos::class, 'store']);
-Route::post('/correos_formatos', [CorreosFormatosController::class, 'store'])->name('correos_formatos.store');
-Route::get('/correos_formatos',[CorreosFormatosController::class, 'store']);
+// Rutas de EmpresasController
+Route::controller(EmpresasController::class)->group(function () {
+    Route::get('/empresas', 'index')->name('empresas.index');
+    Route::get('/empresas/{id_empresa}/sucursales', 'getSucursales');
+});
 
+// Rutas de CasetasController
+Route::controller(CasetasController::class)->group(function () {
+    Route::get('/sucursales/{id}/casetas', 'getCasetas')->name('sucursales.casetas');
+    Route::get('/casetas/{id}/formatos', 'getFormatos')->name('casetas.formatos');
+});
+
+// Rutas de CorreosFormatosController
+Route::controller(CorreosFormatosController::class)->group(function () {
+    Route::post('/correos_formatos', 'store')->name('correos_formatos.store');
+    Route::get('/correos_formatos', 'store');
+});
+
+Route::get('/get-correos/{id}', [FormatosController::class, 'getCorreos'])->name('get.correos');
+
+// Route::get('Vigilancia', function () {
+//     Mail::to('diuitcan@gmail.com')->send(new ReporteMailable);
+//     return "Mensaje enviado";
+// })->name('Vigilancia');
+
+//exportar
+Route::post('/exportar-campo-incidencias', [CampoIncidenciasController::class, 'exportar'])->name('exportar.campo.incidencias');
+
+//obtener formatos
+Route::post('/obtener-campos', [FormatosController::class, 'obtenerCamposPorFormato'])->name('obtener.campos');
+
+Route::post('/envio', [CampoIncidenciasController::class, 'envio'])->name('envio.correos');
 
 
 // Autenticacion

@@ -101,15 +101,15 @@ class IncidenciaController extends Controller
 
         ]);
 
-        if ($request->hasFile('foto_upload')) {
-            $archivo = $request->file('foto_upload');
-            $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
-        } elseif ($request->hasFile('foto_camara')) {
-            $archivo = $request->file('foto_camara');
-            $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
-        }
+        // if ($request->hasFile('foto_upload')) {
+        //     $archivo = $request->file('foto_upload');
+        //     $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
+        // } elseif ($request->hasFile('foto_camara')) {
+        //     $archivo = $request->file('foto_camara');
+        //     $rutaFoto = $archivo->store('fotos', 'public'); // Guarda en 'storage/app/public/fotos'
+        // }
 
-        $incidencia = Incidencia::create(array_merge($request->all(), ['foto_path' => $rutaFoto]));
+        // $incidencia = Incidencia::create(array_merge($request->all(), ['foto_path' => $rutaFoto]));
         // $formato = $request->input('id_formatos');
         // Determinar qué formulario fue enviado
         $formulario = $request->input('formulario'); // Campo oculto que indica el formulario

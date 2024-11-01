@@ -11,13 +11,13 @@ class CorreosFormatosController extends Controller
     {
         //dd($request->all());
         $request->validate([
-            'id_formatos' => 'required|array',
-            'id_correo' => 'required|array',
+            'id_formato' => 'nullable|array',
+            'emails' => 'required|array',
         ]);
 
         // Obtener los formatos y correos seleccionados
         $formatos = $request->input('id_formato');
-        $correos = $request->input('emails');
+        $correos = $request->input('id_emails');
 
         // Guardar cada combinación en la tabla pivote
         foreach ($correos as $correoId) {

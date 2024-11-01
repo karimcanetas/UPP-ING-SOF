@@ -37,13 +37,17 @@ class Formato extends Model
         return $this->belongsToMany(Turno::class, 'formato_caseta', 'id_formatos', 'id_turnos')
             ->withPivot('id_casetas');
     }
-    public function campos()
-    {
-        return $this->belongsToMany(Campo::class, 'formato_campo', 'id_formatos', 'id_campo');
-    }
+    // public function campos()
+    // {
+    //     return $this->belongsToMany(Campo::class, 'campo_incidencias', 'id_formatos', 'id_campo');
+    // }
     public function correos()
     {
         return $this->belongsToMany(Correos::class, 'correos_formatos', 'id_formatos', 'id_correo');
     }
     
+    public function campoIncidencias()
+    {
+        return $this->hasMany(CampoIncidencia::class, 'id_formatos');
+    }
 }

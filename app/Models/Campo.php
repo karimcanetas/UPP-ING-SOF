@@ -17,8 +17,12 @@ class Campo extends Model
         'tipo'
     ];
 
-    public function formatos()
+    // public function formatos()
+    // {
+    //     return $this->belongsToMany(Formato::class, 'formato_campo', 'id_campo', 'id_formatos');
+    // }
+    public function campoIncidencias()
     {
-        return $this->belongsToMany(Formato::class, 'formato_campo', 'id_campo', 'id_formatos');
+        return $this->hasMany(CampoIncidencia::class, 'id_campo', 'id_campo');
     }
 }

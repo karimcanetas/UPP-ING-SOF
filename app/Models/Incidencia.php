@@ -42,10 +42,14 @@ class Incidencia extends Model
     }
     public function turnos()
     {
-        return $this->belongsTo(Turno::class, 'id_turnos'); // Cambia 'id_turno' si tu clave foránea tiene otro nombre
+        return $this->belongsTo(Turno::class, 'id_turnos');
     }
     public function turno()
     {
-        return $this->belongsTo(Turno::class, 'id_turnos'); // Cambia 'id_turno' si tu clave foránea tiene otro nombre
+        return $this->belongsTo(Turno::class, 'id_turnos');
+    }
+    public function campoIncidencias()
+    {
+        return $this->hasMany(CampoIncidencia::class, 'id_incidencias');
     }
 }

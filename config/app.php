@@ -77,12 +77,12 @@ return [
     | set to any locale for which you plan to have translation strings.
     |
     */
-    
-'locale' => env('APP_LOCALE', 'es'), // Cambia 'en' a 'es'
 
-'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'), // Cambia 'en' a 'es'
+    'locale' => env('APP_LOCALE', 'es'), // Cambia 'en' a 'es'
 
-'faker_locale' => env('APP_FAKER_LOCALE', 'es_ES'), // Cambia 'en_US' a 'es_ES'
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'es'), // Cambia 'en' a 'es'
+
+    'faker_locale' => env('APP_FAKER_LOCALE', 'es_ES'), // Cambia 'en_US' a 'es_ES'
 
 
 
@@ -128,6 +128,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // 'providers' => [
+    //     Maatwebsite\Excel\ExcelServiceProvider::class,
+    // ],
+
+    // 'aliases' => [
+    //     'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+    // ]
+
 ];
-
-

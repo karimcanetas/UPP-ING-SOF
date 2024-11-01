@@ -1,23 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("Bienvenido al Sistema de Vigilancia") }}
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
-
-{{-- <x-app-layout>
-    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-center">
             {{ __('Enviar correo por incidencia') }}
         </h2>
@@ -130,7 +112,7 @@
                         </select>
                         <small class="text-muted">Selecciona los correos a agregar.</small>
                         <div class="invalid-feedback">Por favor selecciona al menos un correo.</div>
-                    </div> --}}
+                    </div>
 
 
                     <!-- Asunto y Mensaje -->
@@ -155,7 +137,7 @@
                             </div>
                         </div> --}}
 
-                    {{-- <div class="d-flex justify-content-center mt-4">
+                    <div class="d-flex justify-content-center mt-4">
                         <button type="submit" class="btn btn-primary px-5 py-2 shadow-lg">
                             <i class="fas fa-paper-plane"></i> Agregar Correos
                         </button>
@@ -164,8 +146,8 @@
             </div>
         </div>
     </div>
-    </div> --}}
-    {{-- <script>
+    </div>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetchEmpresas();
 
@@ -379,4 +361,4 @@
             emailContainer.removeChild(button.parentElement);
         }
     </script>
-</x-app-layout> --}}
+</x-app-layout>
