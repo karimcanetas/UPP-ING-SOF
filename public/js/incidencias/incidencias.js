@@ -540,3 +540,14 @@ function updatePhotoName(input, type) {
         mensajeFoto.style.display = 'none';
     }
 }
+
+function submitAndResetForm(button) {
+    const form = button.closest('form');
+
+    form.submit();
+    if (!window.hasErrors) {
+        setTimeout(function() {
+            form.reset();
+        }, 500);
+    }
+}

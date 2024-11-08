@@ -40,7 +40,7 @@ class Formato extends Model
     // public function campos()
     // {
     //     return $this->belongsToMany(Campo::class, 'campo_incidencias', 'id_formatos', 'id_campo');
-    // }
+    // }    
     public function correos()
     {
         return $this->belongsToMany(Correos::class, 'correos_formatos', 'id_formatos', 'id_correo');

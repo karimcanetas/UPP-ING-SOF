@@ -129,6 +129,8 @@ Route::post('/obtener-campos', [FormatosController::class, 'obtenerCamposPorForm
 
 Route::post('/envio', [CampoIncidenciasController::class, 'envio'])->name('envio.correos');
 
+Route::get('/checks-formatos', [FormatosController::class, 'checksSeparadores']);
+
 
 // Autenticacion
 require __DIR__ . '/auth.php';

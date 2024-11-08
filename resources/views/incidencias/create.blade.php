@@ -2,6 +2,16 @@
     <!-- contenido -->
     <x-btn-atras />
 
+    @if ($errors->any())
+        <script>
+            window.hasErrors = true;
+        </script>
+    @else
+        <script>
+            window.hasErrors = false;
+        </script>
+    @endif
+
     <div class="form-container" id="primeraEtapa">
         <h1 class="primera">Iniciar sesión</h1>
 

@@ -22,10 +22,23 @@
                         </div>
                     @endif
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+
                     <form action="{{ route('envio.correos') }}" method="POST">
                         @csrf
                         <input type="hidden" id="formato_id" name="formato_id">
                         <input type="hidden" id="correosSeleccionados" name="correosSeleccionados">
+                        {{-- <input type="hidden" id="campos_obtenidos" name="campos_obtenidos"> --}}
+
                         <div class="container">
                             <h1>Seleccionar Formato</h1>
                             <input type="text" id="formato_search" class="form-control mb-2"
@@ -36,20 +49,35 @@
                                 @foreach ($formatos as $formato)
                                     <option value="{{ $formato->id_formatos }}">{{ $formato->Tipo }}</option>
                                 @endforeach
+                                {{-- @foreach ($groupedByCaseta as $casetaNombre => $formatos)
+                                <optgroup label="{{ $casetaNombre }}">
+                                    @foreach ($formatos as $formatoCaseta)
+                                        <option value="{{ $formatoCaseta->Formato->id_formatos }}">
+                                            {{ $formatoCaseta->Formato->Tipo }}
+                                        </option>
+                                    @endforeach
+                                </optgroup>
+                            @endforeach --}}
+
                             </select>
+                            {{-- <div id="result"></div> --}}
                             <div class="form-group">
                                 <label for="fecha_inicio">Fecha de Inicio:</label>
-                                <input type="datetime-local" class="form-control" id="fecha_inicio" required </div>
+                                <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio"
+                                    required>
+                            </div>
 
-                                <div class="form-group">
-                                    <label for="fecha_fin">Fecha de Fin:</label>
-                                    <input type="datetime-local" class="form-control" id="fecha_fin" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="fecha_fin">Fecha de Fin:</label>
+                                <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin"
+                                    required>
+                            </div>
 
-                                <div class="d-flex justify-content-center mt-4">
-                                    <button type="submit" class="btn btn-success px-5 py-2 shadow-lg">Generar
-                                        Reporte</button>
-                                </div>
+
+                            <div class="d-flex justify-content-center mt-4">
+                                <button type="submit" class="btn btn-success px-5 py-2 shadow-lg">Generar
+                                    Reporte</button>
+                            </div>
                     </form>
 
                     <form action="{{ route('correos.store') }}" method="POST" novalidate class="needs-validation"
@@ -236,14 +264,11 @@
                         }
                     </script>
 
-
                     <script>
                         (() => {
                             'use strict';
 
-
                             const forms = document.querySelectorAll('.needs-validation');
-
 
                             Array.from(forms).forEach(form => {
                                 form.addEventListener('submit', event => {
@@ -257,7 +282,16 @@
                             });
                         })();
 
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const selectElement = document.getElementById('formatoSelect');
+                            const options = selectElement.options;
 
+                            for (let i = 0; i < options.length; i++) {
+                                let txtValue = options[i].text.toLowerCase(); // convertir a minuscula
+                                options[i].text = txtValue.charAt(0).toUpperCase() + txtValue.slice(
+                                    1);
+                            }
+                        });
 
                         function cargarCorreos(formatoId) {
                             if (formatoId) {
@@ -266,8 +300,7 @@
                                     method: 'GET',
                                     success: function(response) {
                                         $('#correos').empty();
-                                        if (response.correos && response.correos.length >
-                                            0) {
+                                        if (response.correos && response.correos.length > 0) {
                                             response.correos.forEach(function(correo) {
                                                 if (correo) {
                                                     const li =
@@ -286,58 +319,59 @@
 
                                 document.getElementById('formato_id').value = formatoId;
 
-
-                                fetch('/obtener-campos', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                        },
-                                        body: JSON.stringify({
-                                            formato_id: formatoId
-                                        }),
-                                    })
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            throw new Error('Error en la respuesta del servidor');
-                                        }
-                                        return response.json();
-                                    })
-                                    .then(data => {
-                                        console.log('Campos obtenidos:', data);
-                                    })
-                                    .catch(error => {
-                                        console.error('Error al obtener campos:', error);
-                                    });
+                                obtenerCampos(formatoId);
                             }
                         }
 
-                        // // Obtener fechas
-                        // const fechaInicio = document.getElementById('fecha_inicio').value;
-                        // const fechaFin = document.getElementById('fecha_fin').value;
-                        // fetch('/envio', {
-                        //     method: 'POST',
-                        //     headers: {
-                        //         'Content-Type': 'application/json',
-                        //         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        //     },
-                        //     body: JSON.stringify({
-                        //         fecha_inicio: fechaInicio,
-                        //         fecha_fin: fechaFin,
-                        //     }),
-                        // })
-                        // .then(response => {
-                        //     if (!response.ok) {
-                        //         throw new Error('Error en la respuesta')
-                        //     }
-                        //     return response.json();
-                        // })
-                        // .then(data => {
-                        //     console.log('fechas y campos',  data);
-                        // })
-                        // .catch(error => {
-                        //     console.error("error en la consulta", error);
-                        // });
+                        function obtenerCampos(formatoId) {
+                            const fechaInicio = document.getElementById('fecha_inicio').value;
+                            const fechaFin = document.getElementById('fecha_fin').value;
+
+                            if (!fechaInicio || !fechaFin) {
+                                console.error('Por favor, ingrese ambas fechas para realizar la búsqueda.');
+                                return;
+                            }
+
+                            fetch('/obtener-campos', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    },
+                                    body: JSON.stringify({
+                                        formato_id: formatoId,
+                                        fecha_inicio: fechaInicio,
+                                        fecha_fin: fechaFin
+                                    }),
+                                })
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Error en la respuesta del servidor');
+                                    }
+                                    return response.json();
+                                })
+                                .then(data => {
+                                    console.log('Campos obtenidos:', data);
+
+                                })
+                                .catch(error => {
+                                    console.error('Error al obtener campos:', error);
+                                });
+                        }
+
+                        document.getElementById('fecha_inicio').addEventListener('change', () => {
+                            const formatoId = document.getElementById('formato_id').value;
+                            if (formatoId) {
+                                obtenerCampos(formatoId);
+                            }
+                        });
+
+                        document.getElementById('fecha_fin').addEventListener('change', () => {
+                            const formatoId = document.getElementById('formato_id').value;
+                            if (formatoId) {
+                                obtenerCampos(formatoId);
+                            }
+                        });
 
                         function filterFormatos() {
                             const input = document.getElementById('formato_search');
@@ -372,6 +406,39 @@
                         }
                     </script>
 
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/checks-formatos',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                const groupedByCaseta = response.groupedByCaseta;
+    
+                $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
+                    console.log("Caseta: " + casetaNombre);
+                    
+                    $("#result").append(
+                        `<p><strong>${casetaNombre}</strong></p>`
+                    );
+                    
+                    $.each(formatoCasetas, function(index, formatoCaseta) {
+                        // console.log("Formato ID: " + formatoCaseta.id_formatos);
+                        console.log("Formato Tipo: " + formatoCaseta.Tipo);
+                        
+                        $("#result").append(
+                            `<p>&nbsp;&nbsp;&nbsp;${formatoCaseta.Tipo}</p>`
+                        );
+                    });
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", error);
+            }
+        });
+    });
+    </script>
+    
                 </div>
             </div>
         </div>

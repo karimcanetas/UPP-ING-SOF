@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Correos;
 use App\Models\Formato;
 use App\Models\CorreosFormatos;
-
+use App\Models\Formatocaseta;
 use Illuminate\Http\Request;
 
 class FormatosController extends Controller
@@ -15,9 +15,30 @@ class FormatosController extends Controller
     {
         $formatos = Formato::all();
         $correosConFormatos = CorreosFormatos::with(['correo', 'formato'])->get();
+        // $formatoCasetas = Formatocaseta::with('Caseta', 'Fotmato')->get();
 
         return view('incidencias.create', compact('formatos', 'correosConFormatos'));
     }
+    public function checksSeparadores()
+    {
+        $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato')->get();
+
+        $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
+            return $item->Caseta->nombre;
+        })->map(function ($items) {
+            return $items->map(function ($item) {
+                return [
+                    'id_formatos' => $item->id_formato,
+                    'Tipo' => $item->Formato->Tipo,
+                    'nombre_caseta' => $item->Caseta->nombre,
+                ];
+            });
+        });
+        return response()->json(['groupedByCaseta' => $groupedByCaseta]);
+    }
+
+
+
 
     public function show($id)
     {
@@ -33,32 +54,68 @@ class FormatosController extends Controller
 
     public function getCorreos($id)
     {
-        // obtener los correos asociados al formato
+
         $correos = CorreosFormatos::with('correo')
             ->where('id_formatos', $id)
             ->get();
 
-        // asegurarse de que hay correos asociados
+
         $correoList = $correos->map(function ($item) {
-            return $item->correo ? $item->correo->correo : null; // asegurar de que esto sea correcto
+            return $item->correo ? $item->correo->correo : null;
         })->filter(); // filtrar nulos
 
         return response()->json(['correos' => $correoList]);
     }
     public function obtenerCamposPorFormato(Request $request)
     {
+        // Validar los parámetros de fecha y formato
         $request->validate([
             'formato_id' => 'required|exists:mysql_2.formatos,id_formatos',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
         ]);
 
-        $formato = Formato::with('campoIncidencias.campo')
-            ->find($request->formato_id);
+        // Obtener los Formatocasetas con las relaciones de Caseta y Formato
+        $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato')->get();
 
-        if (!$formato) {
-            return response()->json(['error' => 'Formato no encontrado'], 404);
+        // Agrupar los Formatocasetas por nombre de la Caseta
+        $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
+            return $item->Caseta->nombre;
+        });
+
+        // Para cada caseta, obtener los campos de incidencia filtrados por fecha
+        $groupedByCaseta = $groupedByCaseta->map(function ($items) use ($request) {
+            return $items->map(function ($item) use ($request) {
+                // Obtener el Formato relacionado
+                $formato = $item->Formato;
+
+                // Verificar que el formato sea el que buscamos
+                if ($formato->id_formatos != $request->formato_id) {
+                    return null;  // Devolver null si no es el formato buscado
+                }
+
+                // Obtener los campos de incidencia dentro del rango de fechas
+                $campoIncidencias = $formato->campoIncidencias->filter(function ($campoIncidencia) use ($request) {
+                    return $campoIncidencia->incidencia &&
+                        $campoIncidencia->incidencia->fecha_hora >= $request->fecha_inicio &&
+                        $campoIncidencia->incidencia->fecha_hora <= $request->fecha_fin;
+                });
+
+                // Si se encontraron incidencias, devolver el formato con sus campos
+                return $campoIncidencias->isNotEmpty() ? [
+                    'id_formatos' => $formato->id_formatos,
+                    'Tipo' => $formato->Tipo,
+                    'campoIncidencias' => $campoIncidencias
+                ] : null;
+            })->filter();  // Filtrar los formatos que no tienen campos válidos
+        });
+
+        // Si no se encuentra ningún campo para el formato, retornar un error
+        if ($groupedByCaseta->isEmpty()) {
+            return response()->json(['error' => 'No se encontraron campos para el formato especificado'], 404);
         }
 
-        // Si existe, devolver los campos relacionados en formato JSON
-        return response()->json($formato->campoIncidencias);
+        // Retornar el JSON con los datos agrupados
+        return response()->json(['groupedByCaseta' => $groupedByCaseta]);
     }
 }

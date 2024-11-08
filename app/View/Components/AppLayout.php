@@ -26,6 +26,7 @@ class AppLayout extends Component
     public $casetas;
     public $correos;
 
+
     public function __construct()
     {
 
@@ -34,6 +35,7 @@ class AppLayout extends Component
         $this->tiposAsociados = TipoAsociado::on('mysql')->get();
         $this->casetas = Caseta::on('mysql_2')->get();
         $this->correos = Correos::on('mysql_2')->get();
+
     }
 
     public function render(): View

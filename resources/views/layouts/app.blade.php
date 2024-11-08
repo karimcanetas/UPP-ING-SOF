@@ -81,10 +81,10 @@
 <body id="page-top" class="scroll-bar-toyota sidebar-toggled">
 
     @if (route::is('dashboard', 'send.index', 'CorreoFormato.index'))
-        <div class="progress" style="height: 6.5px; border-rodius: 0px;">
+        {{-- <div class="progress" style="height: 6.5px; border-rodius: 0px;">
             <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0"
                 aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+        </div> --}}
 
         @include('sweetalert::alert')
 

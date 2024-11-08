@@ -1,4 +1,4 @@
-@if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Caseta Servicio')
+{{-- @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Caseta Servicio')
     <div id="entrega_unidades_altabrisa" style="display: none;">
         <div class="form-group">
             <label for="fecha_servicio">Fecha:</label>
@@ -31,4 +31,4 @@
             'condicion_salida' => $condicion_salida,
         ])
     </div>
-@endif
+@endif --}}

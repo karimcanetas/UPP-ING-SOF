@@ -83,7 +83,7 @@
             </div>
 
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary" onclick="submitAndResetForm(this)">Enviar</button>
             </div>
         </div>
     @endif

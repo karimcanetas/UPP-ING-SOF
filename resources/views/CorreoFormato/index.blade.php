@@ -281,7 +281,7 @@
             const emailInput = button.parentElement.querySelector('input[type="email"]');
             const emailValue = emailInput.value;
 
-            // Si el campo de correo está vacío, simplemente no hacemos nada
+  
             if (emailValue) {
                 fetch('/correos', {
                         method: 'POST',
@@ -308,14 +308,14 @@
                         newOption.textContent = data.correo;
                         correoSelect.appendChild(newOption);
 
-                        emailInput.value = ''; // Limpiar el campo de entrada
+                        emailInput.value = ''; 
                     })
                     .catch(error => {
                         console.error('Error:', error);
                         alert('Error en la conexión.');
                     });
             }
-            // Si el campo está vacío, simplemente no hacemos nada
+
         }
 
 
@@ -362,3 +362,12 @@
         }
     </script>
 </x-app-layout>
+{{-- <style>
+    /* #id_formato {
+        text-transform: lowercase;
+    } */
+
+    #id_formato:first-letter {
+        text-transform: uppercase;
+    }
+</style> --}}

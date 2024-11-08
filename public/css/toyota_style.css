@@ -4687,7 +4687,7 @@ input[type="button"].btn-block {
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
   list-style: none;
-  background-color: #ffffff;
+  background-color: #282828;
   border-radius: 0.35rem;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
@@ -10597,7 +10597,7 @@ a:focus {
 }
 
 .sidebar-light .nav-item .nav-link {
-  color: #858796;
+  color: #ffffff;
 }
 
 .sidebar-light .nav-item .nav-link i {
@@ -10617,7 +10617,7 @@ a:focus {
 }
 
 .sidebar-light .nav-item.active .nav-link {
-  color: #fa7475;
+  color: #d50000;
 }
 
 .sidebar-light .nav-item.active .nav-link i {

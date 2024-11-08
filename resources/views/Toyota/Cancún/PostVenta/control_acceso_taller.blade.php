@@ -1,4 +1,4 @@
-@if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
+{{-- @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Postventa')
     <div id="taller_postventa" style="display: none;">
         <div class="form-group">
             <label for="hora_entrada">Hora de entrada:</label>
@@ -26,4 +26,4 @@
             <input type="text" class="form-control" id="observaciones" name="observaciones">
         </div>
     </div>
-@endif
+@endif --}}
