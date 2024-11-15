@@ -7,13 +7,15 @@
         $tema = DB::select('select * from personalizacions where id = 1');
     @endphp
 
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/select2-custom.css') }}">
 
-    @if (Route::is('dashboard', 'send.index', 'CorreoFormato.index'))
+    @if (Route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
+
 
         <title>{{ config('app.name', 'Sistema administrativo de Vigilancia') }}</title>
 
@@ -40,9 +42,12 @@
         <link href="{{ url('css/loader.css') }}" rel="stylesheet">
         <link href="{{ url('css/style.css') }}" rel="stylesheet">
         <link href="{{ url('css/sucursal.css') }}" rel="stylesheet">
+        
 
-        @if (Route::is('disenio') || Route::is('dashboard', 'send.index', 'CorreoFormato.index'))
+        @if (Route::is('disenio') || Route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
             <link href="{{ url('css/app.css') }}" rel="stylesheet">
+            <x-modalFormatos />
+           
         @endif
     @else
         <title>{{ config('app.name', 'Sistema administrativo de vigilancia') }}</title>
@@ -72,6 +77,11 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.0.1/dist/progressbar.min.js"></script>
     <script src="{{ asset('assets/js/turn/turn.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Bootstrap JS y Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 
     @include('layouts.styles')
@@ -80,7 +90,7 @@
 
 <body id="page-top" class="scroll-bar-toyota sidebar-toggled">
 
-    @if (route::is('dashboard', 'send.index', 'CorreoFormato.index'))
+    @if (route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
         {{-- <div class="progress" style="height: 6.5px; border-rodius: 0px;">
             <div class="progress-bar" id="myProgressBar" role="progressbar" style="width: 0%;" aria-valuenow="0"
                 aria-valuemin="0" aria-valuemax="100"></div>
@@ -125,8 +135,8 @@
         </main>
     @endif
 
-    @if (route::is('dashboard', 'send.index', 'CorreoFormato.index'))
-
+    @if (route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
+    <x-modal-editarcorreo />
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -252,6 +262,7 @@
         });
     </script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 
 </body>
 

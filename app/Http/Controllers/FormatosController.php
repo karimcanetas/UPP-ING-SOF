@@ -19,21 +19,51 @@ class FormatosController extends Controller
 
         return view('incidencias.create', compact('formatos', 'correosConFormatos'));
     }
+    // public function checksSeparadores()
+    // {
+    //     $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato')->get();
+
+    //     $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
+    //         return $item->Caseta->nombre;
+    //     })->map(function ($items) {
+    //         return $items->map(function ($item) {
+    //             return [
+    //                 'id_formatos' => $item->id_formatos,
+    //                 'Tipo' => $item->Formato->Tipo,
+    //                 'nombre_caseta' => $item->Caseta->nombre,
+    //             ];
+    //         });
+    //     });
+    //     return response()->json(['groupedByCaseta' => $groupedByCaseta]);
+    // }
     public function checksSeparadores()
     {
-        $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato')->get();
+        $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato', 'Formato.EmpleadosFormatos.Empleado.user')
+            ->get();
 
         $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
             return $item->Caseta->nombre;
         })->map(function ($items) {
             return $items->map(function ($item) {
+                $empleados = $item->Formato->EmpleadosFormatos->filter(function ($pivot) {
+                    return $pivot->status == 1; // filtro empleados que estan activos '1'
+                })->map(function ($pivot) {
+                    $empleado = $pivot->Empleado;
+                    return [
+                        'nombre' => $empleado->nombres,
+                        'email' => $empleado->user ? $empleado->user->email : null
+                    ];
+                });
+
                 return [
-                    'id_formatos' => $item->id_formato,
+                    'id_formatos' => $item->id_formatos,
                     'Tipo' => $item->Formato->Tipo,
                     'nombre_caseta' => $item->Caseta->nombre,
+                    'empleados' => $empleados,
                 ];
             });
         });
+
         return response()->json(['groupedByCaseta' => $groupedByCaseta]);
     }
 
@@ -66,6 +96,7 @@ class FormatosController extends Controller
 
         return response()->json(['correos' => $correoList]);
     }
+
     public function obtenerCamposPorFormato(Request $request)
     {
         // Validar los parámetros de fecha y formato

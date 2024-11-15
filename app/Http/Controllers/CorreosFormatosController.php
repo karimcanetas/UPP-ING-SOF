@@ -12,18 +12,18 @@ class CorreosFormatosController extends Controller
         //dd($request->all());
         $request->validate([
             'id_formato' => 'nullable|array',
-            'emails' => 'required|array',
+            'id_empleado' => 'required|array',
         ]);
 
         // Obtener los formatos y correos seleccionados
         $formatos = $request->input('id_formato');
-        $correos = $request->input('id_emails');
+        $empleados = $request->input('id_empleado');
 
         // Guardar cada combinación en la tabla pivote
-        foreach ($correos as $correoId) {
+        foreach ($empleados as $empleadoId) {
             foreach ($formatos as $formatoId) {
                 CorreosFormatos::create([
-                    'id_correo' => $correoId,
+                    'empleados' => $empleadoId,
                     'id_formatos' => $formatoId,
                 ]);
             }
@@ -32,3 +32,5 @@ class CorreosFormatosController extends Controller
         return redirect()->route('correos_formatos.store')->with('success', 'Correos y formatos asociados correctamente.');
     }
 }
+
+

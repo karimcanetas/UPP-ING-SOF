@@ -543,11 +543,25 @@ function updatePhotoName(input, type) {
 
 function submitAndResetForm(button) {
     const form = button.closest('form');
-
     form.submit();
+
     if (!window.hasErrors) {
-        setTimeout(function() {
-            form.reset();
-        }, 500);
+        setTimeout(function () {
+            // reset solo campos visibles
+            Array.from(form.elements).forEach(element => {
+                // excluyo campos ocultos, readonly y tarjetas con clase 'd-none'
+                const isHidden = element.type === 'hidden' || element.closest('.d-none') !== null || element.readOnly;
+
+                if (!isHidden) {
+                    if (element.type === 'checkbox' || element.type === 'radio') {
+                        element.checked = false;
+                    } else if (element.tagName === 'SELECT') {
+                        element.selectedIndex = 0;
+                    } else {
+                        element.value = '';
+                    }
+                }
+            });
+        }, 5000);
     }
 }

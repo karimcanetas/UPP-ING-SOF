@@ -1,6 +1,13 @@
 <x-app-layout>
     <!-- contenido -->
+    <x-btn-EnviarCorreo />
     <x-btn-atras />
+    
+    <div class="buttonEnviar-container">
+        <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
+            <i class="fas fa-arrow-right"></i>Enviar correo
+        </button>
+    </div>
 
     @if ($errors->any())
         <script>
@@ -181,7 +188,6 @@
     </div>
     <!-- js -->
     <script src="{{ asset('js/incidencias/incidencias.js') }}"></script>
-
 </x-app-layout>
 
 <x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleados="$empleadosNoRegistrados" />

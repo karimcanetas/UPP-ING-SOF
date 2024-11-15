@@ -121,6 +121,7 @@
                                 <button type="button" class="btn btn-secondary" onclick="addEmail()">Agregar otro
                                     correo</button>
                             </div>
+
                         </div>
 
                         <div class="col-md-6 mb-3">
@@ -159,7 +160,7 @@
                             </div>
                         </div> --}}
 
-                        <!-- Botón de envío (manteniendo la ubicación deseada) -->
+                        <!-- Botón de envio -->
                         <div class="d-flex justify-content-center mt-4">
                             <button type="submit" class="btn btn-primary px-5 py-2 shadow-lg">
                                 <i class="fas fa-paper-plane"></i> Agregar Correos
@@ -304,7 +305,6 @@
             const emailInput = button.parentElement.querySelector('input[type="email"]');
             const emailValue = emailInput.value;
 
-            // Si el campo de correo está vacío, simplemente no hacemos nada
             if (emailValue) {
                 fetch('/correos', {
                         method: 'POST',
@@ -331,14 +331,13 @@
                         newOption.textContent = data.correo;
                         correoSelect.appendChild(newOption);
 
-                        emailInput.value = ''; // Limpiar el campo de entrada
+                        emailInput.value = '';
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error en la conexión.');
+                        alert('Error en la conexión, no se guardo el correo.');
                     });
             }
-            // Si el campo está vacío, simplemente no hacemos nada
         }
 
 

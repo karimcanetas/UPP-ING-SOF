@@ -124,13 +124,11 @@ class IncidenciaController extends Controller
                 //     $unidad = $request->input('otroUnidad');
                 // }
 
-                // Crear una nueva incidencia con la unidad seleccionada o ingresada
+
                 $incidencia = Incidencia::create($request->all());
                 break;
 
             case 'control_proveedores_TOTs':
-                // Lógica específica para el formulario de "Control de Proveedores TOT'S"
-                // Aquí puedes añadir la lógica específica para este formulario
                 $incidencia = Incidencia::create($request->all());
                 break;
 
@@ -143,7 +141,7 @@ class IncidenciaController extends Controller
         // Insertar datos en campo_incidencias
         $campos = $request->input('campos', []);
         foreach ($campos as $id_campo => $valor) {
-            // Verifica si el valor no es nulo o vacío
+            // Verificar si es nulo
             if ($valor !== null && $valor !== '') {
                 CampoIncidencia::create([
                     'id_incidencias' => $incidencia->id_incidencias,

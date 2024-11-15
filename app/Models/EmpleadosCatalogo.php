@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class EmpleadosCatalogo extends Model
 {
@@ -54,5 +56,34 @@ class EmpleadosCatalogo extends Model
     public function correos()
     {
         return $this->belongsTo(Correos::class, 'id_correo', 'id_correo')->withDefault();
+    }
+
+    // public function empleado_sucursales()
+    // {
+    //     return $this->hasMany(EmpleadoSucursal::class, 'id_empleado');
+    // }
+
+    public function sucursales(): BelongsToMany
+    {
+        return $this->belongsToMany(Sucursal::class, 'empleado_sucursal', 'id_empleado', 'id_sucursal', 'id_empleado');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'n_empleado', 'n_empleado');
+    }
+    public function departamentos()
+    {
+        return $this->belongsToMany(Departamentos::class, 'suc_dep', 'id_empleado', 'id_departamento');
+    }
+    public function empleadosFormatos()
+    {
+        return $this->hasMany(EmpleadosFormatos::class, 'id_empleado');
+    }
+    public function formatos()
+    {
+        return $this->belongsToMany(Formato::class, 'empleados_formatos', 'id_empleado', 'id_formatos')
+            ->withPivot('status')
+            ->withTimestamps();
     }
 }

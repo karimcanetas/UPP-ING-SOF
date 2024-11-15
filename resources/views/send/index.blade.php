@@ -10,7 +10,7 @@
             <div class="card shadow-lg">
                 <div class="card-header text-center bg-light shadow-sm" style="padding: 20px;">
                     <h3 class="text-lg font-semibold mb-3 text-primary">
-                        <i class="fas fa-envelope-open-text"></i>
+                        <i class="fa-solid fa-paper-plane"></i>
                         {{ __('Enviar correos') }}
                     </h3>
                 </div>
@@ -36,31 +36,15 @@
                     <form action="{{ route('envio.correos') }}" method="POST">
                         @csrf
                         <input type="hidden" id="formato_id" name="formato_id">
-                        <input type="hidden" id="correosSeleccionados" name="correosSeleccionados">
+                        <input type="hidden" id="email" name="email">
                         {{-- <input type="hidden" id="campos_obtenidos" name="campos_obtenidos"> --}}
 
                         <div class="container">
                             <h1>Seleccionar Formato</h1>
-                            <input type="text" id="formato_search" class="form-control mb-2"
-                                placeholder="Buscar formato..." onkeyup="filterFormatos()">
-                            <select id="formatoSelect" class="form-control" onchange="cargarCorreos(this.value)"
-                                multiple>
-                                <option value="" selected disabled>Selecciona un formato</option>
-                                @foreach ($formatos as $formato)
-                                    <option value="{{ $formato->id_formatos }}">{{ $formato->Tipo }}</option>
-                                @endforeach
-                                {{-- @foreach ($groupedByCaseta as $casetaNombre => $formatos)
-                                <optgroup label="{{ $casetaNombre }}">
-                                    @foreach ($formatos as $formatoCaseta)
-                                        <option value="{{ $formatoCaseta->Formato->id_formatos }}">
-                                            {{ $formatoCaseta->Formato->Tipo }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            @endforeach --}}
-
-                            </select>
-                            {{-- <div id="result"></div> --}}
+                            <button type="button" class="btn btn-danger" id="botonAbrirModal">
+                                Seleccionar Formatos
+                            </button>
+                            <x-modalFormatos />
                             <div class="form-group">
                                 <label for="fecha_inicio">Fecha de Inicio:</label>
                                 <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio"
@@ -86,43 +70,11 @@
 
                         <div class="container">
                             <div class="correo-container">
-                                <h4>Correos disponibles:</h4>
-                                <input type="text" id="buscador" placeholder="Buscar correos..."
-                                    onkeyup="filtrarCorreos()">
+                                <h4>Se enviara a:</h4>
                                 <ul class="correo-list" id="correos">
                                 </ul>
                             </div>
-
-                            <h4>Para:</h4>
-                            <ul id="correos-asociados" class="correo-list asociados-list"></ul>
-
-                            <!-- Asunto y Mensaje -->
-                            {{-- <div class="row" style="padding: 50px">
-                                <div class="col-md-6 mb-3">
-                                    <label for="subject" class="form-label">
-                                        <i class="fas fa-envelope"></i> Asunto:
-                                    </label>
-                                    <input type="text" id="subject" name="subject" required
-                                        class="form-control shadow-sm">
-                                    <div class="invalid-feedback">Por favor ingresa un asunto.</div>
-                                </div>
-
-                                <div class="col-md-12 mb-3">
-                                    <label for="message" class="form-label">
-                                        <i class="fas fa-comment-alt"></i> Mensaje:
-                                    </label>
-                                    <textarea id="message" name="message" rows="4" required class="form-control shadow-sm"></textarea>
-                                    <div class="invalid-feedback">Por favor ingresa un mensaje.</div>
-                                </div>
-                                <div class="d-flex justify-content-center mt-4">
-                                    <button type="submit" class="btn btn-primary px-5 py-2 shadow-lg">
-                                        <i class="fas fa-paper-plane"></i> Enviar Correos
-                                    </button>
-                                </div>
-                            </div> --}}
                     </form>
-
-
                     <style>
                         .correo-container {
                             border: 1px solid #ccc;
@@ -282,16 +234,16 @@
                             });
                         })();
 
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const selectElement = document.getElementById('formatoSelect');
-                            const options = selectElement.options;
+                        // document.addEventListener('DOMContentLoaded', function() {
+                        //     const selectElement = document.getElementById('formatoSelect');
+                        //     const options = selectElement.options;
 
-                            for (let i = 0; i < options.length; i++) {
-                                let txtValue = options[i].text.toLowerCase(); // convertir a minuscula
-                                options[i].text = txtValue.charAt(0).toUpperCase() + txtValue.slice(
-                                    1);
-                            }
-                        });
+                        //     for (let i = 0; i < options.length; i++) {
+                        //         let txtValue = options[i].text.toLowerCase(); // convertir a minuscula
+                        //         options[i].text = txtValue.charAt(0).toUpperCase() + txtValue.slice(
+                        //             1);
+                        //     }
+                        // });
 
                         function cargarCorreos(formatoId) {
                             if (formatoId) {
@@ -373,21 +325,21 @@
                             }
                         });
 
-                        function filterFormatos() {
-                            const input = document.getElementById('formato_search');
-                            const filter = input.value.toLowerCase();
-                            const formatoSelect = document.getElementById('formatoSelect');
-                            const options = formatoSelect.options;
+                        // function filterFormatos() {
+                        //     const input = document.getElementById('formato_search');
+                        //     const filter = input.value.toLowerCase();
+                        //     const formatoSelect = document.getElementById('formatoSelect');
+                        //     const options = formatoSelect.options;
 
-                            for (let i = 0; i < options.length; i++) {
-                                const txtValue = options[i].text;
-                                if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                                    options[i].style.display = "";
-                                } else {
-                                    options[i].style.display = "none";
-                                }
-                            }
-                        }
+                        //     for (let i = 0; i < options.length; i++) {
+                        //         const txtValue = options[i].text;
+                        //         if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        //             options[i].style.display = "";
+                        //         } else {
+                        //             options[i].style.display = "none";
+                        //         }
+                        //     }
+                        // }
 
                         function filtrarCorreos() {
                             const input = document.getElementById('buscador');
@@ -406,40 +358,394 @@
                         }
                     </script>
 
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: '/checks-formatos',
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                const groupedByCaseta = response.groupedByCaseta;
-    
-                $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
-                    console.log("Caseta: " + casetaNombre);
-                    
-                    $("#result").append(
-                        `<p><strong>${casetaNombre}</strong></p>`
-                    );
-                    
-                    $.each(formatoCasetas, function(index, formatoCaseta) {
-                        // console.log("Formato ID: " + formatoCaseta.id_formatos);
-                        console.log("Formato Tipo: " + formatoCaseta.Tipo);
-                        
-                        $("#result").append(
-                            `<p>&nbsp;&nbsp;&nbsp;${formatoCaseta.Tipo}</p>`
-                        );
-                    });
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error("Error en la solicitud AJAX:", error);
-            }
-        });
-    });
-    </script>
-    
+                    {{-- <script>
+                        $(document).ready(function() {
+                            let groupedByCaseta = {}; // variable global para almacenar los datos de la respuesta AJAX
+                            $.ajax({
+                                url: '/checks-formatos',
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(response) {
+                                    groupedByCaseta = response.groupedByCaseta; // se asigna a la variable global
+                                    const addedFormats = new Set(); // para evitar formatos duplicados
+
+                                    $('#formatoSelect').empty();
+
+                                    // agrupo las casetas con sus formatos asignados
+                                    $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
+                                        let optgroup = $('<div>', {
+                                            class: 'caseta-group',
+                                            'data-caseta': casetaNombre.normalize("NFD").replace(
+                                                /[\u0300-\u036f]/g, "").toLowerCase()
+                                        }).appendTo('#formatoSelect');
+
+                                        optgroup.append(`<h5><strong>${casetaNombre}</strong></h5>`);
+
+                                        // itero sobre los formatos
+                                        $.each(formatoCasetas, function(index, formatoCaseta) {
+                                            const formatoTipo = formatoCaseta.Tipo.charAt(0)
+                                                .toUpperCase() + formatoCaseta.Tipo.slice(1);
+
+                                            if (!addedFormats.has(formatoTipo.toLowerCase())) {
+                                                addedFormats.add(formatoTipo.toLowerCase());
+
+                                                optgroup.append(
+                                                    `<label class="formato-label" data-formato="${formatoTipo.toLowerCase()}">
+                                    <input type="checkbox" class="formato-checkbox" value="${formatoCaseta.id_formatos}">
+                                    ${formatoTipo}
+                                </label>`
+                                                );
+
+                                                const empleadosList = formatoCaseta.empleados.map(
+                                                    function(empleado) {
+                                                        return `<li class="empleado-item" data-email="${empleado.email}" data-formato="${formatoCaseta.id_formatos}" data-nombre="${empleado.nombre}">${empleado.nombre}</li>`;
+                                                    }).join('');
+
+                                                optgroup.append(
+                                                    `<ul class="empleados-list">${empleadosList}</ul>`
+                                                );
+                                            }
+                                        });
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Error en la solicitud AJAX:", error);
+                                }
+                            });
+
+                            $('#formatoSelect').on('change', '.formato-checkbox', function() {
+                                const selectedFormatos = [];
+
+                                $('.formato-checkbox:checked').each(function() {
+                                    selectedFormatos.push($(this).val());
+                                });
+
+                                let formatoIds = $('#formato_id').val().split(',');
+                                if ($(this).is(':checked')) {
+                                    // el valor lo mando al campo oculto
+                                    formatoIds.push($(this).val());
+                                } else {
+                                    const index = formatoIds.indexOf($(this).val());
+                                    if (index > -1) {
+                                        formatoIds.splice(index, 1);
+                                    }
+                                }
+
+                                $('#formato_id').val(formatoIds.filter(function(value) {
+                                    return value !== "";
+                                }).join(','));
+
+                                if (selectedFormatos.length > 0) {
+                                    cargarCorreos(selectedFormatos);
+                                } else {
+                                    $('#correos').empty().append('<li>No hay correos disponibles.</li>');
+                                }
+                            });
+
+                            function cargarCorreos(selectedFormatos) {
+                                let correos = [];
+
+                                $.each(selectedFormatos, function(index, formatoId) {
+                                    const formatoCaseta = findFormatoById(formatoId);
+
+                                    if (formatoCaseta) {
+                                        const empleadosCorreos = formatoCaseta.empleados.map(function(empleado) {
+                                            return {
+                                                email: empleado.email,
+                                                nombre: empleado.nombre, // Agregar el nombre del empleado
+                                                formatoId: formatoId
+                                            };
+                                        });
+                                        correos.push(...empleadosCorreos);
+                                    }
+                                });
+
+                                // Crear el string de correos para el campo oculto
+                                let correosString = correos.map(function(correo) {
+                                    return correo.email;
+                                }).join(',');
+
+                                $('#email').val(correosString); // Asignar los correos al campo oculto
+
+                                // Mostrar los nombres de los empleados en la lista
+                                $('#correos').empty();
+                                if (correos.length > 0) {
+                                    $.each(correos, function(index, correo) {
+                                        $('#correos').append(
+                                            `<li data-email="${correo.email}" data-nombre="${correo.nombre}" data-formato="${correo.formatoId}">${correo.nombre} (${correo.email})</li>`
+                                        );
+                                    });
+                                } else {
+                                    $('#correos').append('<li>No hay correos disponibles.</li>');
+                                }
+                            }
+
+                            // Se encuentra el formato por id
+                            function findFormatoById(id) {
+                                let formatoCaseta = null;
+                                $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
+                                    $.each(formatoCasetas, function(index, formato) {
+                                        if (formato.id_formatos == id) {
+                                            formatoCaseta = formato;
+                                            return false;
+                                        }
+                                    });
+                                    if (formatoCaseta) return false;
+                                });
+                                return formatoCaseta;
+                            }
+
+                            // Filtro para los formatos
+                            function filterFormatos() {
+                                const input = document.getElementById('formato_search');
+                                const filter = input.value.toLowerCase();
+                                const casetaGroups = document.querySelectorAll('#formatoSelect .caseta-group');
+
+                                casetaGroups.forEach(group => {
+                                    const casetaName = group.getAttribute('data-caseta');
+                                    const labels = group.querySelectorAll('.formato-label');
+                                    let hasVisibleLabel = false;
+
+                                    labels.forEach(label => {
+                                        const formatoName = label.getAttribute('data-formato');
+                                        if (casetaName.includes(filter) || formatoName.includes(filter)) {
+                                            label.style.display = 'block'; //mostrar el formato que se busca
+                                            hasVisibleLabel = true;
+                                        } else {
+                                            label.style.display = 'none';
+                                        }
+                                    });
+
+                                    group.style.display = hasVisibleLabel ? 'block' : 'none';
+                                });
+                            }
+                        });
+                    </script> --}}
+
+                    <script>
+                        $(document).ready(function() {
+                            let groupedByCaseta = {}; // variable global para almacenar los datos de la respuesta AJAX
+                            $.ajax({
+                                url: '/checks-formatos',
+                                type: 'GET',
+                                dataType: 'json',
+                                success: function(response) {
+                                    groupedByCaseta = response.groupedByCaseta; // se asigna a la variable global
+                                    const addedFormats = new Set(); // para evitar formatos duplicados
+
+                                    $('#formatoSelect').empty();
+
+                                    // agrupo las casetas con sus formatos asignados
+                                    $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
+                                        let optgroup = $('<div>', {
+                                            class: 'caseta-group',
+                                            'data-caseta': casetaNombre.normalize("NFD").replace(
+                                                /[\u0300-\u036f]/g, "").toLowerCase()
+                                        }).appendTo('#formatoSelect');
+
+                                        optgroup.append(`<h5><strong>${casetaNombre}</strong></h5>`);
+
+                                        // itero sobre los formatos
+                                        $.each(formatoCasetas, function(index, formatoCaseta) {
+                                            const formatoTipo = formatoCaseta.Tipo.charAt(0)
+                                                .toUpperCase() + formatoCaseta.Tipo.slice(1)
+                                                .toLowerCase();
+
+                                            if (!addedFormats.has(formatoTipo.toLowerCase())) {
+                                                addedFormats.add(formatoTipo.toLowerCase());
+
+                                                optgroup.append(
+                                                    `<label class="formato-label" data-formato="${formatoTipo.toLowerCase()}">
+                                                        <input type="checkbox" class="formato-checkbox" value="${formatoCaseta.id_formatos}">
+                                                        ${formatoTipo}
+                                                    </label>`
+                                                );
+
+                                                // Verificar si 'empleados' es un arreglo antes de usar map
+                                                const empleadosList = Array.isArray(formatoCaseta
+                                                        .empleados) ?
+                                                    formatoCaseta.empleados.map(function(empleado) {
+                                                        return `<li class="empleado-item" data-email="${empleado.email}" data-formato="${formatoCaseta.id_formatos}" data-nombre="${empleado.nombre}">${empleado.nombre}</li>`;
+                                                    }).join('') : '';
+
+                                                if (empleadosList) {
+                                                    optgroup.append(
+                                                        `<ul class="empleados-list">${empleadosList}</ul>`
+                                                    );
+                                                }
+                                            }
+                                        });
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error("Error en la solicitud AJAX:", error);
+                                }
+                            });
+
+                            $('#formatoSelect').on('change', '.formato-checkbox', function() {
+                                const selectedFormatos = [];
+
+                                $('.formato-checkbox:checked').each(function() {
+                                    selectedFormatos.push($(this).val());
+                                });
+
+                                let formatoIds = $('#formato_id').val().split(',');
+                                if ($(this).is(':checked')) {
+                                    // el valor lo mando al campo oculto
+                                    formatoIds.push($(this).val());
+                                } else {
+                                    const index = formatoIds.indexOf($(this).val());
+                                    if (index > -1) {
+                                        formatoIds.splice(index, 1);
+                                    }
+                                }
+
+                                $('#formato_id').val(formatoIds.filter(function(value) {
+                                    return value !== "";
+                                }).join(','));
+
+                                if (selectedFormatos.length > 0) {
+                                    cargarCorreos(selectedFormatos);
+                                } else {
+                                    $('#correos').empty().append('<li>No hay correos disponibles.</li>');
+                                }
+                            });
+
+                            function cargarCorreos(selectedFormatos) {
+                                let correos = [];
+
+                                $.each(selectedFormatos, function(index, formatoId) {
+                                    const formatoCaseta = findFormatoById(formatoId);
+
+                                    if (formatoCaseta) {
+                                        const empleadosCorreos = formatoCaseta.empleados.map(function(empleado) {
+                                            return {
+                                                email: empleado.email,
+                                                nombre: empleado.nombre, // Agregar el nombre del empleado
+                                                formatoId: formatoId
+                                            };
+                                        });
+                                        correos.push(...empleadosCorreos);
+                                    }
+                                });
+
+                                // Crear el string de correos para el campo oculto
+                                let correosString = correos.map(function(correo) {
+                                    return correo.email;
+                                }).join(',');
+
+                                $('#email').val(correosString); // Asignar los correos al campo oculto
+
+                                // Mostrar los nombres de los empleados en la lista
+                                $('#correos').empty();
+                                if (correos.length > 0) {
+                                    $.each(correos, function(index, correo) {
+                                        $('#correos').append(
+                                            `<li data-email="${correo.email}" data-nombre="${correo.nombre}" data-formato="${correo.formatoId}">${correo.nombre} (${correo.email})</li>`
+                                        );
+                                    });
+                                } else {
+                                    $('#correos').append('<li>No hay correos disponibles.</li>');
+                                }
+                            }
+
+                            // Se encuentra el formato por id
+                            function findFormatoById(id) {
+                                let formatoCaseta = null;
+                                $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
+                                    $.each(formatoCasetas, function(index, formato) {
+                                        if (formato.id_formatos == id) {
+                                            formatoCaseta = formato;
+                                            return false;
+                                        }
+                                    });
+                                    if (formatoCaseta) return false;
+                                });
+                                return formatoCaseta;
+                            }
+
+                            // Filtro para los formatos
+                            function filterFormatos() {
+                                const input = document.getElementById('formato_search');
+                                const filter = input.value.toLowerCase(); // Obtenemos el valor del filtro
+                                const casetaGroups = document.querySelectorAll('#formatoSelect .caseta-group');
+
+                                casetaGroups.forEach(group => {
+                                    const casetaName = group.getAttribute('data-caseta');
+                                    const labels = group.querySelectorAll('.formato-label');
+                                    let hasVisibleLabel = false;
+
+                                    labels.forEach(label => {
+                                        const formatoName = label.getAttribute('data-formato');
+                                        if (casetaName.includes(filter) || formatoName.includes(filter)) {
+                                            label.style.display =
+                                                'block'; // Mostrar formato que coincida con el filtro
+                                            hasVisibleLabel = true;
+                                        } else {
+                                            label.style.display = 'none'; // Ocultar el formato que no coincida
+                                        }
+                                    });
+
+                                    // Solo mostrar el grupo de caseta si hay al menos un formato visible
+                                    group.style.display = hasVisibleLabel ? 'block' : 'none';
+                                });
+                            }
+
+                            // Llamar al filtro cada vez que el usuario escriba
+                            $('#formato_search').on('input', function() {
+                                filterFormatos();
+                            });
+                        });
+                    </script>
+
+                    <script>
+                        // Espera a que el documento esté listo
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Obtén el botón para abrir el modal
+                            const botonAbrirModal = document.getElementById('botonAbrirModal');
+
+                            // Obtén el modal
+                            const modalElemento = document.getElementById('modalFormatos');
+                            const modal = new bootstrap.Modal(modalElemento); // Inicializa el modal con Bootstrap
+
+                            // Asigna un evento para abrir el modal cuando se haga clic en el botón
+                            botonAbrirModal.addEventListener('click', function() {
+                                modal.show(); // Abre el modal
+                            });
+
+                            // Obtén el botón para cerrar el modal
+                            const closeModalButton = document.getElementById('closeModalButton');
+
+                            // Asigna un evento para cerrar el modal cuando se haga clic en el botón
+                            closeModalButton.addEventListener('click', function() {
+                                modal.hide(); // Cierra el modal
+                            });
+                        });
+                    </script>
+
+
+
                 </div>
             </div>
         </div>
 </x-app-layout>
+
+<style>
+    /* Estilo para alinear los checkboxes de manera vertical */
+    .formato-label {
+        display: block;
+        /* Fuerza cada checkbox a ocupar toda la línea */
+        margin-bottom: 5px;
+        /* Espacio entre cada checkbox */
+    }
+
+    .caseta-group {
+        margin-bottom: 15px;
+        /* Espacio entre grupos de caseta */
+    }
+
+    /* Alineación del título de cada caseta en negritas */
+    .caseta-group h5 {
+        font-weight: bold;
+    }
+</style>

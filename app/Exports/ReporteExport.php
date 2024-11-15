@@ -10,9 +10,20 @@ use Illuminate\Contracts\View\View;
 use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\Font;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
 {
+    private const HEADER_BG_COLOR = '2C3E50'; // gris oscuro
+    private const HEADER_FONT_COLOR = 'FFFFFF'; // blanco del texto
+    private const COLUMN_HEADER_BG_COLOR = '34495E'; // gris metálico
+    private const ROW_ALT_COLOR = 'ECF0F1'; // gris de las filas
+    private const FONT_NAME = 'Calibri'; // tipo de letra
+    private const FONT_BOLD = true;
+    private const FONT_SIZE_HEADER = 18;
+    private const FONT_SIZE_DATA = 12;
+    private const BORDER_COLOR = 'BDC3C7'; // bordes
+
     protected $camposIncidencias;
     protected $formato;
 
@@ -26,6 +37,7 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
     {
         $nombresCampos = [];
         $valoresPorCampo = [];
+        $vigilantesYFechas = [];
 
         foreach ($this->camposIncidencias as $incidencia) {
             $nombreCampo = $incidencia->campo->campo;
@@ -34,26 +46,26 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
                 $nombresCampos[] = $nombreCampo;
             }
 
-            $valoresPorCampo[$nombreCampo][] = $incidencia->valor;
-        }
+            $valoresPorCampo[$nombreCampo][] = $incidencia->valor ?? '';
 
-        // dd([
-        //     'camposIncidencias' => $this->camposIncidencias,
-        //     'nombresCampos' => $nombresCampos,
-        //     'valoresPorCampo' => $valoresPorCampo,
-        // ]);
+            // obtengo Nombre_vigilante y fecha_hora directamente desde la incidencia
+            $vigilantesYFechas[] = [
+                'nombre_vigilante' => $incidencia->incidencia->Nombre_vigilante ?? 'No asignado',
+                'fecha_hora' => $incidencia->incidencia->fecha_hora ?? 'Sin fecha',
+            ];
+        }
 
         return view('Formatos.reporte_export', [
             'nombresCampos' => $nombresCampos,
             'valoresPorCampo' => $valoresPorCampo,
-            'formato' => $this->formato
+            'formato' => $this->formato,
+            'vigilantesYFechas' => $vigilantesYFechas
         ]);
     }
 
-
     public function title(): string
     {
-        return 'Reporte Vigilancia PRT ' . $this->formato->Tipo;
+        return 'Reporte Vigilancia PRT - ' . $this->formato->Tipo;
     }
 
     public function registerEvents(): array
@@ -62,73 +74,88 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                $columnCount = max(count($this->camposIncidencias), 1);
-                $lastColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($columnCount);
+                $nombresCampos = array_filter($this->view()->getData()['nombresCampos'], function($campo) {
+                    return !empty($campo);
+                });
+
+                $columnCount = count($nombresCampos) + 2; // Aumentamos el contador para las nuevas columnas
+                $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
                 $lastRow = max(count($this->camposIncidencias) + 5, 10);
 
-                // encabezado principal
-                $sheet->mergeCells("A1:{$lastColumn}1");
-                $sheet->getCell('A1')->setValue('Reporte Vigilancia PRT - ' . $this->formato->Tipo);
-                $sheet->getStyle('A1')->applyFromArray($this->getHeaderStyle());
-                $sheet->getRowDimension(1)->setRowHeight(70);
+                $this->mergeAndStyleHeader($sheet, "A1:{$lastColumn}1", 'Reporte Vigilancia PRT - ' . $this->formato->Tipo);
+                $this->setColumnHeaderStyle($sheet, $lastColumn);
+                $this->applyBorders($sheet, $lastColumn, $lastRow);
+                $this->applyRowAlternatingStyle($sheet, $lastColumn, $lastRow);
+                $this->applyVigilanteAndFechaStyle($sheet, $lastColumn, $lastRow);
 
-                
-                $sheet->getColumnDimension('A')->setWidth(70);
-                $sheet->getColumnDimension($lastColumn)->setWidth(70);
-
-                // encabezado de los campos
-                $sheet->getStyle("A2:{$lastColumn}2")->applyFromArray($this->getColumnHeaderStyle());
-                $sheet->getRowDimension(2)->setRowHeight(30);
-
-                // ancho
-                foreach (range('A', $lastColumn) as $columnID) {
-                    $sheet->getColumnDimension($columnID)->setAutoSize(true);
+                foreach (range('A', $lastColumn) as $column) {
+                    $sheet->getColumnDimension($column)->setAutoSize(true);
                 }
 
-                //diseño de celdas dinamicos
-                for ($row = 3; $row <= $lastRow; $row++) {
-                    $sheet->getRowDimension($row)->setRowHeight(25);  // alto de la fila
-                    if ($row % 2 == 0) {  
-                        $sheet->getStyle("A{$row}:{$lastColumn}{$row}")->applyFromArray([
-                            'fill' => [
-                                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                                'startColor' => ['argb' => 'FFF9F9F9'],
-                            ],
-                        ]);
-                    }
-                }
-
-                //bordes
-                $dataRange = "A3:{$lastColumn}{$lastRow}";
-                $sheet->getStyle($dataRange)->applyFromArray($this->getDataCellStyle());
-
-                $sheet->getStyle("A2:{$lastColumn}{$lastRow}")->applyFromArray([
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                            'color' => ['argb' => 'FFD1D1D1'],
-                        ],
-                    ],
-                ]);
+                $sheet->getStyle("A2:{$lastColumn}{$lastRow}")->getAlignment()->setWrapText(true);
             },
         ];
     }
 
-    /**
-     * Estilo para el encabezado principal.
-     */
-    private function getHeaderStyle(): array
+    private function mergeAndStyleHeader($sheet, $range, $title)
+    {
+        $sheet->mergeCells($range);
+        $sheet->getCell(substr($range, 0, strpos($range, ':')))->setValue($title);
+        $sheet->getStyle($range)->applyFromArray($this->getHeaderStyle());
+        $sheet->getRowDimension(1)->setRowHeight(55);
+
+        $sheet->getStyle($range)->getAlignment()->setWrapText(true);
+    }
+
+    private function setColumnHeaderStyle($sheet, $lastColumn)
+    {
+        $sheet->getStyle("A2:{$lastColumn}2")->applyFromArray($this->getColumnHeaderStyle());
+        $sheet->getRowDimension(2)->setRowHeight(35);
+    }
+
+    private function applyBorders($sheet, $lastColumn, $lastRow)
+    {
+        $dataRange = "A2:{$lastColumn}{$lastRow}";
+        $sheet->getStyle($dataRange)->applyFromArray([ 
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => self::BORDER_COLOR],
+                ],
+            ],
+        ]);
+    }
+
+    private function applyRowAlternatingStyle($sheet, $lastColumn, $lastRow)
+    {
+        for ($row = 3; $row <= $lastRow; $row++) {
+            $rowStyle = ($row % 2 == 0) ? self::ROW_ALT_COLOR : 'FFFFFF';
+            $sheet->getStyle("A{$row}:{$lastColumn}{$row}")->applyFromArray([ 
+                'fill' => [
+                    'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                    'startColor' => ['argb' => $rowStyle],
+                ],
+            ]);
+        }
+    }
+
+    private function applyVigilanteAndFechaStyle($sheet, $lastColumn, $lastRow)
+    {
+        $vigilantesYFechas = $this->view()->getData()['vigilantesYFechas'];
+
+        foreach ($vigilantesYFechas as $index => $vigilanteFecha) {
+            $row = $index + 3; // Las filas de datos empiezan desde la fila 3
+            $sheet->getStyle("A{$row}:B{$row}")->applyFromArray($this->getVigilanteFechaStyle());
+        }
+    }
+
+    private function getVigilanteFechaStyle()
     {
         return [
             'font' => [
-                'bold' => true,
-                'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE],
-                'size' => 22,
-                'name' => 'Trebuchet MS',
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FF102E42'],
+                'name' => self::FONT_NAME,
+                'size' => self::FONT_SIZE_DATA,
+                'color' => ['argb' => '2C3E50'], // Gris oscuro
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -137,47 +164,43 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
         ];
     }
 
-    /**
-     * Estilo para el encabezado de columnas.
-     */
-    private function getColumnHeaderStyle(): array
+    private function getHeaderStyle()
     {
         return [
             'font' => [
-                'size' => 14,
-                'bold' => true,
-                'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_DARKBLUE],
+                'name' => self::FONT_NAME,
+                'bold' => self::FONT_BOLD,
+                'size' => self::FONT_SIZE_HEADER,
+                'color' => ['argb' => self::HEADER_FONT_COLOR],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['argb' => self::HEADER_BG_COLOR],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+    }
+
+    private function getColumnHeaderStyle()
+    {
+        return [
+            'font' => [
+                'name' => self::FONT_NAME,
+                'bold' => self::FONT_BOLD,
+                'size' => self::FONT_SIZE_DATA,
+                'color' => ['argb' => self::HEADER_FONT_COLOR],
+            ],
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'startColor' => ['argb' => self::COLUMN_HEADER_BG_COLOR],
             ],
             'alignment' => [
                 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                 'wrapText' => true,
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FFF2F2F2'],
-            ],
-        ];
-    }
-
-    /**
-     * Estilo para celdas de datos.
-     */
-    private function getDataCellStyle(): array
-    {
-        return [
-            'font' => [
-                'size' => 12,
-                'color' => ['argb' => \PhpOffice\PhpSpreadsheet\Style\Color::COLOR_BLACK],
-            ],
-            'alignment' => [
-                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-                'wrapText' => true, 
-            ],
-            'fill' => [
-                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                'startColor' => ['argb' => 'FFFFFFFF'],
             ],
         ];
     }

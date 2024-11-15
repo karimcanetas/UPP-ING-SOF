@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Departamentos as ModelsDepartamentos;
 use Illuminate\Http\Request;
 use App\Models\Sucursal;
 use App\Models\Empresa;
+// use Database\Seeders\departamentos;
+use App\Models\Departamentos;
 
 class SucursalesController extends Controller
 {
@@ -27,4 +30,18 @@ class SucursalesController extends Controller
             ? view('sucursal.show', compact('sucursal'))
             : abort(404, 'Sucursal no encontrada');
     }
+
+    // public function getDepartamentos($id_departamento)
+    // {
+    //     $sucursal = Sucursal::on('mysql')->with('departamentos')->find($id_departamento);
+
+    //     return $sucursal;
+    // }
+    // public function getDepartamentos($sucursalId)
+    // {
+    //     $departamentos = Departamentos::where('sucursal_id', $sucursalId)->get();
+    //     return response()->json($departamentos);
+    // }
+
+    
 }

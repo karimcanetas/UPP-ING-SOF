@@ -8,9 +8,9 @@
             <a class="nav-link dropdown-toggle animated animated-sm bounceInUp" href="#" id="userDropdown"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline">
-                    <b>{{ Auth::user()->empleado->nombres }} {{ Auth::user()->empleado->apellido_p }}
-                        {{ Auth::user()->empleado->apellido_m }}</b>
-                </span>
+                    <b>{{ Auth::user()->empleado->nombres }}</b> 
+                </span>           {{-- {{ Auth::user()->empleado->apellido_p }}
+                {{ Auth::user()->empleado->apellido_m }} --}}
                 <img class="img-profile rounded-circle" id="img"
                     src="{{ url('/assets/img/perfil/' . auth()->user()->perfil) }}">
             </a>

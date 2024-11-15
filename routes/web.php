@@ -13,6 +13,8 @@ use App\Http\Controllers\CorreosFormatosController;
 use App\Http\Controllers\FormatosController;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\CampoIncidenciasController;
+use App\Http\Controllers\EmpleadosFormatosController;
+use App\Models\EmpleadosCatalogo;
 
 // Ruta de la vista Welcome
 Route::get('/', function () {
@@ -35,12 +37,12 @@ Route::get('/send/index', function () {
 
 
 Route::get('/index', function () {
-    return view('CorreoFormato.index');
+    return view('EmpleadoFormato.index');
 })->middleware(['auth', 'verified'])->name('index');
 
-Route::get('/CorreoFormato/index', function () {
-    return view('CorreoFormato.index');
-})->middleware(['auth', 'verified'])->name('CorreoFormato.index');
+Route::get('/EmpleadoFormato/index', function () {
+    return view('EmpleadoFormato.index');
+})->middleware(['auth', 'verified'])->name('EmpleadoFormato.index');
 
 Route::get('/emails', function () {
     return view('layouts.emails.index');
@@ -87,6 +89,7 @@ Route::controller(IncidenciaController::class)->group(function () {
 //ruta de Empleados
 Route::controller(EmpleadosCatologoController::class)->group(function () {
     Route::post('/empleados/store', 'store')->name('empleados.store');
+    Route::get('/empleados/{sucursalId}/{departamentoId}', 'usuariosEmails')->name('empleados.usuariosEmails');
 });
 
 // Rutas 'correos'
@@ -94,7 +97,6 @@ Route::resource('correos', CorreosController::class)->names([
     'index' => 'correos.index',
     'store' => 'correos.store',
 ]);
-// Route::get('/correos/{id}', [FormatosController::class, 'getCorreos']);
 
 // Rutas de EmpresasController
 Route::controller(EmpresasController::class)->group(function () {
@@ -106,30 +108,36 @@ Route::controller(EmpresasController::class)->group(function () {
 Route::controller(CasetasController::class)->group(function () {
     Route::get('/sucursales/{id}/casetas', 'getCasetas')->name('sucursales.casetas');
     Route::get('/casetas/{id}/formatos', 'getFormatos')->name('casetas.formatos');
+    Route::get('/sucursales/{sucursalId}/departamentos', 'getDepartamentos')->name('sucursales.departamentos');
+});
+// Rutas de EmpleadosCatologoController
+Route::get('/empleados/{sucursalId}/{departamentoId}', [EmpleadosCatologoController::class, 'usuariosEmails']);
+
+// Rutas de EmpleadosFormatosController
+Route::controller(EmpleadosFormatosController::class)->group(function () {
+    Route::post('/empleados_formatos', 'store')->name('empleados_formatos.store');
+    Route::get('/empleados_formatos', 'store');
 });
 
-// Rutas de CorreosFormatosController
-Route::controller(CorreosFormatosController::class)->group(function () {
-    Route::post('/correos_formatos', 'store')->name('correos_formatos.store');
-    Route::get('/correos_formatos', 'store');
-});
-
+// Rutas de FormatosController
 Route::get('/get-correos/{id}', [FormatosController::class, 'getCorreos'])->name('get.correos');
-
-// Route::get('Vigilancia', function () {
-//     Mail::to('diuitcan@gmail.com')->send(new ReporteMailable);
-//     return "Mensaje enviado";
-// })->name('Vigilancia');
-
-//exportar
-Route::post('/exportar-campo-incidencias', [CampoIncidenciasController::class, 'exportar'])->name('exportar.campo.incidencias');
-
-//obtener formatos
 Route::post('/obtener-campos', [FormatosController::class, 'obtenerCamposPorFormato'])->name('obtener.campos');
+Route::get('/checks-formatos', [FormatosController::class, 'checksSeparadores']);
 
+// Rutas de CampoIncidenciasController
+Route::post('/exportar-campo-incidencias', [CampoIncidenciasController::class, 'exportar'])->name('exportar.campo.incidencias');
 Route::post('/envio', [CampoIncidenciasController::class, 'envio'])->name('envio.correos');
 
-Route::get('/checks-formatos', [FormatosController::class, 'checksSeparadores']);
+// Asegúrate de definir los parámetros en la ruta
+Route::get('/empleados/formatos', [EmpleadosCatologoController::class, 'obtenerTodosLosFormatos']);
+Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCatologoController::class, 'actualizarStatus']);
+
+//ruta envio vigilante 
+Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
+
+
+
+
 
 
 // Autenticacion

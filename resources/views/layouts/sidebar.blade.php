@@ -127,8 +127,8 @@
 
 
 
-    <li class="nav-item anim-left anim-pause-1 @if (Route::is('CorreoFormato.index')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('CorreoFormato.index') }}" data-toggle="popover"
+    <li class="nav-item anim-left anim-pause-1 @if (Route::is('EmpleadoFormato.index')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('EmpleadoFormato.index') }}" data-toggle="popover"
             data-content="Pulsar para ir al módulo de correos">
             {{-- <svg @if (Route::is('CorreoFormato.index')) width="80px" height="80px" @else width="40px" height="40px" @endif viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="10" y="30" width="80" height="40" rx="5" ry="5" fill="none" stroke="#ffffff" stroke-width="5" opacity="0.8"/>
@@ -138,7 +138,7 @@
                 <path d="M10 30L50 55L90 30" stroke="#ffffff" stroke-width="5" opacity="0.5"/>
                 <rect x="10" y="30" width="80" height="40" rx="5" ry="5" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.3"/>
             </svg> --}}
-            <svg @if (Route::is('CorreoFormato.index')) width="60px" height="60px" @else width="45px" height="45px" @endif
+            <svg @if (Route::is('EmpleadoFormato.index')) width="60px" height="60px" @else width="45px" height="45px" @endif
                 xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24">
                 <path fill="currentColor"
                     d="M23 6.5a5.5 5.5 0 1 0-11 0a5.5 5.5 0 0 0 11 0ZM18 7l.001 2.504a.5.5 0 1 1-1 0V7h-2.505a.5.5 0 0 1 0-1H17V3.5a.5.5 0 0 1 1 0V6h2.497a.5.5 0 0 1 0 1H18Zm2.5 9.75v-4.482A6.518 6.518 0 0 0 22 11.19v5.56a3.25 3.25 0 0 1-3.066 3.245L18.75 20H5.25a3.25 3.25 0 0 1-3.245-3.066L2 16.75v-9.5a3.25 3.25 0 0 1 3.066-3.245L5.25 4h6.248a6.451 6.451 0 0 0-.422 1.5H5.25a1.75 1.75 0 0 0-1.744 1.606L3.5 7.25v.429l8.5 4.473l1.305-.687c.439.371.927.685 1.454.93l-2.41 1.269a.75.75 0 0 1-.602.042l-.096-.042L3.5 9.374v7.376a1.75 1.75 0 0 0 1.606 1.744l.144.006h13.5a1.75 1.75 0 0 0 1.744-1.607l.006-.143Z" />

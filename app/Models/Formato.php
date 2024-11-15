@@ -45,9 +45,19 @@ class Formato extends Model
     {
         return $this->belongsToMany(Correos::class, 'correos_formatos', 'id_formatos', 'id_correo');
     }
-    
+
     public function campoIncidencias()
     {
         return $this->hasMany(CampoIncidencia::class, 'id_formatos');
+    }
+    public function empleadosFormatos()
+    {
+        return $this->hasMany(EmpleadosFormatos::class, 'id_formatos', 'id_formatos');
+    }
+    public function empleados()
+    {
+        return $this->belongsToMany(EmpleadosCatalogo::class, 'empleados_formatos', 'id_formato', 'id_empleado')
+            ->withPivot('status')
+            ->withTimestamps();
     }
 }

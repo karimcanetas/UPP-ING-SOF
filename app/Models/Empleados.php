@@ -24,9 +24,9 @@ class Empleados extends Model {
 
     protected $fillable = ['nombre', /* otros campos */];
 
-    public function user()
-    {
-        return $this->hasOne(Empleado::class);
-    }
+    // public function user()
+    // {
+    //     return $this->hasOne(Empleado::class);
+    // }
 
 }

@@ -16,7 +16,7 @@
                 Route::is('users.index') ||
                 Route::is('users.show') ||
                 Route::is('send.index') ||
-                Route::is('CorreoFormato.index') ||
+                Route::is('EmpleadoFormato.index') ||
                 Route::is('manual'))
 
 
@@ -41,7 +41,7 @@
                     </g>
                 </svg>
 
-                <a href="{{ route('dashboard', 'send', 'CorreoFormato') }}">
+                <a href="{{ route('dashboard', 'send', 'EmpleadoFormato') }}">
                     <b>{{ __('Servicio de Vigilancia') }}</b>
                 </a>
             </li>
@@ -88,7 +88,7 @@
                 </li>
             @endif
 
-            @if (Route::is('CorreoFormato.index'))
+            @if (Route::is('EmpleadoFormato.index'))
                 <li class="breadcrumb-item text-danger" aria-current="page">
                     <b>{{ __('Agregar Correo') }}</b>
                 </li>

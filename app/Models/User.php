@@ -33,7 +33,7 @@ class User extends Authenticatable
 
     public function empleado()
     {
-        return $this->belongsTo(Empleados::class, 'n_empleado', 'n_empleado');
+        return $this->belongsTo(EmpleadosCatalogo::class, 'n_empleado', 'n_empleado');
     }
 
 }

@@ -5,7 +5,7 @@
          $casetaSeleccionada &&
              ($casetaSeleccionada->nombre === 'Caseta Servicio' || $casetaSeleccionada->nombre === 'Caseta Subaru'))
          <div id="novedad_servicio" style="display: none;">
-             <div class="card horizontal-card d-none">
+             <div class="card horizontal-card ">
                  <div class="form-group">
                      <label for="id_casetas">Caseta:</label>
                      <input type="text" class="form-control" name="id_casetas" id="caseta_servicios" readonly>

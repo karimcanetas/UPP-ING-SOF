@@ -26,4 +26,13 @@ class Puestos extends Model
     {
         $this->setConnection($connection);
     }
+    public function departamentos()
+    {
+        return $this->belongsToMany(Departamentos::class, 'departamento_puesto');
+    }
+
+    public function empleados()
+    {
+        return $this->hasMany(EmpleadosCatalogo::class);
+    }
 }
