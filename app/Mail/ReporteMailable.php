@@ -26,7 +26,7 @@ class ReporteMailable extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('danieliuit75@gmail.com', 'Daniel Iuit'),
+            from: new Address('prt@gmail.com', 'Vigilancia PRT'),
             subject: mb_encode_mimeheader('Reporte Vigilancia PRT ' . $this->formatoNombre, 'UTF-8'),
         );
     }

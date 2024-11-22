@@ -2,7 +2,20 @@
     <!-- contenido -->
     <x-btn-EnviarCorreo />
     <x-btn-atras />
+
+    <form action="{{ route('envio.vigilante') }}" method="POST" id="envio" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" id="hidden_fecha_hora" name="fecha_hora">
+        <input type="hidden" id="hidden_nombre_vigilante" name="Nombre_vigilante">
+        <input type="hidden" id="hidden_id_turnos" name="id_turnos">
     
+        <div class="buttonEnviar-container">
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
+                <i class="fas fa-arrow-right"></i> Enviar correo
+            </button>
+        </div>
+    </form>
+
     <div class="buttonEnviar-container">
         <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
             <i class="fas fa-arrow-right"></i>Enviar correo
@@ -37,8 +50,10 @@
             {{-- select turnos --}}
             <x-select-turnos :turnos="$turnos" />
 
-            <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" class="form-control" id="fecha_hora"
-                name="fecha_hora" readonly>
+            <div class="form-group">
+                <input type="hidden" value="{{ date('Y-m-d H:i:s') }}" class="form-control" id="fecha_hora"
+                    name="fecha_hora" readonly>
+            </div>
 
             <div class="form-group text-center">
                 <button type="button" id="crearIncidenciaBtn" class="btn btn-primary"

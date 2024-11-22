@@ -134,6 +134,7 @@ Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCa
 
 //ruta envio vigilante 
 Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
+Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
 
 
 

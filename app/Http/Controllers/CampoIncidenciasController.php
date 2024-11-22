@@ -6,6 +6,7 @@ use App\Models\Formato;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Exports\ReporteExport;
+use App\Exports\VigilanteExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Mail\ReporteMailable;
 use App\Models\CampoIncidencia;
@@ -16,6 +17,8 @@ use App\Models\Incidencia;
 use App\Models\Turno;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class CampoIncidenciasController extends Controller
 {
@@ -78,86 +81,134 @@ class CampoIncidenciasController extends Controller
         return response()->json(['success' => 'Correos enviados correctamente.']);
     }
 
-    // public function EnvioVigilante(Request $request)
-    // {
-    //     $request->validate([
-    //         'fecha_hora' => 'required',
-    //         'Nombre_vigilante' => 'required',
-    //         'id_turnos' => 'required',
-    //     ]);
 
-    //     $fechahora = Carbon::parse($request->input('fecha_hora'));
-    //     $vigilante = $request->input('Nombre_vigilante');
-    //     $turnos = $request->input('id_turnos');
+    public function EnvioVigilante(Request $request)
+    {
+        $request->validate([
+            'fecha_hora' => 'required',
+            'Nombre_vigilante' => 'required',
+            'id_turnos' => 'required|integer',
+        ]);
 
-    //     // Obtener el turno 
-    //     $turno = Turno::find($turnos);
+        $nombreVigilante = $request->input('Nombre_vigilante');
+        $fechaHora = $request->input('fecha_hora');
+        $idTurnos = (int) $request->input('id_turnos');
 
-    //     if (!$turno) {
-    //         return response()->json(['error' => 'Turno no encontrado'], 404);
-    //     }
+        $turno = Turno::find($idTurnos);
+        if (!$turno || empty($turno->Hora_Fin)) {
+            return response()->json(['error' => 'Turno o Hora_Fin no válido'], 400);
+        }
 
-    //     $horaInicio = Carbon::parse($turno->Hora_inicio);
-    //     $horaFin = Carbon::parse($turno->Hora_fin);
+        $fechaHoraInicio = Carbon::parse($fechaHora);
+        $fechaHoraFin = $fechaHoraInicio->copy()->setTimeFromTimeString($turno->Hora_Fin);
 
-    //     $formatosCoincidentes = Incidencia::where('fecha_hora', '>=', $fechahora)
-    //         ->where('Nombre_vigilante', $vigilante)
-    //         ->where('id_turnos', $turnos)
-    //         ->get();
+        //agrego un dia adicional cuando el turno es nocturno
+        if ($turno->id_turnos == 2 || $turno->turnos = "Nocturno") {
+            $fechaHoraFin->addDay();
+        }
 
-    //     if ($formatosCoincidentes->isEmpty()) {
-    //         return response()->json(['error' => 'No se encontraron formatos para este vigilante'], 404);
-    //     }
+        // obtengo las incidencias
+        $formatosCoincidentes = Incidencia::whereBetween('fecha_hora', [$fechaHoraInicio, $fechaHoraFin])
+            ->where('Nombre_vigilante', $nombreVigilante)
+            ->where('id_turnos', $idTurnos)
+            ->get();
 
-    //     $empleadosHabilitados = EmpleadosFormatos::where('id_formatos', $formatosCoincidentes->first()->id_formatos)
-    //         ->where('status', 1) 
-    //         ->get();
+        Log::info('Consultando formatos con los parámetros:', [
+            'fecha_hora_inicio' => $fechaHoraInicio,
+            'fecha_hora_fin' => $fechaHoraFin,
+            'nombre_vigilante' => $nombreVigilante,
+            'id_turnos' => $idTurnos,
+            'consulta_resultado' => $formatosCoincidentes->isEmpty() ? 'No se encontraron formatos' : 'Formatos encontrados'
+        ]);
 
-    //     if ($empleadosHabilitados->isEmpty()) {
-    //         return response()->json(['error' => 'No hay empleados habilitados para enviar el correo'], 404);
-    //     }
+        if ($formatosCoincidentes->isEmpty()) {
+            return response()->json(['error' => 'no se encontraron formatos'], 404);
+        }
 
-    //     $correosEmpleados = [];
-    //     foreach ($empleadosHabilitados as $empleadoFormato) {
-    //         $empleado = EmpleadosCatalogo::find($empleadoFormato->id_empleado);
-    //         if ($empleado) {
-    //             $nEmpleado = $empleado->n_empleado;
-    //             $usuario = User::where('n_empleado', $nEmpleado)->first();
-    //             if ($usuario) {
-    //                 // Agregamos a la lista de correos
-    //                 $correosEmpleados[] = $usuario->email;
-    //             }
-    //         }
-    //     }
+        // agrupo las incidencias por el id_formatos
+        $formatosAgrupados = $formatosCoincidentes->groupBy('id_formatos');
+        $archivosGenerados = 0; // test
 
-    //     if (empty($correosEmpleados)) {
-    //         return response()->json(['error' => 'No se encontraron correos electrónicos de empleados habilitados'], 404);
-    //     }
+        foreach ($formatosAgrupados as $idFormato => $formatos) {
+            $formatoEjemplo = $formatos->first(); // el formato que representara por agrupacion
+            $camposIncidencias = collect();
 
-    //     $camposIncidencias = $formatosCoincidentes->first()->campoIncidencias()
-    //         ->with(['campo', 'incidencia' => function ($query) use ($horaInicio, $horaFin) {
-    //             $query->whereBetween('fecha_hora', [$horaInicio, $horaFin]);
-    //         }])
-    //         ->whereNotNull('valor')
-    //         ->get();
+            // relaciono los campos con su formato
+            foreach ($formatos as $formato) {
+                $camposFormato = $formato->campoIncidencias()
+                    ->with(['campo', 'incidencia' => function ($query) use ($fechaHoraInicio, $fechaHoraFin) {
+                        $query->whereBetween('fecha_hora', [$fechaHoraInicio, $fechaHoraFin]);
+                    }])
+                    ->whereNotNull('valor')
+                    ->get();
 
-    //     // Exportar el reporte
-    //     $export = new ReporteExport($formatosCoincidentes, $camposIncidencias);
-    //     $filePath = storage_path('app/reporte_vigilancia_' . $formatosCoincidentes->first()->id_formatos . '.xlsx');
+                $camposIncidencias = $camposIncidencias->merge($camposFormato);
+            }
 
-    //     // Guardar el archivo de manera temporal
-    //     Excel::store($export, 'reporte_vigilancia_' . $formatosCoincidentes->first()->id_formatos . '.xlsx');
+            if ($camposIncidencias->isEmpty()) {
+                continue; // no hay campos para este formato
+            }
 
-    //     // Enviar el correo a los empleados habilitados con el archivo adjunto
-    //     foreach ($correosEmpleados as $correo) {
-    //         Mail::to($correo)->send(new ReporteMailable($filePath, $formatosCoincidentes->first()->Tipo));
-    //     }
+            // test agrupacion
+            $detalleCampos = $camposIncidencias->map(function ($incidencia) {
+                return [
+                    'campo' => $incidencia->campo->campo ?? 'deconocido',
+                    'valor' => $incidencia->valor ?? 'sin valor',
+                ];
+            })->toArray();
 
-    //     // Eliminar el archivo después de enviarlo
-    //     if (file_exists($filePath)) {
-    //         unlink($filePath);
-    //     }
+            Log::info('procesando formato agrupado:', [
+                'id_formato' => $idFormato,
+                'tipo_formato' => $formatoEjemplo->Tipo ?? 'Desconocido',
+                'campos_incidencias' => $detalleCampos,
+            ]);
 
-    //     return response()->json(['success' => 'Correo enviado a los administrativos'], 200);
-    // }
+            $empleadosHabilitados = EmpleadosFormatos::where('id_formatos', $idFormato)
+                ->where('status', 1)
+                ->get();
+
+            if ($empleadosHabilitados->isEmpty()) {
+                continue; // no hay empleados habilitados
+            }
+
+            $correosEmpleados = $empleadosHabilitados->map(function ($empleadoFormato) {
+                $empleado = EmpleadosCatalogo::find($empleadoFormato->id_empleado);
+                if ($empleado) {
+                    $usuario = User::where('n_empleado', $empleado->n_empleado)->first();
+                    return $usuario ? $usuario->email : null;
+                }
+                return null;
+            })->filter()->toArray();
+
+            if (empty($correosEmpleados)) {
+                continue; // no hay correos habilitados
+            }
+
+            $tipoFormato = $formatoEjemplo->formato->Tipo ?? 'formato desconocido';
+
+            // genero el excel 
+            $export = new VigilanteExport(collect([$formatoEjemplo]), $camposIncidencias, $tipoFormato);
+            $fileName = 'reporte_vigilancia_' . $idFormato . '.xlsx';
+            $filePath = storage_path('app/' . $fileName);
+
+            Excel::store($export, $fileName);
+
+            // test
+            $archivosGenerados++;
+
+            // envio el excel a los correos habilitados
+            foreach ($correosEmpleados as $correo) {
+                Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
+            }
+
+            // elimino el archivo después de enviarlo
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
+        Log::info('cantidad de archivos excel generados: ' . $archivosGenerados);
+
+        return response()->json(['success' => 'Haz enviado tus formatos con exito', 'archivos generados' => $archivosGenerados], 200);
+    }
 }

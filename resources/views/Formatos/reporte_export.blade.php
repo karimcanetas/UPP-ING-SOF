@@ -9,7 +9,7 @@
 
 <body style="font-family: 'Calibri', sans-serif; margin: 20px;">
 
-    <h1 style="text-align: center; color: #5e5e5e;">Reporte de Vigilancia: {{ $formato->Tipo }}</h1>
+    <h1 style="text-align: center; color: #5e5e5e;">Reporte de Vigilancia:</h1>
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
         <thead>
             <tr>

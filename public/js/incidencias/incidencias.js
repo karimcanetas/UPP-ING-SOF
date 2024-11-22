@@ -16,6 +16,10 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
     ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa', 'turno_vehiculos', 'turno_bitacora', 'turno_ingreso', 'turno_aceite'].forEach(id => setField(id, turno));
     ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa', 'Nombre_vigilante_vehiculos', 'Nombre_vigilante_bitacora', 'Nombre_vigilante_ingreso', 'Nombre_vigilante_aceite'].forEach(id => setField(id, vigilante));
 
+    setField('hidden_fecha_hora', fechaHora);
+    setField('hidden_id_turnos', turno);
+    // setField('hidden_id_casetas', caseta);
+    setField('hidden_nombre_vigilante', vigilante);
     document.getElementById('incidenciaForm').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'block';
 });
@@ -565,3 +569,119 @@ function submitAndResetForm(button) {
         }, 5000);
     }
 }
+
+// document.addEventListener('DOMContentLoaded', function () {
+
+//     // document.getElementById('hidden_fecha_hora').value = document.getElementById('fecha_hora_detalles').value;
+
+//     document.getElementById('Nombre_vigilante').addEventListener('input', function () {
+//         document.getElementById('hidden_nombre_vigilante').value = this.value;
+//     });
+
+//     document.getElementById('id_turnos').addEventListener('change', function () {
+//         document.getElementById('hidden_id_turnos').value = this.value;
+//     });
+// });
+
+
+
+
+// document.addEventListener('DOMContentLoaded', function () {
+//     function sincronizarValores() {
+//         const fechaHoraDetalles = document.getElementById('fecha_hora_detalles').value;
+//         document.getElementById('hidden_id_turnos').value = fechaHoraDetalles;
+//     }
+//     sincronizarValores();
+
+//     setInterval(sincronizarValores, 1000);
+// });
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     console.log("El DOM está cargado.");
+
+    //     function iniciarTurno() {
+    //         console.log("Inicializando lógica para el turno.");
+
+    //         const selectedOption = document.querySelector('option[data-hora-fin]');
+    //         if (!selectedOption) {
+    //             console.warn("No se encontró un turno activo con 'data-hora-fin'.");
+    //             return;
+    //         }
+
+    //         const horaFin = selectedOption.getAttribute('data-hora-fin');
+    //         console.log("Hora final obtenida del atributo:", horaFin);
+
+    //         if (!horaFin) {
+    //             console.error("El atributo 'data-hora-fin' no tiene valor.");
+    //             return;
+    //         }
+
+    //         const horaParts = horaFin.split(':');
+    //         if (horaParts.length < 2 || isNaN(horaParts[0]) || isNaN(horaParts[1])) {
+    //             console.error("Formato de hora inválido:", horaFin);
+    //             return;
+    //         }
+
+    //         const ahora = new Date();
+    //         console.log("Hora actual:", ahora);
+
+    //         const horaFinDate = new Date(ahora);
+    //         horaFinDate.setHours(horaParts[0], horaParts[1], 0, 0);
+    //         console.log("Hora final convertida a objeto Date:", horaFinDate);
+
+    //         if (isNaN(horaFinDate.getTime())) {
+    //             console.error("La hora final es inválida:", horaFinDate);
+    //             return;
+    //         }
+
+    //         const diferencia = horaFinDate - ahora;
+    //         console.log("Diferencia en milisegundos entre hora actual y hora final:", diferencia);
+
+    //         if (diferencia <= 0) {
+    //             console.warn("La hora final ya pasó o está demasiado cerca.");
+    //             limpiarEstado();
+    //             return;
+    //         }
+
+    //         const tiempoAlerta = diferencia - 900000; // 15 minutos antes
+    //         console.log("Tiempo hasta la alerta en milisegundos:", tiempoAlerta);
+
+    //         setTimeout(() => {
+    //             console.log("Mostrando alerta.");
+    //             Swal.fire({
+    //                 title: '¡Alerta!',
+    //                 text: 'Faltan 15 minutos para que termine el turno.',
+    //                 icon: 'info',
+    //                 confirmButtonText: 'Cerrar'
+    //             }).then(() => {
+    //                 console.log("Alerta cerrada. Mostrando botón 'Enviar'.");
+    //                 const btnEnviar = document.getElementById('btnEnviar');
+    //                 if (btnEnviar) {
+    //                     btnEnviar.style.display = 'block';
+    //                 } else {
+    //                     console.error("No se encontró el botón con ID 'btnEnviar'.");
+    //                 }
+    //             });
+    //         }, tiempoAlerta);
+
+    //         setTimeout(() => {
+    //             console.log("El turno ha finalizado. Limpiando el estado...");
+    //             limpiarEstado();
+    //         }, diferencia);
+    //     }
+
+    //     function limpiarEstado() {
+    //         console.log("Restableciendo el estado del sistema...");
+    //         // Ocultar el botón de enviar
+    //         const btnEnviar = document.getElementById('btnEnviar');
+    //         if (btnEnviar) {
+    //             btnEnviar.style.display = 'none';
+    //         }
+    //         const selectedOption = document.querySelector('option[data-hora-fin]');
+    //         if (selectedOption) {
+    //             selectedOption.removeAttribute('data-hora-fin');
+    //         }
+    //         console.log("Esperando nuevo turno...");
+    //     }
+    //     iniciarTurno();
+    // });

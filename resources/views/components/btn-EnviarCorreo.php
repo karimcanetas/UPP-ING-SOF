@@ -1,12 +1,4 @@
-<!-- <form action="{{ route('envio.vigilante') }}" method="POST">
-    @csrf
-</form> -->
 
-<div class="buttonEnviar-container">
-    <button id="btnEnviar" class="btn btn-primary" style="display:none">
-        <i class="fas fa-arrow-right"></i> Enviar correo
-    </button>
-</div>
 
 <style>
     /* Contenedor del botón */
@@ -17,6 +9,7 @@
         z-index: 1000;
     }
 </style>
+</script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

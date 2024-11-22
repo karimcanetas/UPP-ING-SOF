@@ -34,7 +34,7 @@ class Incidencia extends Model
     }
     public function formato()
     {
-        return $this->hasMany(Formato::class, 'id_formatos');
+        return $this->belongsTo(Formato::class, 'id_formatos'); //si falla cambiarlo por hasmany pero la consecuencia sera en el metodo de EnvioVigilante no accedera a la propiedad "Tipo"
     }
     public function formatos()
     {

@@ -5,7 +5,7 @@
         <div id="control_acceso_proveedores" style="display: none;">
 
 
-            <div class="card horizontal-card ">
+            <div class="card horizontal-card d-none">
                 <div class="form-group">
                     <label for="id_casetas">Caseta:</label>
                     <input type="text" class="form-control" name="id_casetas" id="caseta_acceso" readonly>
