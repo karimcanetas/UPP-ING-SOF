@@ -1,4 +1,3 @@
-
 <footer class="deneb_footer anim-up anim-pause-1 mb-4">
 	<div class="widget_wrapper">
         <section class="deneb_cta">

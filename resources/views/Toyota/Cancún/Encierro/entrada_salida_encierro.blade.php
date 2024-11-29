@@ -81,11 +81,12 @@
                                 name="campos[{{ $campo->id_campo }}]"
                                 value="{{ old('campos.' . $campo->id_campo) }}" maxlength="6" pattern="\d{6}"
                                 title="Debe contener exactamente 6 dígitos numéricos" required
-                                placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)">
+                                placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
+                                required>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" required>
+                                value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

@@ -2,7 +2,6 @@
     <!-- contenido -->
     <x-btn-EnviarCorreo />
     <x-btn-atras />
-
     <form action="{{ route('envio.vigilante') }}" method="POST" id="envio" enctype="multipart/form-data">
         @csrf
         <input type="hidden" id="hidden_fecha_hora" name="fecha_hora">

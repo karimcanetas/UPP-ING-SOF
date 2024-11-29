@@ -14,6 +14,7 @@ class Turno extends Model
     protected $primaryKey = 'id_turnos';
     protected $fillable = [
         'turno',
+        'id_sucursal',
         'Hora_inicio',
         'Hora_Fin',
     ];
@@ -35,5 +36,9 @@ class Turno extends Model
         return $this->belongsToMany(Formato::class, 'formato_caseta', 'id_turnos', 'id_formatos')
             ->withPivot('id_casetas');
     }
+    //turno por sucursal
+    public function sucursal()
+    {
+        return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
+    }
 }
-    

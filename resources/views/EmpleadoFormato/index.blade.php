@@ -15,8 +15,14 @@
                     </h3>
                 </div>
 
-                <div class="card-body">
-                    @if ($errors->any() && !collect($errors->all())->contains(fn($error) => str_contains($error, 'emails')))
+                <div class="container mt-5">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
@@ -87,8 +93,8 @@
                                 <label for="id_formato" class="form-label">
                                     <i class="fas fa-file-alt"></i> Formatos disponibles:
                                 </label>
-                                <input type="text" id="formato_search" class="form-control mb-2"
-                                    placeholder="Buscar formato..." onkeyup="filterFormatos()">
+                                {{-- <input type="text" id="formato_search" class="form-control mb-2"
+                                    placeholder="Buscar formato..." onkeyup="filterFormatos()"> --}}
                                 <select id="id_formato" name="id_formato[]"
                                     class="form-select shadow-sm form-control-lg" required>
                                     <!-- se cargarán con AJAX -->
@@ -99,10 +105,10 @@
                         </div>
 
                         <div class="row">
-                            <!-- Editar correo -->
+                            <!-- Destinatarios correo -->
                             <div class="col-md-12 text-center mb-4">
                                 <button type="button" class="btn btn-warning px-5 py-2 shadow-lg" id="editarmodal">
-                                    <i class="fa-solid fa-pencil"></i> Editar correo
+                                    <i class="fa-solid fa-pencil"></i> Destinatarios Correos
                                 </button>
                             </div>
                         </div>
@@ -248,7 +254,6 @@
                         const empleadoSelect = document.getElementById('id_empleado');
                         empleadoSelect.innerHTML = '<option value="">Seleccione un empleado</option>';
 
-                        // Filtrar empleados duplicados por su ID
                         const uniqueEmpleados = [];
                         const seen = new Set();
 
@@ -265,7 +270,7 @@
                                 option.value = empleado.id_empleado;
                                 option.text = empleado.nombres;
                                 option.setAttribute('data-email', empleado
-                                    .email); // Agregar el email como atributo
+                                    .email);
                                 empleadoSelect.appendChild(option);
                             });
                         } else {
@@ -276,9 +281,8 @@
                         console.error('Error al obtener los empleados:', error);
                     });
             }
+
         }
-
-
 
         function resetSucursalAndCaseta() {
             document.getElementById('id_sucursal').innerHTML = '<option value="">Seleccione una sucursal</option>';
@@ -426,5 +430,62 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            @if (session('success'))
+                Swal.fire({
+                    title: "¡Éxito!",
+                    text: "{{ session('success') }}",
+                    icon: "success"
+                });
+            @endif
+        });
+    </script>
 
+    <script>
+        function filterEmpleados() {
+            const searchValue = document.getElementById('empleado_search').value.toLowerCase();
+            const empleadoSelect = document.getElementById('id_empleado');
+
+            // Obtener todos los elementos de la lista de empleados
+            const empleadoOptions = Array.from(empleadoSelect.options);
+
+            // Filtrar los empleados en base al valor de búsqueda
+            const filteredEmpleados = empleadoOptions.filter(option => {
+                const empleadoNombre = option.text.toLowerCase();
+                return empleadoNombre.includes(searchValue);
+            });
+
+            // Limpiar la lista de empleados
+            empleadoSelect.innerHTML = '';
+
+            // Agregar los empleados filtrados a la lista
+            filteredEmpleados.forEach(empleado => {
+                empleadoSelect.appendChild(empleado);
+            });
+        }
+
+
+        // function filterFormatos() {
+        //     const searchValue = document.getElementById('formato_search').value.toLowerCase();
+        //     const formatoSelect = document.getElementById('id_formato');
+
+        //     // Obtener todos los elementos de la lista de formatos
+        //     const formatoOptions = Array.from(formatoSelect.options);
+
+        //     // Filtrar los formatos en base al valor de búsqueda
+        //     const filteredFormatos = formatoOptions.filter(option => {
+        //         const formatoNombre = option.text.toLowerCase();
+        //         return formatoNombre.includes(searchValue);
+        //     });
+
+        //     // Limpiar la lista de formatos
+        //     formatoSelect.innerHTML = '';
+
+        //     // Agregar los formatos filtrados a la lista
+        //     filteredFormatos.forEach(formato => {
+        //         formatoSelect.appendChild(formato);
+        //     });
+        // }
+    </script>
 </x-app-layout>

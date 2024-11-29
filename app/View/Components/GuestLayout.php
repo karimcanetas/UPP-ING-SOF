@@ -12,7 +12,7 @@ use DB;
 class GuestLayout extends Component
 {
     public function render(): View {
-        $tema = DB::select('select * from personalizacions where id = 1');
+        $tema = [];
 
         return view('layouts.guest', compact('tema'));
     }

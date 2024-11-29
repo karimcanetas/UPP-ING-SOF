@@ -70,7 +70,7 @@
             </div> --}}
 
             <!-- Contenedor para el mensaje de éxito -->
-            <div id="mensaje-foto" class="alert alert-success mt-2" style="display: none;"></div>
+            {{-- <div id="mensaje-foto" class="alert alert-success mt-2" style="display: none;"></div> --}}
 
             <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary" onclick="submitAndResetForm(this)">Enviar</button>

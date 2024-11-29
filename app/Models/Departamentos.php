@@ -16,7 +16,7 @@ class Departamentos extends Model
     ];
     public function sucursales()
     {
-        return $this->belongsToMany(Sucursal::class, 'suc_dep', 'id_sucursal', 'id_departamento')
+        return $this->belongsToMany(Sucursal::class, 'suc_dep', 'id_departamento', 'id_sucursal')
             ->withTimestamps();
     }
     public function puestos()

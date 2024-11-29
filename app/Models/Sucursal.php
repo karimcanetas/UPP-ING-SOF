@@ -36,4 +36,9 @@ class Sucursal extends Model
         return $this->belongsToMany(EmpleadosCatalogo::class, 'empleado_sucursal', 'id_sucursal', 'id_empleado')
             ->withPivot('id_sucursal');
     }
+    //turno por sucursal
+    public function turnos()
+    {
+        return $this->hasMany(Turno::class, 'id_sucursal', 'id_sucursal');
+    }
 }

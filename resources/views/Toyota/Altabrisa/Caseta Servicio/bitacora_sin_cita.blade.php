@@ -91,7 +91,8 @@
                         @elseif($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"
-                                value=" {{ old('campo.' . $campo->id_campo) }}">
+                                value=" {{ old('campo.' . $campo->id_campo) }}"
+                                required>
                         @endif
                     </div>
                 @endif

@@ -44,12 +44,17 @@ class CasetasController extends Controller
         // Obtener las casetas asociadas a la sucursal
         $casetas = $sucursal->casetas;
 
-        // Devolver las casetas y departamentos en una respuesta JSON
+        // Obtener los turnos asociados a la sucursal
+        $turnos = $sucursal->turnos;
+
+        // Devolver las casetas, departamentos y turnos en una respuesta JSON
         return response()->json([
             'casetas' => $casetas,
-            'departamentos' => $departamentos
+            'departamentos' => $departamentos,
+            'turnos' => $turnos
         ]);
     }
+
 
 
     public function getFormatos($id_casetas)

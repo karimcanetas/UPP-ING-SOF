@@ -34,20 +34,15 @@ class CampoIncidenciasController extends Controller
         $fechaInicio = Carbon::parse($request->input('fecha_inicio'));
         $fechaFin = Carbon::parse($request->input('fecha_fin'));
 
-        // Dividir los correos y formatos en arreglos
-        $correos = explode(',', $request->input('email'));
         $formatoIds = explode(',', $request->input('formato_id'));
 
-        if (count($correos) != count($formatoIds)) {
-            return response()->json(['error' => 'El número de correos no coincide con el número de formatos.'], 400);
-        }
+        $archivosGenerados = 0;
 
-        // genero el excel para cada formato
-        foreach ($formatoIds as $key => $formatoId) {
+        foreach ($formatoIds as $formatoId) {
             $formato = Formato::find($formatoId);
 
             if (!$formato) {
-                return response()->json(['error' => 'Formato no encontrado.'], 404);
+                continue; // Ssi el formato no existe sigue
             }
 
             $camposIncidencias = $formato->campoIncidencias()
@@ -60,27 +55,62 @@ class CampoIncidenciasController extends Controller
                 ->whereNotNull('valor')
                 ->get();
 
+            if ($camposIncidencias->isEmpty()) {
+                continue; // si no hay incidencias se omite el formato
+            }
 
-            // Export
+            $empleadosHabilitados = EmpleadosFormatos::where('id_formatos', $formatoId)
+                ->where('status', 1)
+                ->get();
+
+            if ($empleadosHabilitados->isEmpty()) {
+                continue; // si no hay emplados habilitados omite el formato
+            }
+
+            $correosEmpleados = $empleadosHabilitados->map(function ($empleadoFormato) {
+                $empleado = EmpleadosCatalogo::find($empleadoFormato->id_empleado);
+                if ($empleado) {
+                    $usuario = User::where('n_empleado', $empleado->n_empleado)->first();
+                    return $usuario ? $usuario->email : null;
+                }
+                return null;
+            })->filter()->toArray();
+
+            if (empty($correosEmpleados)) {
+                continue; // si no hay correos omite el formato
+            }
+
+            $tipoFormato = $formato->Tipo ?? 'formato desconocido';
+
+            // genero el archivo Excel
             $export = new ReporteExport($formato, $camposIncidencias);
-            $filePath = storage_path('app/reporte_vigilancia_' . $formato->id_formatos . '.xlsx');
+            $fileName = 'reporte_vigilancia_' . $formatoId . '.xlsx';
+            $filePath = storage_path('app/' . $fileName);
 
-            // Guardado temporal
-            Excel::store($export, 'reporte_vigilancia_' . $formato->id_formatos . '.xlsx');
+            Excel::store($export, $fileName);
 
-            // Enviar el correo correspondiente con el archivo adjunto
-            $correo = trim($correos[$key]);
-            Mail::to($correo)->send(new ReporteMailable($filePath, $formato->Tipo));
+            $archivosGenerados++;
 
-            // Eliminar el archivo después de enviarlo
+            // envio el archivo a los correos habilitados
+            Mail::to($correosEmpleados)
+                ->send(new ReporteMailable($filePath, $tipoFormato));
+
+
+            // foreach ($correosEmpleados as $correo) {
+            //     Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
+            // }
+
+
+            // elimino el archivo después de enviarlo
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
         }
 
-        return response()->json(['success' => 'Correos enviados correctamente.']);
-    }
+        Log::info('Cantidad de archivos Excel generados: ' . $archivosGenerados);
 
+        return redirect()->route('send.index')->with('success', 'Correos enviados exitosamente.');
+    }
 
     public function EnvioVigilante(Request $request)
     {
@@ -107,11 +137,18 @@ class CampoIncidenciasController extends Controller
             $fechaHoraFin->addDay();
         }
 
+
         // obtengo las incidencias
         $formatosCoincidentes = Incidencia::whereBetween('fecha_hora', [$fechaHoraInicio, $fechaHoraFin])
             ->where('Nombre_vigilante', $nombreVigilante)
             ->where('id_turnos', $idTurnos)
             ->get();
+
+        // actualizar el campo enviado 1 es enviado
+        $formatosCoincidentes->each(function ($incidencia) {
+            $incidencia->enviado = 1;
+            $incidencia->save();
+        });
 
         Log::info('Consultando formatos con los parámetros:', [
             'fecha_hora_inicio' => $fechaHoraInicio,
@@ -197,9 +234,19 @@ class CampoIncidenciasController extends Controller
             $archivosGenerados++;
 
             // envio el excel a los correos habilitados
-            foreach ($correosEmpleados as $correo) {
-                Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
-            }
+
+            Mail::to($correosEmpleados)
+                ->send(new ReporteMailable($filePath, $tipoFormato));
+
+            // foreach ($correosEmpleados as $correo) {
+            //     Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
+            // }
+
+            
+            // correos ocultos 
+            // envio el archivo a los correos habilitados
+            // Mail::bcc($correosEmpleados)
+            //     ->send(new ReporteMailable($filePath, $tipoFormato));
 
             // elimino el archivo después de enviarlo
             if (file_exists($filePath)) {
@@ -209,6 +256,6 @@ class CampoIncidenciasController extends Controller
 
         Log::info('cantidad de archivos excel generados: ' . $archivosGenerados);
 
-        return response()->json(['success' => 'Haz enviado tus formatos con exito', 'archivos generados' => $archivosGenerados], 200);
+        return redirect()->route('incidencias.create')->with('success', 'Enviaste los correos exitosamente.');
     }
 }

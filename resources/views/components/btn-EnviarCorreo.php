@@ -1,5 +1,3 @@
-
-
 <style>
     /* Contenedor del botón */
     .buttonEnviar-container {
@@ -63,22 +61,25 @@
             console.log("Tiempo hasta la alerta en milisegundos:", tiempoAlerta);
 
             setTimeout(() => {
-                console.log("Mostrando alerta.");
                 Swal.fire({
                     title: '¡Alerta!',
                     text: 'Faltan 15 minutos para que termine el turno.',
-                    icon: 'info',
-                    confirmButtonText: 'Cerrar'
-                }).then(() => {
-                    console.log("Alerta cerrada. Mostrando botón 'Enviar'.");
-                    const btnEnviar = document.getElementById('btnEnviar');
-                    if (btnEnviar) {
-                        btnEnviar.style.display = 'block';
-                    } else {
-                        console.error("No se encontró el botón con ID 'btnEnviar'.");
-                    }
+                    icon: 'warning',
+                    confirmButtonText: 'Cerrar',
+                    toast: true,
+                    position: 'bottom-end',
+                    timer: horaFinDate,
+                    timerProgressBar: true,
                 });
+
+                const btnEnviar = document.getElementById('btnEnviar');
+                if (btnEnviar) {
+                    btnEnviar.style.display = 'block';
+                }
             }, tiempoAlerta);
+
+
+
 
             setTimeout(() => {
                 console.log("El turno ha finalizado. Limpiando el estado...");

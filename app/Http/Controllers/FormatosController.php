@@ -7,6 +7,7 @@ use App\Models\Formato;
 use App\Models\CorreosFormatos;
 use App\Models\Formatocaseta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FormatosController extends Controller
 {
@@ -19,55 +20,51 @@ class FormatosController extends Controller
 
         return view('incidencias.create', compact('formatos', 'correosConFormatos'));
     }
-    // public function checksSeparadores()
-    // {
-    //     $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato')->get();
 
-    //     $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
-    //         return $item->Caseta->nombre;
-    //     })->map(function ($items) {
-    //         return $items->map(function ($item) {
-    //             return [
-    //                 'id_formatos' => $item->id_formatos,
-    //                 'Tipo' => $item->Formato->Tipo,
-    //                 'nombre_caseta' => $item->Caseta->nombre,
-    //             ];
-    //         });
-    //     });
-    //     return response()->json(['groupedByCaseta' => $groupedByCaseta]);
-    // }
     public function checksSeparadores()
     {
-        $FormatoCasetas = Formatocaseta::with('Caseta', 'Formato', 'Formato.EmpleadosFormatos.Empleado.user')
-            ->get();
+        $FormatoCasetas = Formatocaseta::with([
+            'Caseta',
+            'Formato',
+            'Formato.EmpleadosFormatos.Empleado.user',
+            'Caseta.empresa',
+            'Caseta.sucursal'
+        ])->get();
 
+        // agrupo por caseta y mapea el contenido
         $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
             return $item->Caseta->nombre;
         })->map(function ($items) {
             return $items->map(function ($item) {
                 $empleados = $item->Formato->EmpleadosFormatos->filter(function ($pivot) {
-                    return $pivot->status == 1; // filtro empleados que estan activos '1'
+                    return $pivot->status == 1;
                 })->map(function ($pivot) {
                     $empleado = $pivot->Empleado;
-                    return [
-                        'nombre' => $empleado->nombres,
-                        'email' => $empleado->user ? $empleado->user->email : null
-                    ];
-                });
+
+                    if ($empleado && $empleado->user && $empleado->user->email) {
+                        return [
+                            'nombre' => $empleado->nombres,
+                            'email' => $empleado->user->email,
+                        ];
+                    }
+                    return null;
+                })->filter(); // elimino empleados nulos
 
                 return [
                     'id_formatos' => $item->id_formatos,
                     'Tipo' => $item->Formato->Tipo,
                     'nombre_caseta' => $item->Caseta->nombre,
+                    'empresa' => $item->Caseta->sucursal->empresa->alias ?? 'Sin empresa',
+                    'sucursal' => $item->Caseta->sucursal->nombre ?? 'Sin sucursal',
                     'empleados' => $empleados,
                 ];
             });
         });
 
+        Log::info('FormatoCasetas agrupadas por caseta:', $groupedByCaseta->toArray());
+
         return response()->json(['groupedByCaseta' => $groupedByCaseta]);
     }
-
-
 
 
     public function show($id)

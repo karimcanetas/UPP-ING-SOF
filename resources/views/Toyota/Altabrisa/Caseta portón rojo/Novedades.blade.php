@@ -41,8 +41,7 @@
                     </div>
                 @endif
             @endforeach
-
-            <!-- Botón para subir una foto -->
+{{-- 
             <div class="form-group">
                 <label for="foto-upload">Subir foto:</label>
                 <input type="file" class="form-control-file" name="foto_upload" id="foto-upload" accept="image/*"
@@ -53,7 +52,6 @@
                 </button>
             </div>
 
-            <!-- Botón para tomar una foto -->
             <div class="form-group">
                 <label for="foto-camara">Tomar foto:</label>
                 <input type="file" class="form-control-file" name="foto_camara" id="foto-camara" accept="image/*"
@@ -62,7 +60,7 @@
                     onclick="document.getElementById('foto-camara').click();">
                     <i class="fas fa-camera"></i> Tomar Foto
                 </button>
-            </div>
+            </div> --}}
 
             <!-- Contenedor para el mensaje de éxito -->
             <div id="mensaje-foto" class="alert alert-success mt-2" style="display: none;"></div>

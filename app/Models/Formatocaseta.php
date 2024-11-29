@@ -29,4 +29,10 @@ class Formatocaseta extends Model
     {
         return $this->belongsToMany(Turno::class, 'id_turnos', 'turno', 'Hora_inicio', 'Hora_Fin');
     }
+    public function sucursal(){
+        return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
+    }
+    public function empresa(){
+        return $this->belongsTo(Empresa::class, 'id_empresa', 'id_empresa');
+    }
 }

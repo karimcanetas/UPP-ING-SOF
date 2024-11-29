@@ -531,7 +531,6 @@ document.addEventListener('alertaAbierta', function () {
 });
 
 
-// Función para actualizar el nombre de la foto seleccionada
 function updatePhotoName(input, type) {
     const fileName = input.files[0] ? input.files[0].name : '';
     const message = type === 'subida' ? 'Foto subida: ' : 'Foto tomada: ';
@@ -566,7 +565,7 @@ function submitAndResetForm(button) {
                     }
                 }
             });
-        }, 5000);
+        }, 500);
     }
 }
 

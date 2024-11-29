@@ -128,18 +128,11 @@ Route::get('/checks-formatos', [FormatosController::class, 'checksSeparadores'])
 Route::post('/exportar-campo-incidencias', [CampoIncidenciasController::class, 'exportar'])->name('exportar.campo.incidencias');
 Route::post('/envio', [CampoIncidenciasController::class, 'envio'])->name('envio.correos');
 
-// Asegúrate de definir los parámetros en la ruta
+
 Route::get('/empleados/formatos', [EmpleadosCatologoController::class, 'obtenerTodosLosFormatos']);
 Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCatologoController::class, 'actualizarStatus']);
 
 //ruta envio vigilante 
 Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
-Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
-
-
-
-
-
-
 // Autenticacion
 require __DIR__ . '/auth.php';

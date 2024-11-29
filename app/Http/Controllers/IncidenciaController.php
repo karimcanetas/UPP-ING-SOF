@@ -53,9 +53,11 @@ class IncidenciaController extends Controller
         }
 
         if ($casetaSeleccionada) {
+            $turnos = $casetaSeleccionada->sucursal->turnos;
             $formatos = $casetaSeleccionada->formatos;
         } else {
             $formatos = collect();
+            $turnos = collect();
         }
 
         $incidencias = Incidencia::with('caseta', 'turnos', 'formatos')->get();

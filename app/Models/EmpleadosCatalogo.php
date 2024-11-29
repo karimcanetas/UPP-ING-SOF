@@ -50,8 +50,12 @@ class EmpleadosCatalogo extends Model
     public function puesto()
     {
 
-        return $this->belongsTo(Puestos::class, 'id_puesto', 'id_puesto')->withDefault();
+        return $this->belongsTo(Puestos::class, 'departamento_puesto', 'id_puesto', 'id_puesto')->withDefault();
     }
+    // public function puestos()
+    // {
+    //     return $this->belongsToMany(Puestos::class, 'departamento_puesto', 'id_departamento', 'id_puesto');
+    // }
 
     public function correos()
     {
@@ -70,7 +74,7 @@ class EmpleadosCatalogo extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'n_empleado', 'n_empleado');
+        return $this->hasOne(User::class, 'n_empleado', 'n_empleado');
     }
     public function departamentos()
     {

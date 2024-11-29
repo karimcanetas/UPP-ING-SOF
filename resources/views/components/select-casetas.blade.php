@@ -5,3 +5,5 @@
     <input type="hidden" name="id_casetas" id="id_casetas"
         value="{{ $casetaSeleccionada ? $casetaSeleccionada->id_casetas : '' }}">
 </div>
+
+

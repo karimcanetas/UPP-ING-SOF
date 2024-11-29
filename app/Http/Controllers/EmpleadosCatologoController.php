@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartamentoPuesto;
+use App\Models\empleado_sucursal;
 use App\Models\EmpleadosCatalogo;
 use App\Models\EmpleadosFormatos;
 use App\Models\EmpleadosNoRegistrados;
@@ -10,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Puestos;
 use App\Models\Sucursal;
 use App\Models\TipoAsociado;
+use Database\Seeders\departamento_puesto;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 
@@ -61,26 +64,33 @@ class EmpleadosCatologoController extends Controller
 
     public function usuariosEmails($sucursalId, $departamentoId)
     {
-        $empleados = EmpleadosCatalogo::join('empleado_sucursal', 'empleado_sucursal.id_empleado', '=', 'empleados.id_empleado')
-            ->join('suc_dep', 'suc_dep.id_sucursal', '=', 'empleado_sucursal.id_sucursal')
-            ->join('departamentos', 'departamentos.id_departamento', '=', 'suc_dep.id_departamento')
-            ->join('departamento_puesto', 'departamento_puesto.id_departamento', '=', 'departamentos.id_departamento')
-            ->join('puestos', 'puestos.id_puesto', '=', 'departamento_puesto.id_puesto')
-            ->join('empleados AS puesto_empleados', 'puesto_empleados.id_empleado', '=', 'empleados.id_empleado')
-            ->join('users', 'users.n_empleado', '=', 'empleados.n_empleado')
-            ->where('empleado_sucursal.id_sucursal', $sucursalId)  // filtro por sucursal
-            ->where('suc_dep.id_departamento', $departamentoId)    // filtro por departamento
-            ->select('empleados.id_empleado', 'empleados.n_empleado', 'empleados.nombres', 'users.email')
-            ->get();
+        // obtengo los empleados de la sucursal especificada
+        $empSuc = empleado_sucursal::where('id_sucursal', $sucursalId)->pluck('id_empleado');
+        // obtengo los puestos asociados al departamento especificado
+        $puestos = DepartamentoPuesto::where('id_departamento', $departamentoId)->pluck('id_puesto');
+        // obtengo los empleados que están en la sucursal y puestos solicitados
+        $empleados = EmpleadosCatalogo::whereIn('id_empleado', $empSuc)
+            ->whereIn('id_puesto', $puestos)
+            ->with(['user:id,n_empleado,email'])
+            ->get()
+            ->map(function ($empleado) {
+                return [
+                    'id_empleado' => $empleado->id_empleado,
+                    'nombres' => $empleado->nombres,
+                    'email' => $empleado->user->email ?? '',
+                ];
+            });
 
         return response()->json($empleados);
     }
+
+
     public function obtenerTodosLosFormatos()
     {
         // obtengo los registros de la tabla pivote
         $pivotData = DB::connection('mysql_2')
             ->table('empleados_formatos')
-            ->join('formatos', 'empleados_formatos.id_formatos', '=', 'formatos.id_formatos') 
+            ->join('formatos', 'empleados_formatos.id_formatos', '=', 'formatos.id_formatos')
             ->select('empleados_formatos.id_empleado', 'empleados_formatos.id_formatos', 'empleados_formatos.status', 'formatos.Tipo') //campos deseados
             ->get();
 
