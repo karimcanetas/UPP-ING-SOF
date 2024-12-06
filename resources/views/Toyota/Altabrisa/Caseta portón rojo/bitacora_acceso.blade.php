@@ -44,15 +44,14 @@
                                     <option value="" selected disabled>Selecciona un empleado</option>
                                     @foreach ($empleados as $empleado)
                                         <option value="{{ $empleado->id_empleado }}"
-                                            data-puesto="{{ $empleado->puesto->nombre }}"
+                                            data-puesto="{{ $empleado->puestos->nombre ?? 'Sin puesto' }}"
                                             {{ old('campos.' . $campo->id_campo) == $empleado->id_empleado ? 'selected' : '' }}
                                             style="text-transform: uppercase;">
                                             {{ strtoupper($empleado->nombres) }}
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-
+                            </div>                           
                             <br>
                             <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-outline-primary mr-2" data-toggle="modal"

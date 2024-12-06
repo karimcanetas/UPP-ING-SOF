@@ -15,7 +15,7 @@
 //         $tiposAsociados = TipoAsociado::on('mysql')->get();
 //         $puestos = Puestos::on('mysql')->get();
 //         $casetaSeleccionada = Caseta::first();
-        
+
 //         return view('incidencias.create', compact('puestos', 'tiposAsociados'));
 //     }
 

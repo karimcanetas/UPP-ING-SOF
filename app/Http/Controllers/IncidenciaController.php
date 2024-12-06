@@ -85,7 +85,7 @@ class IncidenciaController extends Controller
     public function store(Request $request)
     {
 
-        //dd($request->all());
+        // dd($request->all());
         $request->validate([
             'id_casetas' => 'required',
             'Detalles' => 'nullable',

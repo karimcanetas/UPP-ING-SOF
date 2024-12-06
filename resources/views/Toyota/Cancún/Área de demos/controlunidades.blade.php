@@ -42,8 +42,7 @@
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
-                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
-                                required>
+                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
                         @elseif ($campoNombre == 'Folio/Salida definitiva')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
@@ -60,7 +59,7 @@
                             <!-- campo Fecha -->
                             <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                min="1111-01-01" max="9999-12-31" required>
                         @elseif ($campoNombre == 'Hora')
                             <!-- campo Hora -->
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"

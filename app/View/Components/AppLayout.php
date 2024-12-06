@@ -24,7 +24,7 @@ class AppLayout extends Component
     public $tiposAsociados;
     public $empresas;
     public $casetas;
-    public $correos;
+    // public $correos;
 
 
     public function __construct()
@@ -34,7 +34,7 @@ class AppLayout extends Component
         $this->puestos = Puestos::all();
         $this->tiposAsociados = TipoAsociado::on('mysql')->get();
         $this->casetas = Caseta::on('mysql_2')->get();
-        $this->correos = Correos::on('mysql_2')->get();
+        // $this->correos = Correos::on('mysql_2')->get();
 
     }
 
@@ -45,7 +45,7 @@ class AppLayout extends Component
             'puestos' => $this->puestos,
             'tiposAsociados' => $this->tiposAsociados,
             'casetas' => $this->casetas,
-            'correos' => $this->correos,
+            // 'correos' => $this->correos,
 
         ]);
     }

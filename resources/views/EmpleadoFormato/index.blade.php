@@ -333,84 +333,100 @@
     </script>
 
     <script>
-        $.ajax({
-            url: '/empleados/formatos',
-            type: 'GET',
-            success: function(response) {
-                if (response.success) {
-                    $('#empleadosorganizados').empty(); // Limpiar datos anteriores
+        $(document).ready(function() {
+            $.ajax({
+                url: '/empleados/formatos',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#empleadosorganizados').empty();
 
-                    let formatos = {};
+                        let casetas = {};
 
-                    // Agrupar empleados por tipo de formato
-                    response.data.forEach(item => {
-                        if (!formatos[item.Tipo]) {
-                            formatos[item.Tipo] = [];
-                        }
-                        formatos[item.Tipo].push(item);
-                    });
+                        response.data.forEach(item => {
+                            if (!casetas[item.nombre_caseta]) {
+                                casetas[item.nombre_caseta] = {
+                                    empresa: item.empresa,
+                                    sucursal: item.sucursal,
+                                    formatos: {} 
+                                };
+                            }
 
-                    // Construir lista visualmente mejorada
-                    for (let tipo in formatos) {
-                        // Título de cada tipo de formato
-                        $('#empleadosorganizados').append(
-                            `<div class="formato-tipo">${tipo}</div><ul style="list-style-type: none; padding-left: 20px;"></ul>`
-                        );
+                            if (!casetas[item.nombre_caseta].formatos[item.Tipo]) {
+                                casetas[item.nombre_caseta].formatos[item.Tipo] = [];
+                            }
 
-                        formatos[tipo].forEach(item => {
-                            let checkbox = item.status == 1 ? 'checked' : '';
-                            let listItem = `
-                            <li class="empleado-item">
-                                <span class="empleado-icon fa fa-user-circle"></span>
-                                <span class="empleado-nombre">${item.nombres}</span>
-                                <input type="checkbox" class="status-checkbox" data-id="${item.id_empleado}" data-formato-id="${item.id_formatos}" ${checkbox}>
-                            </li>
-                        `;
-                            $('#empleadosorganizados ul:last').append(listItem); // Añadir empleado
+                            casetas[item.nombre_caseta].formatos[item.Tipo].push(item);
                         });
-                    }
 
-                    // Configuración de token CSRF
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        for (let nombreCaseta in casetas) {
+                            let casetaData = casetas[nombreCaseta];
+                            $('#empleadosorganizados').append(
+                                `<h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${nombreCaseta}</strong></h5>`
+                            );
+
+                            for (let tipo in casetaData.formatos) {
+                                $('#empleadosorganizados').append(
+                                    `<div class="formato-tipo" style="font-size: 0.9">${tipo}</div>
+                                <ul style="list-style-type: none; padding-left: 20px;"></ul>`
+                                );
+
+                                // agregp a los  empleados para este formato
+                                casetaData.formatos[tipo].forEach(item => {
+                                    let checkbox = item.status == 1 ? 'checked' : '';
+                                    let listItem = `
+                                    <li class="empleado-item">
+                                        <span class="empleado-icon fa fa-user-circle"></span>
+                                        <span class="empleado-nombre">${item.nombres}</span>
+                                        <input type="checkbox" class="status-checkbox" data-id="${item.id_empleado}" data-formato-id="${item.id_formatos}" ${checkbox}>
+                                    </li>
+                                `;
+                                    $('#empleadosorganizados ul:last').append(
+                                    listItem);
+                                });
+                            }
                         }
-                    });
-
-                    // Manejo de evento para checkboxes
-                    $('#empleadosorganizados').on('change', '.status-checkbox', function() {
-                        let empleadoId = $(this).data('id');
-                        let formatoId = $(this).data('formato-id');
-                        let nuevoStatus = $(this).prop('checked') ? 1 : 0;
-
-                        // Solicitud AJAX para actualizar el estado
-                        $.ajax({
-                            url: `/empleados/actualizar-status/${empleadoId}/${formatoId}`,
-                            type: 'PUT',
-                            data: {
-                                status: nuevoStatus
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    console.log(`Status actualizado correctamente`);
-                                } else {
-                                    console.error(`Error al actualizar el status`);
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("Error en la solicitud:", error);
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
                         });
-                    });
-                } else {
-                    console.error('Error en la respuesta del servidor');
+                        $('#empleadosorganizados').on('change', '.status-checkbox', function() {
+                            let empleadoId = $(this).data('id');
+                            let formatoId = $(this).data('formato-id');
+                            let nuevoStatus = $(this).prop('checked') ? 1 : 0;
+                            $.ajax({
+                                url: `/empleados/actualizar-status/${empleadoId}/${formatoId}`,
+                                type: 'PUT',
+                                data: {
+                                    status: nuevoStatus
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        console.log(
+                                            'Estado actualizado correctamente.');
+                                    } else {
+                                        console.error(
+                                            'Error al actualizar el estado.');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error en la solicitud:', error);
+                                }
+                            });
+                        });
+                    } else {
+                        console.error('Error en la respuesta del servidor.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al realizar la solicitud GET:', error);
                 }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error al realizar la solicitud GET:", error);
-            }
+            });
         });
     </script>
+
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

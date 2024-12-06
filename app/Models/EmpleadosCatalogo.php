@@ -52,20 +52,11 @@ class EmpleadosCatalogo extends Model
 
         return $this->belongsTo(Puestos::class, 'departamento_puesto', 'id_puesto', 'id_puesto')->withDefault();
     }
-    // public function puestos()
-    // {
-    //     return $this->belongsToMany(Puestos::class, 'departamento_puesto', 'id_departamento', 'id_puesto');
-    // }
-
-    public function correos()
+    public function puestos()
     {
-        return $this->belongsTo(Correos::class, 'id_correo', 'id_correo')->withDefault();
-    }
 
-    // public function empleado_sucursales()
-    // {
-    //     return $this->hasMany(EmpleadoSucursal::class, 'id_empleado');
-    // }
+        return $this->belongsTo(Puestos::class, 'id_puesto', 'id_puesto');
+    }
 
     public function sucursales(): BelongsToMany
     {

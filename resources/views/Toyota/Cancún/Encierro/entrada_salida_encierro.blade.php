@@ -38,6 +38,7 @@
                         @if ($campoNombre == 'Fecha')
                             <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                                min="1111-01-01" max="9999-12-31"
                                 required>
                         @elseif ($campoNombre == 'Situación')
                             <section class="form-group ">

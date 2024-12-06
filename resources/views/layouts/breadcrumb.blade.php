@@ -12,7 +12,7 @@
                 Route::is('roles.create') ||
                 Route::is('/') ||
                 Route::is('log.index') ||
-                Route::is('perfil.edit') ||
+                // Route::is('perfil.edit') ||
                 Route::is('users.index') ||
                 Route::is('users.show') ||
                 Route::is('send.index') ||
@@ -58,11 +58,11 @@
                 </li>
             @endif
 
-            @if (Route::is('perfil.edit'))
+            {{-- @if (Route::is('perfil.edit'))
                 <li class="breadcrumb-item text-danger" aria-current="page">
                     <a href="{{ Route('perfil.edit') }}" class="text-danger">{{ __('Perfil') }}</a>
                 </li>
-            @endif
+            @endif --}}
 
             @if (Route::is('users.index') || Route::is('users.edit') || Route::is('users.show'))
                 <li class="breadcrumb-item text-danger" aria-current="page">

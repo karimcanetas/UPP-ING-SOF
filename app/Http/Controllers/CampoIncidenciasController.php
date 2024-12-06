@@ -33,10 +33,10 @@ class CampoIncidenciasController extends Controller
 
         $fechaInicio = Carbon::parse($request->input('fecha_inicio'));
         $fechaFin = Carbon::parse($request->input('fecha_fin'));
-
         $formatoIds = explode(',', $request->input('formato_id'));
 
         $archivosGenerados = 0;
+        $errorFormatos = [];
 
         foreach ($formatoIds as $formatoId) {
             $formato = Formato::find($formatoId);
@@ -56,6 +56,7 @@ class CampoIncidenciasController extends Controller
                 ->get();
 
             if ($camposIncidencias->isEmpty()) {
+                $errorFormatos[] = $formato->Tipo;
                 continue; // si no hay incidencias se omite el formato
             }
 
@@ -82,7 +83,7 @@ class CampoIncidenciasController extends Controller
 
             $tipoFormato = $formato->Tipo ?? 'formato desconocido';
 
-            // genero el archivo Excel
+            // Generar el archivo Excel.
             $export = new ReporteExport($formato, $camposIncidencias);
             $fileName = 'reporte_vigilancia_' . $formatoId . '.xlsx';
             $filePath = storage_path('app/' . $fileName);
@@ -95,19 +96,16 @@ class CampoIncidenciasController extends Controller
             Mail::to($correosEmpleados)
                 ->send(new ReporteMailable($filePath, $tipoFormato));
 
-
-            // foreach ($correosEmpleados as $correo) {
-            //     Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
-            // }
-
-
-            // elimino el archivo después de enviarlo
+            // Eliminar el archivo después de enviarlo.
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
         }
 
-        Log::info('Cantidad de archivos Excel generados: ' . $archivosGenerados);
+        if ($archivosGenerados === 0 && !empty($errorFormatos)) {
+            return redirect()->route('send.index')
+                ->with('error', 'No se pudieron enviar los formatos: ' . implode(', ', $errorFormatos) . ' porque no cuentan con campos.');
+        }
 
         return redirect()->route('send.index')->with('success', 'Correos enviados exitosamente.');
     }
@@ -140,7 +138,7 @@ class CampoIncidenciasController extends Controller
 
         // obtengo las incidencias
         $formatosCoincidentes = Incidencia::whereBetween('fecha_hora', [$fechaHoraInicio, $fechaHoraFin])
-            ->where('Nombre_vigilante', $nombreVigilante)
+            // ->where('Nombre_vigilante', $nombreVigilante)
             ->where('id_turnos', $idTurnos)
             ->get();
 
@@ -242,7 +240,7 @@ class CampoIncidenciasController extends Controller
             //     Mail::to($correo)->send(new ReporteMailable($filePath, $tipoFormato));
             // }
 
-            
+
             // correos ocultos 
             // envio el archivo a los correos habilitados
             // Mail::bcc($correosEmpleados)

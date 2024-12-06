@@ -77,8 +77,7 @@
                                 required>
                         @elseif ($campoNombre == 'Origen / Destino')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

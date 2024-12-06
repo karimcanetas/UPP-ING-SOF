@@ -21,6 +21,12 @@ class Caseta extends Model
         return $this->belongsTo(Sucursal::class, 'id_sucursal', 'id_sucursal');
     }
 
+    public function sucursales()
+    {
+        return $this->belongsToMany(Sucursal::class);
+    }
+
+
     //Realacion de empresa
     public function empresa()
     {
@@ -42,6 +48,6 @@ class Caseta extends Model
     }
     public function formatocasetas()
     {
-        return $this->hasMany(Formatocaseta::class, 'id_caseta', 'id');
+        return $this->hasMany(Formatocaseta::class, 'id_casetas', 'id');
     }
 }

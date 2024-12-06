@@ -15,7 +15,7 @@
                     src="{{ url('/assets/img/perfil/' . auth()->user()->perfil) }}">
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{{ url('perfil.edit') }}" data-toggle="popover"
+                {{--<a class="dropdown-item" href="{{ url('perfil.edit') }}" data-toggle="popover"
                     data-content="Acceso a cuenta">
                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@
                         </g>
                     </svg>
                     {{ __('Cuenta') }}
-                </a>
+                </a> --}}
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button class="dropdown-item text-dark font-weight-bold confirmar_salida" data-toggle="popover"

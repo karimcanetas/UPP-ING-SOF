@@ -92,12 +92,6 @@ Route::controller(EmpleadosCatologoController::class)->group(function () {
     Route::get('/empleados/{sucursalId}/{departamentoId}', 'usuariosEmails')->name('empleados.usuariosEmails');
 });
 
-// Rutas 'correos'
-Route::resource('correos', CorreosController::class)->names([
-    'index' => 'correos.index',
-    'store' => 'correos.store',
-]);
-
 // Rutas de EmpresasController
 Route::controller(EmpresasController::class)->group(function () {
     Route::get('/empresas', 'index')->name('empresas.index');
@@ -110,7 +104,7 @@ Route::controller(CasetasController::class)->group(function () {
     Route::get('/casetas/{id}/formatos', 'getFormatos')->name('casetas.formatos');
     Route::get('/sucursales/{sucursalId}/departamentos', 'getDepartamentos')->name('sucursales.departamentos');
 });
-// Rutas de EmpleadosCatologoController
+// Rutas para realizar el filro de empresa, sucursal, departamento y empleados 
 Route::get('/empleados/{sucursalId}/{departamentoId}', [EmpleadosCatologoController::class, 'usuariosEmails']);
 
 // Rutas de EmpleadosFormatosController
@@ -119,16 +113,16 @@ Route::controller(EmpleadosFormatosController::class)->group(function () {
     Route::get('/empleados_formatos', 'store');
 });
 
-// Rutas de FormatosController
+// Ruta para recuperar los formatos, obtener los campos y para poder habilitar deshabilitar a los empleados
 Route::get('/get-correos/{id}', [FormatosController::class, 'getCorreos'])->name('get.correos');
 Route::post('/obtener-campos', [FormatosController::class, 'obtenerCamposPorFormato'])->name('obtener.campos');
 Route::get('/checks-formatos', [FormatosController::class, 'checksSeparadores']);
 
-// Rutas de CampoIncidenciasController
+// Rutas de para la exportacion con los campos y realizar el envio
 Route::post('/exportar-campo-incidencias', [CampoIncidenciasController::class, 'exportar'])->name('exportar.campo.incidencias');
 Route::post('/envio', [CampoIncidenciasController::class, 'envio'])->name('envio.correos');
 
-
+//ruta empleados para el enlace con los formatos y actualizar el status
 Route::get('/empleados/formatos', [EmpleadosCatologoController::class, 'obtenerTodosLosFormatos']);
 Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCatologoController::class, 'actualizarStatus']);
 

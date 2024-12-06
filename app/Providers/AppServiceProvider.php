@@ -24,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
     {
         // Cargar incidencias
         $incidencias = Incidencia::with('caseta', 'turno', 'formato')->get();
-        $formatos = Formato::with('correos')->get();
+        // $formatos = Formato::with('correos')->get();
 
         // Compartir incidencias y formatos con todas las vistas
         View::share('incidencias', $incidencias);
-        View::share('formatos', $formatos);
+        // View::share('formatos', $formatos);
     }
 }

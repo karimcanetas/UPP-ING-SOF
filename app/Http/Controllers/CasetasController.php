@@ -78,31 +78,3 @@ class CasetasController extends Controller
         return response()->json($departamentos);
     }
 }
-
-
-
-// namespace App\Http\Controllers;
-
-// use App\Models\Caseta;
-// use Illuminate\Http\Request;
-
-// class CasetasController extends Controller
-// {
-//     public function getCasetas($sucursalId)
-//     {
-//         // Encuentra todas las casetas asociadas a la sucursal con el ID proporcionado
-//         $casetas = Caseta::where('id_sucursal', $sucursalId)->get();
-
-//         // Devuelve los datos en formato JSON para AJAX
-//         return response()->json($casetas);
-//     }
-
-//     public function getFormatos($id_casetas)
-//     {
-//         $caseta = Caseta::with('formatos')->findOrFail($id_casetas);
-//         $formatos = $caseta->formatos; // Obtiene todos los formatos asociados a esta caseta
-
-//         // Devuelve los datos en formato JSON para AJAX
-//         return response()->json($formatos);
-//     }
-// }

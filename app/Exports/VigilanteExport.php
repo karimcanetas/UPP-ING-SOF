@@ -80,7 +80,7 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
-
+                $sheet->mergeCells('A2:B2');
                 // obtengo los datos procesados
                 $data = $this->view()->getData();
                 $vigilantesYFechas = $data['vigilantesYFechas'];
@@ -94,7 +94,7 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
                 $fechaConEtiqueta = "Fecha: $primerFechaHora";
 
                 $nombresCampos = $data['nombresCampos'];
-                $columnCount = count($nombresCampos) + 2;
+                $columnCount = count($nombresCampos) + 1;
                 $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
                 $lastRow = max(count($this->camposIncidencias) + 3, 10);
 
@@ -127,6 +127,12 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT,
                     ],
                 ]);
+
+                $lastRow = $sheet->getHighestRow();
+
+                for ($row = 3; $row <= $lastRow; $row++) {
+                    $sheet->mergeCells("A{$row}:B{$row}");
+                }
 
                 // une y aplica estilo al encabezado general
                 $this->mergeAndStyleHeader($sheet, "A2:{$lastColumn}2", "Reporte Vigilancia PRT - {$this->formatoNombre}");

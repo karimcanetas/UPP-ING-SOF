@@ -7,7 +7,7 @@
         <input type="hidden" id="hidden_fecha_hora" name="fecha_hora">
         <input type="hidden" id="hidden_nombre_vigilante" name="Nombre_vigilante">
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
-    
+
         <div class="buttonEnviar-container">
             <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
                 <i class="fas fa-arrow-right"></i> Enviar correo
@@ -205,3 +205,15 @@
 </x-app-layout>
 
 <x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleados="$empleadosNoRegistrados" />
+
+<script>
+        $(document).ready(function() {
+        @if (session('error'))
+            Swal.fire({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                icon: "error"
+            });
+        @endif
+    });
+</script>

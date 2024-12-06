@@ -8,11 +8,11 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Illuminate\Contracts\View\View;
 use PhpOffice\PhpSpreadsheet\Style\Color;
-use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+// use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Style\Font;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
-class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
+class ReporteExport implements FromView, WithTitle, WithEvents
 {
     private const HEADER_BG_COLOR = '2C3E50'; // gris oscuro
     private const HEADER_FONT_COLOR = 'FFFFFF'; // blanco del texto
@@ -50,8 +50,8 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
 
             // obtengo Nombre_vigilante y fecha_hora directamente desde la incidencia
             $vigilantesYFechas[] = [
-                'nombre_vigilante' => $incidencia->incidencia->Nombre_vigilante ?? 'No asignado',
-                'fecha_hora' => $incidencia->incidencia->fecha_hora ?? 'Sin fecha',
+                'nombre_vigilante' => nl2br($incidencia->incidencia->Nombre_vigilante ?? 'No asignado'),
+                'fecha_hora' => nl2br($incidencia->incidencia->fecha_hora ?? 'Sin fecha'),
             ];
         }
 
@@ -74,28 +74,39 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
 
-                $nombresCampos = array_filter($this->view()->getData()['nombresCampos'], function($campo) {
-                    return !empty($campo);
-                });
-
-                $columnCount = count($nombresCampos) + 2; // Aumentamos el contador para las nuevas columnas
+                $nombresCampos = array_filter($this->view()->getData()['nombresCampos'], fn($campo) => !empty($campo));
+                $columnCount = count($nombresCampos) + 2;
                 $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
                 $lastRow = max(count($this->camposIncidencias) + 5, 10);
 
+                // se define de forma fija el ancho de la columna
+                foreach (range('A', $lastColumn) as $column) {
+                    $sheet->getColumnDimension($column)->setWidth(55);
+                }
+
+                for ($row = 3; $row <= $lastRow; $row++) {
+                    $sheet->getRowDimension($row)->setRowHeight(-1);
+                }
+                $sheet->getStyle("A2:{$lastColumn}{$lastRow}")
+                    ->getAlignment()->setWrapText(true);
+
+                //estilos
                 $this->mergeAndStyleHeader($sheet, "A1:{$lastColumn}1", 'Reporte Vigilancia PRT - ' . $this->formato->Tipo);
                 $this->setColumnHeaderStyle($sheet, $lastColumn);
                 $this->applyBorders($sheet, $lastColumn, $lastRow);
                 $this->applyRowAlternatingStyle($sheet, $lastColumn, $lastRow);
                 $this->applyVigilanteAndFechaStyle($sheet, $lastColumn, $lastRow);
-
-                foreach (range('A', $lastColumn) as $column) {
-                    $sheet->getColumnDimension($column)->setAutoSize(true);
-                }
-
-                $sheet->getStyle("A2:{$lastColumn}{$lastRow}")->getAlignment()->setWrapText(true);
             },
         ];
     }
+
+
+    // public function columnWidths(): array
+    // {
+    //     return [
+    //         'A' => 100,
+    //     ];
+    // }
 
     private function mergeAndStyleHeader($sheet, $range, $title)
     {
@@ -116,7 +127,7 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
     private function applyBorders($sheet, $lastColumn, $lastRow)
     {
         $dataRange = "A2:{$lastColumn}{$lastRow}";
-        $sheet->getStyle($dataRange)->applyFromArray([ 
+        $sheet->getStyle($dataRange)->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -130,7 +141,7 @@ class ReporteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
     {
         for ($row = 3; $row <= $lastRow; $row++) {
             $rowStyle = ($row % 2 == 0) ? self::ROW_ALT_COLOR : 'FFFFFF';
-            $sheet->getStyle("A{$row}:{$lastColumn}{$row}")->applyFromArray([ 
+            $sheet->getStyle("A{$row}:{$lastColumn}{$row}")->applyFromArray([
                 'fill' => [
                     'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                     'startColor' => ['argb' => $rowStyle],

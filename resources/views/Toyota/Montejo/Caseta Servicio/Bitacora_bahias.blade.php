@@ -31,60 +31,54 @@
                 </div>
             </div>
 
-            @foreach (['Fecha', 'Nombre de la empresa visitante', 'Nombre persona visitada', 'Area / Departamento', 'Asunto - Motivo visita', 'Hora de entrada', 'Hora de salida'] as $campoNombre)
-                @if ($campo = $campos->firstWhere('campo', $campoNombre))
-                    <div class="form-group">
-                        <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
+            <div class="table-responsive">
+                <table class="table table-bordered"
+                    style="border-radius: 8px; overflow: hidden; transition: all 0.3s ease;">
+                    <thead style="background-color: #601911; color: white; text-align: center;">
+                        <tr>
+                            <th scope="col">Campo</th>
+                            <th scope="col">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (['Fecha', 'Bahía 1-2. Inicial', 'Bahía 1-2. Final', 'Bahía 3-4. Inicial', 'Bahía 3-4. Final', 'Bahía 5-6. Inicial', 'Bahía 5-6. Final', 'Bahía 7-8. Inicial', 'Bahía 7-8. Final', 'Bahía 9-10. Inicial', 'Bahía 9-10. Final', 'Total surtido'] as $campoNombre)
+                            @if ($campo = $campos->firstWhere('campo', $campoNombre))
+                                <tr>
+                                    <td style="color: #ffffff; padding: 15px;">
+                                        <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
+                                    </td>
+                                    <td>
+                                        @if ($campoNombre == 'Fecha')
+                                            <input type="date" class="form-control"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                min="1111-01-01" max="9999-12-31"
+                                                required>
+                                        @elseif (str_contains($campoNombre, 'Bahía'))
+                                            <input type="number" step="0.01" class="form-control"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Total surtido')
+                                            <input type="decimal" class="form-control"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}" disabled
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                disabled>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-                        @if ($campoNombre == 'Fecha')
-                            <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 12px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                required>
-                        @elseif ($campoNombre == 'Nombre de la persona visitante')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Nombre de la empresa visitante')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                        @elseif ($campoNombre == 'Nombre persona visitada')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
-                                @elseif ($campoNombre == 'Area / Departamento')
-                                <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroArea(this)" required>
-                                    <option value="">Seleccione un área</option>
-                                    @foreach ($area_departamento as $area_departamentos)
-                                        <option value="{{ $area_departamentos->nombre }}">
-                                            {{ $area_departamentos->nombre }}</option>
-                                    @endforeach
-                                    <option value="otro">OTRO</option>
-                                </select>
-    
-                                <div class="otrosTextareaContainer" style="display: none; margin-top: 10px;">
-                                    <label for="otrosTextarea2">Especificar otra área o departamento</label>
-                                    <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                        placeholder="Especifica otra área o departamento"></textarea>
-                                </div>
-                        @elseif($campoNombre == 'Asunto - Motivo visita')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}">
-                        @elseif($campoNombre == 'Hora de entrada')
-                            <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}">
-                        @elseif($campoNombre == 'Hora de salida')
-                            <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}">
-                        @endif
-                    </div>
-                @endif
-            @endforeach
             <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary" onclick="submitAndResetForm(this)">Enviar</button>
             </div>

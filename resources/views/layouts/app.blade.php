@@ -200,6 +200,8 @@
             });
         </script>
 
+    
+
         @foreach ($tema as $key => $loader)
             <script>
                 document.body.style.zoom = "{{ $loader->loader }}%";

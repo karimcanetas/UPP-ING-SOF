@@ -340,44 +340,6 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     document.head.appendChild(style);
 });
-// // Función para mostrar u ocultar el textarea según la opción seleccionada
-// function toggleOtroArea(selectElement) {
-//     const selectedValue = selectElement.value;
-//     const otrosTextareaContainer = selectElement.nextElementSibling; // Asegúrate de que el textarea esté justo después del select
-//     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
-
-//     if (selectedValue === 'otro') {
-//         otrosTextareaContainer.style.display = 'block';
-//         otrosTextarea.value = ''; // Limpiar el textarea
-//     } else {
-//         otrosTextareaContainer.style.display = 'none';
-//         otrosTextarea.value = selectedValue; // Asignar el valor del select al textarea
-//     }
-// }
-
-// // Función para ajustar el valor del campo de "Área / Departamento" antes de enviar el formulario
-// function ajustarValorCampo(form) {
-//     // Seleccionar todos los elementos select en el formulario
-//     const selectElements = form.querySelectorAll('select[name^="campos["]');
-//     let valid = true; // Variable para verificar la validez
-
-//     selectElements.forEach((selectElement) => {
-//         const otrosTextarea = selectElement.nextElementSibling.querySelector('textarea');
-
-//         // Verificar si el valor seleccionado es "otro"
-//         if (selectElement.value === 'otro') {
-//             selectElement.value = otrosTextarea.value.trim(); // Asigna el valor del textarea
-//         }
-
-//         // Verifica que el textarea tenga un valor si se selecciona "OTRO"
-//         if (selectElement.value === '' && otrosTextarea.value.trim() === '') {
-//             alert('Por favor, especifica otra área o departamento.');
-//             valid = false; // Marcar como inválido
-//         }
-//     });
-
-//     return valid; // Retorna true si todos los campos son válidos
-// }
 document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
     const puestoInput = document.getElementById('puestoInput');
@@ -385,7 +347,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const empleadoNoRegistradoContainer = document.getElementById('empleadoNoRegistradoContainer');
     const agregarEmpleadoBtn = document.getElementById('agregarEmpleadoBtn');
     const empleadoNoRegistradoSelect = $('#empleadoNoRegistrado');
-
     // Inicializa Select2 solo si el elemento existe
     if (empleadoSelect) {
         $(empleadoSelect).select2({
@@ -401,6 +362,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function updatePuestoInput() {
         const selectedOption = this.options[this.selectedIndex];
         puestoInput.value = selectedOption ? selectedOption.getAttribute('data-puesto') : '';
+        // console.log(updatePuestoInput);
     }
 
     // Maneja el evento de envio del nuevo empleado
@@ -451,7 +413,8 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#empleadoNombre').val(data.nombres);
         puestoInput.value = data.puestoNombre;
         alert(data.message || 'Empleado agregado exitosamente.');
-        nuevoEmpleadoForm.reset(); // Reinicia el formulario
+        nuevoEmpleadoForm.reset();
+        // console.log(data.message);
     }
 
     // Cambia el campo asociado interno al cambiar el select de no registrados
@@ -544,24 +507,50 @@ function updatePhotoName(input, type) {
     }
 }
 
-function submitAndResetForm(button) {
-    const form = button.closest('form');
-    form.submit();
+function submitAndResetForm(boton) {
+    const formulario = boton.closest('form');
+    const elementos = Array.from(formulario.elements);
+    let esValido = true;
+    elementos.forEach(elemento => {
+        const esOpcional = !elemento.hasAttribute('required');
+        const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
+        if (!esOpcional && !esOculto && !elemento.disabled) {
+            const esVacio =
+                (['text', 'textarea', 'number', 'email'].includes(elemento.type) && elemento.value.trim() === '') ||
+                (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
+                (elemento.tagName === 'SELECT' && elemento.value === '');
+
+            if (esVacio) {
+                esValido = false;
+            }
+        }
+    });
+
+    if (!esValido) {
+        $(document).ready(function () {
+            Swal.fire({
+                title: "Error!",
+                text: "Favor de completar los campos requeridos...",
+                icon: "error"
+            });
+        });
+        return;
+    }
+
+    formulario.submit();
 
     if (!window.hasErrors) {
-        setTimeout(function () {
-            // reset solo campos visibles
-            Array.from(form.elements).forEach(element => {
-                // excluyo campos ocultos, readonly y tarjetas con clase 'd-none'
-                const isHidden = element.type === 'hidden' || element.closest('.d-none') !== null || element.readOnly;
+        setTimeout(() => {
+            elementos.forEach(elemento => {
+                const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
 
-                if (!isHidden) {
-                    if (element.type === 'checkbox' || element.type === 'radio') {
-                        element.checked = false;
-                    } else if (element.tagName === 'SELECT') {
-                        element.selectedIndex = 0;
+                if (!esOculto && !elemento.disabled) {
+                    if (['checkbox', 'radio'].includes(elemento.type)) {
+                        elemento.checked = false;
+                    } else if (elemento.tagName === 'SELECT') {
+                        elemento.selectedIndex = 0;
                     } else {
-                        element.value = '';
+                        elemento.value = '';
                     }
                 }
             });
@@ -569,118 +558,4 @@ function submitAndResetForm(button) {
     }
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
 
-//     // document.getElementById('hidden_fecha_hora').value = document.getElementById('fecha_hora_detalles').value;
-
-//     document.getElementById('Nombre_vigilante').addEventListener('input', function () {
-//         document.getElementById('hidden_nombre_vigilante').value = this.value;
-//     });
-
-//     document.getElementById('id_turnos').addEventListener('change', function () {
-//         document.getElementById('hidden_id_turnos').value = this.value;
-//     });
-// });
-
-
-
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     function sincronizarValores() {
-//         const fechaHoraDetalles = document.getElementById('fecha_hora_detalles').value;
-//         document.getElementById('hidden_id_turnos').value = fechaHoraDetalles;
-//     }
-//     sincronizarValores();
-
-//     setInterval(sincronizarValores, 1000);
-// });
-
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     console.log("El DOM está cargado.");
-
-    //     function iniciarTurno() {
-    //         console.log("Inicializando lógica para el turno.");
-
-    //         const selectedOption = document.querySelector('option[data-hora-fin]');
-    //         if (!selectedOption) {
-    //             console.warn("No se encontró un turno activo con 'data-hora-fin'.");
-    //             return;
-    //         }
-
-    //         const horaFin = selectedOption.getAttribute('data-hora-fin');
-    //         console.log("Hora final obtenida del atributo:", horaFin);
-
-    //         if (!horaFin) {
-    //             console.error("El atributo 'data-hora-fin' no tiene valor.");
-    //             return;
-    //         }
-
-    //         const horaParts = horaFin.split(':');
-    //         if (horaParts.length < 2 || isNaN(horaParts[0]) || isNaN(horaParts[1])) {
-    //             console.error("Formato de hora inválido:", horaFin);
-    //             return;
-    //         }
-
-    //         const ahora = new Date();
-    //         console.log("Hora actual:", ahora);
-
-    //         const horaFinDate = new Date(ahora);
-    //         horaFinDate.setHours(horaParts[0], horaParts[1], 0, 0);
-    //         console.log("Hora final convertida a objeto Date:", horaFinDate);
-
-    //         if (isNaN(horaFinDate.getTime())) {
-    //             console.error("La hora final es inválida:", horaFinDate);
-    //             return;
-    //         }
-
-    //         const diferencia = horaFinDate - ahora;
-    //         console.log("Diferencia en milisegundos entre hora actual y hora final:", diferencia);
-
-    //         if (diferencia <= 0) {
-    //             console.warn("La hora final ya pasó o está demasiado cerca.");
-    //             limpiarEstado();
-    //             return;
-    //         }
-
-    //         const tiempoAlerta = diferencia - 900000; // 15 minutos antes
-    //         console.log("Tiempo hasta la alerta en milisegundos:", tiempoAlerta);
-
-    //         setTimeout(() => {
-    //             console.log("Mostrando alerta.");
-    //             Swal.fire({
-    //                 title: '¡Alerta!',
-    //                 text: 'Faltan 15 minutos para que termine el turno.',
-    //                 icon: 'info',
-    //                 confirmButtonText: 'Cerrar'
-    //             }).then(() => {
-    //                 console.log("Alerta cerrada. Mostrando botón 'Enviar'.");
-    //                 const btnEnviar = document.getElementById('btnEnviar');
-    //                 if (btnEnviar) {
-    //                     btnEnviar.style.display = 'block';
-    //                 } else {
-    //                     console.error("No se encontró el botón con ID 'btnEnviar'.");
-    //                 }
-    //             });
-    //         }, tiempoAlerta);
-
-    //         setTimeout(() => {
-    //             console.log("El turno ha finalizado. Limpiando el estado...");
-    //             limpiarEstado();
-    //         }, diferencia);
-    //     }
-
-    //     function limpiarEstado() {
-    //         console.log("Restableciendo el estado del sistema...");
-    //         // Ocultar el botón de enviar
-    //         const btnEnviar = document.getElementById('btnEnviar');
-    //         if (btnEnviar) {
-    //             btnEnviar.style.display = 'none';
-    //         }
-    //         const selectedOption = document.querySelector('option[data-hora-fin]');
-    //         if (selectedOption) {
-    //             selectedOption.removeAttribute('data-hora-fin');
-    //         }
-    //         console.log("Esperando nuevo turno...");
-    //     }
-    //     iniciarTurno();
-    // });

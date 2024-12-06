@@ -10,15 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     protected $connection = 'mysql_2'; //bd vigilancia
-    public function up(): void
-    {
-        Schema::create('correos', function(Blueprint $table) {
-            $table->id('id_correo');
-            $table->unsignedBigInteger('id_empleado');
-            $table->string('correo');
-        });
+    // public function up(): void
+    // {
+    //     Schema::create('correos', function(Blueprint $table) {
+    //         $table->id('id_correo');
+    //         $table->unsignedBigInteger('id_empleado');
+    //         $table->string('correo');
+    //     });
         
-    }
+    // }
 
     /**
      * Reverse the migrations.

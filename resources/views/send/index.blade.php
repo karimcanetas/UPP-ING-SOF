@@ -64,18 +64,14 @@
                             </div>
                         </div>
                     </form>
-
-                    <form action="{{ route('correos.store') }}" method="POST" novalidate class="needs-validation">
-                        @csrf
-                        <div class="container">
-                            <div class="correo-container">
-                                <h4 class="h4 text-center mb-4">
-                                    <strong><i class="fa-solid fa-envelope"></i> Se enviará a:</strong>
-                                </h4>
-                                <ul class="correo-list" id="correos"></ul>
-                            </div>
+                    <div class="container">
+                        <div class="correo-container">
+                            <h4 class="h4 text-center mb-4">
+                                <strong><i class="fa-solid fa-envelope"></i> Se enviará a:</strong>
+                            </h4>
+                            <ul class="correo-list" id="correos"></ul>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,7 +227,7 @@
 
 <script>
     $(document).ready(function() {
-        let groupedByCaseta = {}; // variable global para almacenar los datos de la respuesta AJAX
+        let groupedByCaseta = {}; // variable global para almacenar los datos de la respuesta AJAX7
         $.ajax({
             url: '/checks-formatos',
             type: 'GET',
@@ -239,7 +235,7 @@
             success: function(response) {
                 groupedByCaseta = response.groupedByCaseta; // se asigna a la variable global
                 const addedFormats = new Set(); // para evitar formatos duplicados
-
+            console.log(groupedByCaseta);
                 $('#formatoSelect').empty();
 
                 // agrupo las casetas con sus formatos asignados
@@ -250,7 +246,7 @@
                             /[\u0300-\u036f]/g, "").toLowerCase()
                     }).appendTo('#formatoSelect');
 
-                    console.log(formatoCasetas);
+                    // console.log(formatoCasetas);
 
                     const empresa = formatoCasetas[0].empresa || 'Sin empresa';
                     const sucursal = formatoCasetas[0].sucursal || 'Sin sucursal';
@@ -266,7 +262,7 @@
                             .toLowerCase();
 
                         if (!addedFormats.has(formatoTipo.toLowerCase())) {
-                            addedFormats.add(formatoTipo.toLowerCase());
+                            // addedFormats.add(formatoTipo.toLowerCase());
 
                             optgroup.append(
                                 `<label class="formato-label" data-formato="${formatoTipo.toLowerCase()}">
@@ -605,6 +601,16 @@
                 title: "¡Éxito!",
                 text: "{{ session('success') }}",
                 icon: "success"
+            });
+        @endif
+    });
+
+    $(document).ready(function() {
+        @if (session('error'))
+            Swal.fire({
+                title: "Error!",
+                text: "{{ session('error') }}",
+                icon: "error"
             });
         @endif
     });

@@ -392,6 +392,12 @@ h1 {
     left: 20px;
 }
 
+.buttonEnviar-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
 .back-button {
     background-color: #b31500;
     border: none;

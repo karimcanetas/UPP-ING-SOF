@@ -15,6 +15,7 @@ use App\Models\TipoAsociado;
 use Database\Seeders\departamento_puesto;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use App\Models\Formatocaseta;
 
 
 class EmpleadosCatologoController extends Controller
@@ -31,6 +32,7 @@ class EmpleadosCatologoController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->all());
         $request->validate([
             'nombres' => 'required|string|max:255',
             'id_puesto' => 'required',
@@ -50,7 +52,6 @@ class EmpleadosCatologoController extends Controller
 
 
         $empleado->save();
-
         $puesto = Puestos::find($empleado->id_puesto);
         return response()->json([
             'id_empleado' => $empleado->id_empleado,
@@ -59,6 +60,7 @@ class EmpleadosCatologoController extends Controller
             'puestoNombre' => $puesto ? $puesto->nombre : '',
             'message' => 'Empleado agregado exitosamente.',
         ]);
+        
         // return redirect()->route('incidencias.create')->with('empleado_success', 'Empleado agregado exitosamente.');
     }
 
@@ -87,31 +89,38 @@ class EmpleadosCatologoController extends Controller
 
     public function obtenerTodosLosFormatos()
     {
-        // obtengo los registros de la tabla pivote
         $pivotData = DB::connection('mysql_2')
             ->table('empleados_formatos')
             ->join('formatos', 'empleados_formatos.id_formatos', '=', 'formatos.id_formatos')
-            ->select('empleados_formatos.id_empleado', 'empleados_formatos.id_formatos', 'empleados_formatos.status', 'formatos.Tipo') //campos deseados
+            ->select('empleados_formatos.id_empleado', 'empleados_formatos.id_formatos', 'empleados_formatos.status', 'formatos.Tipo')
             ->get();
-
-
-        // recupero los nombres
         $empleados = DB::connection('mysql')
             ->table('empleados')
             ->whereIn('id_empleado', $pivotData->pluck('id_empleado'))
-            ->pluck('nombres', 'id_empleado'); //campos necesarios
+            ->pluck('nombres', 'id_empleado');
 
+        // recupero la empresa y sucursal junto con la caseta
+        $FormatoCasetas = Formatocaseta::with([
+            'Caseta.empresa',
+            'Caseta.sucursal'
+        ])->get()->keyBy('id_formatos');
 
-
-
-
-        //asociamos a la tabla empleados_formatos
+        // los paso todo a a varible pivoteData
         foreach ($pivotData as $item) {
+            $formatoCaseta = $FormatoCasetas[$item->id_formatos] ?? null;
+            $item->id_casetas = $formatoCaseta->id_casetas;
             $item->nombres = $empleados[$item->id_empleado] ?? 'Empleado no encontrado';
+            $item->nombre_caseta = $formatoCaseta->Caseta->nombre ?? 'Caseta no encontrada';
+            $item->empresa = $formatoCaseta->Caseta->sucursal->empresa->alias ?? 'Sin empresa';
+            $item->sucursal = $formatoCaseta->Caseta->sucursal->nombre ?? 'Sin sucursal';
         }
-
-        return response()->json(['success' => true, 'data' => $pivotData]);
+        Log::info('Datos de pivotData:', ['pivotData' => $pivotData]);
+        return response()->json([
+            'success' => true,
+            'data' => $pivotData
+        ]);
     }
+
     public function actualizarStatus(Request $request, $empleadoId, $formatoId)
     {
         // Validación del status

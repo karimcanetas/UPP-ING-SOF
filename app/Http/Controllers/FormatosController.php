@@ -11,88 +11,44 @@ use Illuminate\Support\Facades\Log;
 
 class FormatosController extends Controller
 {
-
-    public function index()
-    {
-        $formatos = Formato::all();
-        $correosConFormatos = CorreosFormatos::with(['correo', 'formato'])->get();
-        // $formatoCasetas = Formatocaseta::with('Caseta', 'Fotmato')->get();
-
-        return view('incidencias.create', compact('formatos', 'correosConFormatos'));
-    }
-
     public function checksSeparadores()
     {
         $FormatoCasetas = Formatocaseta::with([
-            'Caseta',
-            'Formato',
-            'Formato.EmpleadosFormatos.Empleado.user',
-            'Caseta.empresa',
-            'Caseta.sucursal'
+            'Caseta.sucursal.empresa',
+            'Formato.EmpleadosFormatos.Empleado.user'
         ])->get();
 
-        // agrupo por caseta y mapea el contenido
-        $groupedByCaseta = $FormatoCasetas->groupBy(function ($item) {
-            return $item->Caseta->nombre;
+        $groupedByCaseta = $FormatoCasetas->groupBy(function($item) {
+            return $item->Caseta->id_casetas . ' - ' . $item->Caseta->nombre;
         })->map(function ($items) {
             return $items->map(function ($item) {
-                $empleados = $item->Formato->EmpleadosFormatos->filter(function ($pivot) {
-                    return $pivot->status == 1;
-                })->map(function ($pivot) {
-                    $empleado = $pivot->Empleado;
-
-                    if ($empleado && $empleado->user && $empleado->user->email) {
-                        return [
-                            'nombre' => $empleado->nombres,
-                            'email' => $empleado->user->email,
-                        ];
-                    }
-                    return null;
-                })->filter(); // elimino empleados nulos
-
+                
+                $empleados = $item->Formato->EmpleadosFormatos
+                    ->where('status', 1)
+                    ->map(fn($pivot) => $pivot->Empleado?->user?->email ? [
+                        'nombre' => $pivot->Empleado->nombres,
+                        'email' => $pivot->Empleado->user->email,
+                    ] : null)
+                    ->filter();
+        
                 return [
+                    'id_casetas' => $item->id_casetas,
+                    'nombre_caseta' => $item->Caseta->nombre,
                     'id_formatos' => $item->id_formatos,
                     'Tipo' => $item->Formato->Tipo,
-                    'nombre_caseta' => $item->Caseta->nombre,
                     'empresa' => $item->Caseta->sucursal->empresa->alias ?? 'Sin empresa',
                     'sucursal' => $item->Caseta->sucursal->nombre ?? 'Sin sucursal',
-                    'empleados' => $empleados,
+                    'empleados' => $empleados->values(),
                 ];
             });
         });
+        
 
         Log::info('FormatoCasetas agrupadas por caseta:', $groupedByCaseta->toArray());
 
         return response()->json(['groupedByCaseta' => $groupedByCaseta]);
     }
 
-
-    public function show($id)
-    {
-        $formato = Formato::with('correos')->findOrFail($id);
-
-        // Verificar si el formato existe
-        if (!$formato) {
-            return redirect()->back()->with('error', 'Formato no encontrado.');
-        }
-
-        return view('dashboard', compact('formato'));
-    }
-
-    public function getCorreos($id)
-    {
-
-        $correos = CorreosFormatos::with('correo')
-            ->where('id_formatos', $id)
-            ->get();
-
-
-        $correoList = $correos->map(function ($item) {
-            return $item->correo ? $item->correo->correo : null;
-        })->filter(); // filtrar nulos
-
-        return response()->json(['correos' => $correoList]);
-    }
 
     public function obtenerCamposPorFormato(Request $request)
     {
