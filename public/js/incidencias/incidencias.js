@@ -38,6 +38,12 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
 
 
 function mostrarSegundaEtapa() {
+    // Swal.fire({
+    //     title: 'Atención',
+    //     text: 'Es muy importante que primero complete y envíe cada uno de los formatos que se requieren. Una vez que haya terminado de llenar y enviar todos los formatos, deberá esperar hasta que falten solo 15 minutos para que su turno termine. Cuando eso suceda, aparecerá un botón que dice "Enviar Correo". Presione ese botón para completar su tarea antes de que su turno termine. Si no ve el botón, es porque su turno aún no ha llegado a los 15 minutos finales.',
+    //     icon: 'info',
+    //     confirmButtonText: 'Entendido'
+    // });
     document.getElementById('primeraEtapa').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'none';
 }
@@ -121,8 +127,8 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Novedades Servicios',
                 'Control de entrega de unidades en postventa',
                 'Control de unidades en estacionamiento TOYOTA',
-                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS',
-                'POSTVENTA - BITACORA DE ACEITE GRANEL'
+                'Postventa - bitacora de surtido de aceite bahias',
+                'Postventa - bitácora de aceite granel',
 
             ]
         },
@@ -141,7 +147,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
             'Matutino': [
                 'Novedades Subaru',
                 'Control de entrega de unidades en Postventa Subaru',
-                'SALIDA UNIDADES TOTs SUBARU'
+                'Salida unidades ToTs subaru',
             ],
             'Nocturno': [
                 'Novedades Subaru',
@@ -151,14 +157,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         '2': { //ID Caseta Servicio Empresa TOYOTA Sucursal Altabrisa
             'Matutino': [
                 'Novedades Servicios',
-                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA',
+                'Postventa - bitácora de surtido de aceite bahías Altabrisa',
                 'Postventa - Bitácora acceso vehículos a servicio sin cita',
                 'Control de entrega de unidades en postventa'
 
             ],
             'Nocturno': [
                 'Novedades Servicios',
-                'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA'
+                'Postventa - bitácora de surtido de aceite bahías Altabrisa'
             ]
         },
         '8': {// ID Caseta Portón rojo empresa TOYOTA sucursal Altabrisa
@@ -166,7 +172,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Novedades Portón rojo',
                 'Bitacora de control de acceso personal y vehicular',
                 'Bitácora de control de vehículos utilitarios',
-                'CONTROL DE INGRESO/SALIDA DE UNIDADES B&P'
+                'Control de ingreso/salida de unidades B&P',
 
             ],
             'Nocturno': [
@@ -229,8 +235,8 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'Control de entrega de unidades en postventa': 'Control_entrega_servicio',
         'Control de unidades en estacionamiento TOYOTA': 'Control_toyota_servicio',
         'Control de acceso a proveedores Montejo': 'control_acceso_proveedores',
-        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS': 'controlAceite',
-        'POSTVENTA - BITACORA DE ACEITE GRANEL': 'BitacoraAceite',
+        'Postventa - bitacora de surtido de aceite bahias': 'controlAceite',
+        'Postventa - bitácora de aceite granel': 'BitacoraAceite',
 
         //SUCURSAL TOYOTA ALTABRISA
         'Novedades Servicios': 'novedad_servicio',
@@ -246,11 +252,11 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         //EMPRESA SUBARU SUCURSAL MÉRIDA 
         //CASETA SUBARU
         'Novedades Subaru': 'novedad_subaru',
-        'SALIDA UNIDADES TOTs SUBARU': 'unidades_subaru',
+        'Salida unidades ToTs subaru': 'unidades_subaru',
         'Control de unidades en estacionamiento SUBARU': 'Control_subaru_servicio',
         'Bitácora de control de vehículos utilitarios': 'control_vehiculos',
-        'POSTVENTA - BITACORA DE SURTIDO DE ACEITE BAHIAS ALTABRISA': 'bitacora_bahias',
-        'CONTROL DE INGRESO/SALIDA DE UNIDADES B&P': 'control_ingreso_salida',
+        'Postventa - bitácora de surtido de aceite bahías Altabrisa': 'bitacora_bahias',
+        'Control de ingreso/salida de unidades B&P': 'control_ingreso_salida',
         'Control de entrega de unidades en Postventa Subaru': 'control_subaru',
         'Control de entrega de unidades en Postventa': 'entrega_unidades_altabrisa'
 
@@ -416,20 +422,21 @@ function toggleOtroUnidad(select) {
 
     textunidad.style.display = (select.value === 'otro') ? 'block' : 'none';
     if (select.value !== 'otro') otrotextunidad.value = select.value;
+    // console.log(select.value);
 }
 
-function toggleOtroArea(selectElement) {
-    const otrosTextareaContainer = selectElement.nextElementSibling;
-    const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
+// function toggleOtroArea(selectElement) {
+//     const otrosTextareaContainer = selectElement.nextElementSibling;
+//     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
 
-    if (selectElement.value === 'otro') {
-        otrosTextareaContainer.style.display = 'block';
-        otrosTextarea.value = ''; // Limpiar el textarea
-    } else {
-        otrosTextareaContainer.style.display = 'none';
-        otrosTextarea.value = selectElement.value;
-    }
-}
+//     if (selectElement.value === 'Otro') {
+//         otrosTextareaContainer.style.display = 'block';
+//         otrosTextarea.value = ''; // Limpiar el textarea
+//     } else {
+//         otrosTextareaContainer.style.display = 'none';
+//         otrosTextarea.value = selectElement.value;
+//     }
+// }
 
 function ajustarValorCampo(form) {
     const selectElements = form.querySelectorAll('select[name^="campos["]');
@@ -474,24 +481,34 @@ function submitAndResetForm(boton) {
     const formulario = boton.closest('form');
     const elementos = Array.from(formulario.elements);
     let esValido = true;
+    let mensajeError = "";
+
     elementos.forEach(elemento => {
         const esOpcional = !elemento.hasAttribute('required');
         const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
+
         if (!esOpcional && !esOculto && !elemento.disabled) {
             const esVacio =
                 (['text', 'textarea', 'number', 'email'].includes(elemento.type) && elemento.value.trim() === '') ||
                 (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
-                if (elemento.classList.contains('vin')) {
-                    const valorVin = elemento.value.trim();
-                    if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
-                        esValido = false;
-                    }
+            // valido que el vin tenga los 6 digitos exactos
+            if (elemento.classList.contains('vin')) {
+                const valorVin = elemento.value.trim();
+                if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
+                    esValido = false;
+                    mensajeError = "El VIN debe tener exactamente 6 dígitos numéricos.";
                 }
+            }
 
             if (esVacio) {
                 esValido = false;
+
+                // obtengo el label del campo si existe
+                const label = formulario.querySelector(`label[for="${elemento.id}"]`);
+                const nombreCampo = label ? label.textContent.trim() : elemento.name || "campo requerido";
+                mensajeError = mensajeError || `Favor de completar el campo: ${nombreCampo}`;
             }
         }
     });
@@ -500,12 +517,13 @@ function submitAndResetForm(boton) {
         $(document).ready(function () {
             Swal.fire({
                 title: "Error!",
-                text: "Favor de completar los campos requeridos...",
+                text: mensajeError,
                 icon: "error"
             });
         });
         return;
     }
+
     formulario.submit();
     setTimeout(() => {
         elementos.forEach(elemento => {
@@ -517,12 +535,13 @@ function submitAndResetForm(boton) {
                 } else if (elemento.tagName === 'SELECT') {
                     elemento.selectedIndex = 0;
                 } else {
-                    elemento.value = '';  // Restablece el valor del campo
+                    elemento.value = ''; // restablece el valor del campo
                 }
             }
         });
     }, 500);
 }
+
 
 
 //Formula
@@ -533,18 +552,18 @@ function calcularConsumo(prefix, totalSurtidoClass) {
     const totalSurtido = document.querySelector(totalSurtidoClass);
     let totalConsumo = 0;
 
-    // Iterar sobre las bahías (1 a 4)
+    // itero sobre las bahías (1 a 4)
     for (let i = 1; i <= 4; i++) {
         const bahiaInicial = document.querySelector(`.${prefix}${i}-inicial`);
         const bahiaFinal = document.querySelector(`.${prefix}${i}-final`);
 
-        // Verificar si los elementos existen antes de acceder a sus valores
+        // verifico si los elementos existen antes de acceder a sus valores
         if (bahiaInicial && bahiaFinal) {
             totalConsumo += parseFloat(bahiaFinal.value || 0) - parseFloat(bahiaInicial.value || 0);
         }
     }
 
-    // Mostrar el total surtido si existe el elemento
+    //mostrar el total surtido si existe el elemento
     if (totalSurtido) {
         totalSurtido.value = totalConsumo.toFixed(2);
     }
@@ -590,9 +609,11 @@ $(document).ready(function () {
 //boton enviarCorreo
 function iniciarTurno() {
     const selectedOption = document.querySelector('option[data-hora-fin]');
+    if (!selectedOption || !selectedOption.hasAttribute('data-hora-fin')) {
+        return;
+    }
     const horaFin = selectedOption.getAttribute('data-hora-fin');
     if (!horaFin) {
-        console.error("El atributo 'data-hora-fin' no tiene valor.");
         return;
     }
     const horaParts = horaFin.split(':');
@@ -612,7 +633,7 @@ function iniciarTurno() {
         return;
     }
 
-    const tiempoAlerta = diferencia - 900000; // 15 minutos antes
+    const tiempoAlerta = diferencia - 900000;
     setTimeout(() => {
         Swal.fire({
             title: '¡Alerta!',

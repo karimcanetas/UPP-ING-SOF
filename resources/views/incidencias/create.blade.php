@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- contenido -->
-    <x-btn-EnviarCorreo />
+
     <x-btn-atras />
     <form action="{{ route('envio.vigilante') }}" method="POST" id="envio" enctype="multipart/form-data">
         @csrf
@@ -9,11 +9,12 @@
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:block">
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
                 <i class="fas fa-arrow-right"></i> Enviar correo
             </button>
         </div>
     </form>
+
 
     <div class="buttonEnviar-container">
         <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
@@ -34,7 +35,7 @@
     <script>
         window.hasErrors = {{ $errors->any() ? 'true' : 'false' }};
     </script>
-    
+
 
     <div class="form-container" id="primeraEtapa">
         <h1 class="primera">Iniciar sesión</h1>
@@ -67,10 +68,21 @@
     </div>
 
 
+
     <form id="detallesForm" style="display:none; background-color: transparent;"
         action="{{ route('incidencias.store') }}" method="POST">
         @csrf
         <!-- Primer Card -->
+
+        {{-- <div class="alert alert-success"
+            style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 1050; padding: 12px 25px; font-size: 15px; max-width: 60%; background-color: #4CAF50; color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+            <strong>¡Atención!</strong>
+            <span style="margin-left: 10px;">Complete y envíe todos los formatos. Luego, espere 15 minutos antes de que
+                termine su turno. Aparecerá el botón <strong>"Enviar Correo"</strong> para finalizar.</span>
+        </div> --}}
+
+
+
         <div class="card horizontal-card d-none">
             <div class="form-group">
                 <label for="id_casetas">Caseta:</label>
@@ -212,7 +224,7 @@
 <x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleados="$empleadosNoRegistrados" />
 
 <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
         @if (session('error'))
             Swal.fire({
                 title: "Error!",

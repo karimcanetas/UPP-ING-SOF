@@ -75,7 +75,14 @@
                                         {{ $motivo->nombre }}
                                     </option>
                                 @endforeach
+                                <option value="otro">OTRO</option>
                             </select>
+
+                            <div class="textunidad" style="display: none; margin-top: 10px;">
+                                <label for="otrotextunidad7412">Especificar otro motivo</label>
+                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
+                                    placeholder="Especifica otro motivo"></textarea>
+                            </div>
                         @elseif($campoNombre == 'Asesor que atenderá')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"

@@ -55,7 +55,7 @@
                                 required>
                         @elseif ($campoNombre == 'Area / Departamento')
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroArea(this)" required>
+                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione un área</option>
                                 @foreach ($area_departamento as $area_departamentos)
                                     <option value="{{ $area_departamentos->nombre }}">
@@ -74,7 +74,7 @@
                                 rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @elseif ($campoNombre == 'Asunto - Motivo visita')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                                rows="3" required>{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @elseif ($campoNombre == 'Hora de salida' || $campoNombre == 'Hora de entrada')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"

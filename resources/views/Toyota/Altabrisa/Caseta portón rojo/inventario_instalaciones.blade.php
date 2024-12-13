@@ -45,8 +45,7 @@
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">selecciona una ubicacion</option>"
                                 @foreach ($ubicacion_unidad as $ubiunidad)
-                                    <option value="{{ $ubiunidad->id }}" data-nombre="{{ $ubiunidad->nombre }}">
-                                        {{ $ubiunidad->nombre }}
+                                    <option value="{{ $ubiunidad->nombre }}">{{ $ubiunidad->nombre }}
                                     </option>
                                 @endforeach
                                 <option value="otro">OTRO</option>

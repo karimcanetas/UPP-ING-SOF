@@ -40,7 +40,7 @@
                         @if ($campoNombre == 'Fecha')
                             <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                min="1111-01-01" max="9999-12-31" required>
                         @elseif ($campoNombre == 'Placas')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
@@ -68,26 +68,32 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
                                 required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
-                        @elseif ($campoNombre == 'Hora de salida' || $campoNombre == 'Hora de entrada')
+                        @elseif ($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
-                        @elseif ($campoNombre == 'KM de salida' || $campoNombre == 'KM de entrada')
+                        @elseif ($campoNombre == 'KM de salida')
                             <input type="number" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
+                        @elseif ($campoNombre == 'Hora de entrada')
+                            <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                        @elseif ($campoNombre == 'KM de entrada')
+                            <input type="number" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Nombre Taller')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif ($campoNombre == 'Persona que retira la unidad (Proveedor)')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif ($campoNombre == 'Folio / Num de pase')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
                                 rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>

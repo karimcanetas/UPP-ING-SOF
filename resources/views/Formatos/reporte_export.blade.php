@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', 'es-MX') }}">
 
 <head>
     <meta charset="UTF-8">

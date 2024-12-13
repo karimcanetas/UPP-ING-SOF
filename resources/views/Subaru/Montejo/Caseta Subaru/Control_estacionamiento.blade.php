@@ -70,7 +70,7 @@
                                 required>
                                 @elseif ($campoNombre == 'Area / Departamento')
                                 <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroArea(this)" required>
+                                    name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                     <option value="">Seleccione un área</option>
                                     @foreach ($area_departamento as $area_departamentos)
                                         <option value="{{ $area_departamentos->nombre }}">

@@ -80,18 +80,16 @@
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione una condición</option>
                                 @foreach ($condicion_salida as $condicion)
-                                    <option value="{{ $condicion->id }}" data-nombre="{{ $condicion->nombre }}">
-                                        {{ $condicion->nombre }}
-                                    </option>
+                                    <option value="{{ $condicion->nombre}}">{{ $condicion->nombre }}</option>
                                 @endforeach
                                 <option value="otro">OTRO</option>
                             </select>
 
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
-                                <label for="otrotextunidad16">Especificar otra unidad</label>
+                                <label for="otrotextunidad1678">Especificar otra Condición</label>
                                 <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                    placeholder="Especifica otra condición"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"

@@ -47,8 +47,7 @@
                             <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
-                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
-                                required>
+                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
                         @elseif ($campoNombre == 'Unidad')
                             <!-- campo Unidad (select) -->
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -72,23 +71,37 @@
                                 required>
                         @elseif ($campoNombre == 'Area / Departamento')
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroArea(this)" required>
-                                <option value="">Seleccione un área</option>
-                                @foreach ($area_departamento as $area_departamentos)
-                                    <option value="{{ $area_departamentos->nombre }}">
-                                        {{ $area_departamentos->nombre }}</option>
-                                @endforeach
-                                <option value="otro">OTRO</option>
+                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
+                                <option style="text-transform:uppercase" value="">Seleccione un área</option>
+                                <option style="text-transform:uppercase"
+                                    value="Estacionamiento de clientes (Av. Prolongación)">Estacionamiento de
+                                    clientes (Av. Prolongación)</option>
+                                <option style="text-transform:uppercase" value="Estacionamiento de clientes (Calle 43)">
+                                    Estacionamiento de clientes
+                                    (Calle 43)
+                                </option>
+                                <option style="text-transform:uppercase" style="text-transform:uppercase"
+                                    value="Area de Demos">Area de Demos</option>
+                                <option style="text-transform:uppercase" value="Taller de Servicio">Taller de Servicio
+                                </option>
+                                <option style="text-transform:uppercase" value="Area de Lavado unidades">Area de Lavado
+                                    unidades</option>
+                                <option style="text-transform:uppercase"
+                                    value="Unidades recibidas por grua durante el turno">Unidades recibidas por grua
+                                    durante el turno</option>
+                                <option style="text-transform:uppercase" value="otro">Otro</option>
                             </select>
 
-                            <div class="otrosTextareaContainer" style="display: none; margin-top: 10px;">
-                                <label for="otrosTextarea4">Especificar otra área o departamento</label>
-                                <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra área o departamento"></textarea>
+                            <!-- campo adicional para cuando se selecciona 'Otro' -->
+                            <div class="textunidad" style="display: none; margin-top: 10px;">
+                                <label for="otrotextunidad845">Especificar otra Area o Departamento</label>
+                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
+                                    placeholder="Especifica otra area"></textarea>
                             </div>
                         @elseif($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

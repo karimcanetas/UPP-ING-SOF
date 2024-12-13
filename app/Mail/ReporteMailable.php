@@ -27,7 +27,7 @@ class ReporteMailable extends Mailable
     {
         return new Envelope(
             from: new Address('prt@gmail.com', 'Vigilancia PRT'),
-            subject: mb_encode_mimeheader('Reporte Vigilancia PRT ' . $this->formatoNombre, 'UTF-8'),
+            subject: 'Reporte Vigilancia PRT ' . $this->formatoNombre,
         );
     }
 
