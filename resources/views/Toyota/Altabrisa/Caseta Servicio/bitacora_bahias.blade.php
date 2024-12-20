@@ -90,28 +90,28 @@
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
                                                 required>
                                         @elseif ($campoNombre == 'Bahía 5-6. Inicial')
-                                            <input type="number" step="0.01" class="form-control bahiaAL2-inicial"
-                                                id="campos[{{ $campo->id_campo }}]"
-                                                name="campos[{{ $campo->id_campo }}]"
-                                                value="{{ old('campos.' . $campo->id_campo) }}"
-                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                                required>
-                                        @elseif ($campoNombre == 'Bahía 5-6. Final')
-                                            <input type="number" step="0.01" class="form-control bahiaAL2-final"
-                                                id="campos[{{ $campo->id_campo }}]"
-                                                name="campos[{{ $campo->id_campo }}]"
-                                                value="{{ old('campos.' . $campo->id_campo) }}"
-                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                                required>
-                                        @elseif ($campoNombre == 'Bahía 7-8. Inicial')
                                             <input type="number" step="0.01" class="form-control bahiaAL3-inicial"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
                                                 required>
-                                        @elseif ($campoNombre == 'Bahía 7-8. Final')
+                                        @elseif ($campoNombre == 'Bahía 5-6. Final')
                                             <input type="number" step="0.01" class="form-control bahiaAL3-final"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 7-8. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahiaAL4-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 7-8. Final')
+                                            <input type="number" step="0.01" class="form-control bahiaAL4-final"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"
@@ -119,14 +119,14 @@
                                                 required>
                                         @elseif ($campoNombre == 'Bahía 9-10. Inicial')
                                             <input type="number" step="0.01"
-                                                class="form-control bahiaAL4-inicial"
+                                                class="form-control bahiaAL5-inicial"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
                                                 required>
                                         @elseif ($campoNombre == 'Bahía 9-10. Final')
-                                            <input type="number" step="0.01" class="form-control bahiaAL4-final"
+                                            <input type="number" step="0.01" class="form-control bahiaAL5-final"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"

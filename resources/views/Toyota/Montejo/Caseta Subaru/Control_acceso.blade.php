@@ -32,7 +32,7 @@
             </div>
 
 
-            @foreach (['Nombre de la persona visitante', 'Nombre de la empresa visitante', 'Nombre persona visitada', 'Area / Departamento', 'Observaciones / Comentarios', 'Asunto - Motivo visita', 'Hora de entrada', 'Hora de salida'] as $campoNombre)
+            @foreach (['Nombre de la persona visitante', 'Nombre de la empresa visitante', 'Nombre persona visitada', 'Area / Departamento', 'Asunto - Motivo visita', 'Hora de entrada', 'Hora de salida'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -69,9 +69,6 @@
                                 <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
                                     placeholder="Especifica otra área o departamento"></textarea>
                             </div>
-                        @elseif ($campoNombre == 'Observaciones / Comentarios')
-                            <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @elseif ($campoNombre == 'Asunto - Motivo visita')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
                                 rows="3" required>{{ old('campos.' . $campo->id_campo) }}</textarea>

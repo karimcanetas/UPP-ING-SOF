@@ -70,11 +70,11 @@
                         @elseif ($campoNombre == 'Hora de entrada')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                >
                         @elseif ($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                >
                         @elseif ($campoNombre == 'Origen / Destino')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">

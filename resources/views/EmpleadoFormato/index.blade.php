@@ -5,15 +5,16 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="container max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8 sm:py-10 lg:py-12">
+        <div class="container mx-auto px-0 sm:px-6 lg:px-8">
             <div class="card shadow-lg">
-                <div class="card-header text-center bg-light shadow-sm p-4">
-                    <h3 class="text-lg font-semibold mb-3 text-primary">
+                <div class="card-header text-center bg-gray-100 shadow-sm p-4">
+                    <h3 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-primary">
                         <i class="fas fa-envelope-open-text"></i>
-                        {{ __('Agregar correos') }}
+                        {{ __('Enlace de formatos') }}
                     </h3>
                 </div>
+
 
                 <div class="container mt-5">
                     @if (session('success'))
@@ -106,8 +107,8 @@
 
                         <div class="row">
                             <!-- Destinatarios correo -->
-                            <div class="col-md-12 text-center mb-4">
-                                <button type="button" class="btn btn-warning px-5 py-2 shadow-lg" id="editarmodal">
+                            <div class="col-md- text-center mb-4">
+                                <button type="button" class="btn btn-warning px-2 py-2 shadow-lg" id="editarmodal">
                                     <i class="fa-solid fa-pencil"></i> Destinatarios Correos
                                 </button>
                             </div>
@@ -134,7 +135,7 @@
                         {{-- <div id="empleadosorganizados" style="padding: 10px;"></div> --}}
 
 
-                        <div class="d-flex justify-content-center mt-4">
+                        <div class="submit-button-container">
                             <button type="submit" class="btn btn-primary px-5 py-2 shadow-lg">
                                 <i class="fas fa-paper-plane"></i> Enlazar Formato
                             </button>
@@ -344,26 +345,28 @@
                         let casetas = {};
 
                         response.data.forEach(item => {
-                            if (!casetas[item.nombre_caseta]) {
-                                casetas[item.nombre_caseta] = {
+                            if (!casetas[item.id_casetas]) {
+                                casetas[item.id_casetas] = {
                                     empresa: item.empresa,
                                     sucursal: item.sucursal,
-                                    formatos: {} 
+                                    caseta: item.nombre_caseta,
+                                    formatos: {}
                                 };
                             }
 
-                            if (!casetas[item.nombre_caseta].formatos[item.Tipo]) {
-                                casetas[item.nombre_caseta].formatos[item.Tipo] = [];
+                            if (!casetas[item.id_casetas].formatos[item.Tipo]) {
+                                casetas[item.id_casetas].formatos[item.Tipo] = [];
                             }
 
-                            casetas[item.nombre_caseta].formatos[item.Tipo].push(item);
+                            casetas[item.id_casetas].formatos[item.Tipo].push(item);
                         });
 
                         for (let nombreCaseta in casetas) {
                             let casetaData = casetas[nombreCaseta];
                             $('#empleadosorganizados').append(
-                                `<h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${nombreCaseta}</strong></h5>`
+                                `<h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${casetaData.caseta}</strong></h5>`
                             );
+                            // console.log(casetaData);
 
                             for (let tipo in casetaData.formatos) {
                                 $('#empleadosorganizados').append(
@@ -382,7 +385,7 @@
                                     </li>
                                 `;
                                     $('#empleadosorganizados ul:last').append(
-                                    listItem);
+                                        listItem);
                                 });
                             }
                         }
@@ -426,7 +429,14 @@
         });
     </script>
 
-
+    <style>
+        .submit-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: -20px;
+            padding: 20px
+        }
+    </style>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

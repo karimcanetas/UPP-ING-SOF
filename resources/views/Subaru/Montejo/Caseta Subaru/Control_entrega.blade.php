@@ -32,7 +32,7 @@
             </div>
 
 
-            @foreach (['Fecha', 'Folio/Salida definitiva', 'Placas', 'Unidad', 'VIN (6 últimos dígitos)', 'Hora de salida', 'Observaciones / Comentarios'] as $campoNombre)
+            @foreach (['Fecha', 'Folio/Salida definitiva', 'Placas', 'Unidad', 'VIN (6 últimos dígitos)', 'Hora de salida', 'Condición salida unidad del taller', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -55,9 +55,12 @@
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione una unidad</option>
-                                @foreach ($unidad as $unidad_item)
-                                    <option value="{{ $unidad_item->unidad }}">{{ $unidad_item->unidad }}</option>
-                                @endforeach
+                                <option value="XV">XV</option>
+                                <option value="WRX">WRX</option>
+                                <option value="OUTBACK">OUTBACK</option>
+                                <option value="FORESTER">FORESTER</option>
+                                <option value="CROOSTREK">CROOSTREK</option>
+                                <option value="BRZ">BRZ</option>
                                 <option value="otro">OTRO</option>
                             </select>
 
@@ -75,8 +78,22 @@
                                 required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)">
                         @elseif ($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                        @elseif ($campoNombre == 'Condición salida unidad del taller')
+                            <select class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
+                                <option value="">Seleccione una condición</option>
+                                @foreach ($condicion_salida as $condicion)
+                                    <option value="{{ $condicion->nombre }}">{{ $condicion->nombre }}</option>
+                                @endforeach
+                                <option value="otro">OTRO</option>
+                            </select>
+
+                            <div class="textunidad" style="display: none; margin-top: 10px;">
+                                <label for="otrotextunidad1469">Especificar otra Condición</label>
+                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
+                                    placeholder="Especifica otra condición"></textarea>
+                            </div>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
                                 rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>

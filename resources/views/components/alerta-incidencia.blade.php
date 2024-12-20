@@ -18,20 +18,16 @@
 
 <script>
     $(document).ready(function() {
-        // Muestra de incidencia creada
         @if ($message = Session::get('success'))
             Swal.fire({
-                imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/check.gif',
-                imageWidth: 300,
-                imageHeight: 300,
+                position: "center",
+                icon: "success",
                 title: "¡Incidencia creada!",
                 text: "{{ $message }}",
-                confirmButtonColor: '#00bf7a',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.history.back(); // Retrocede a lo anterior
-                }
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.history.back();
             });
         @endif
 

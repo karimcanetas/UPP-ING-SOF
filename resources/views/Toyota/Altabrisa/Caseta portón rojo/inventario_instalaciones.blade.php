@@ -52,7 +52,7 @@
                             </select>
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
-                                <label for="otrotextunidad155">Especificar otra unidad</label>
+                                <label for="otrotextunidad155">Especificar otra ubicación</label>
                                 <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
                                     placeholder="Especifica otra ubicación"></textarea>
                             </div>

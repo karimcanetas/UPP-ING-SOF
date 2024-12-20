@@ -33,7 +33,7 @@
             </div>
 
 
-            @foreach (['Fecha', 'Unidad', 'Color', 'Placas', 'VIN (6 últimos dígitos)', 'Area', 'Observaciones / Comentarios'] as $campoNombre)
+            @foreach (['Fecha', 'Unidad', 'Color', 'Placas', 'VIN (6 últimos dígitos)', 'Area', 'Cono/Observaciones'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -79,7 +79,7 @@
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
-                        @elseif ($campoNombre == 'Observaciones / Comentarios')
+                        @elseif ($campoNombre == 'Cono/Observaciones')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif

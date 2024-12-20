@@ -119,12 +119,12 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         },
         '1': {// ID caseta servicio
             'Matutino': [
-                'Novedades Servicios',
+                'Novedades Servicios.',
                 'Control de acceso a proveedores Montejo',
 
             ],
             'Nocturno': [
-                'Novedades Servicios',
+                'Novedades Servicios.',
                 'Control de entrega de unidades en postventa',
                 'Control de unidades en estacionamiento TOYOTA',
                 'Postventa - bitacora de surtido de aceite bahias',
@@ -134,12 +134,12 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         },
         '7': {// ID caseta subaru 
             'Matutino': [
-                'Novedades Subaru',
+                'Novedades Subaru.',
                 'Salida Unidades TOTs',
                 'Control de acceso a proveedores Subaru'
             ],
             'Nocturno': [
-                'Novedades Subaru',
+                'Novedades Subaru.',
                 'Control de acceso a proveedores Subaru'
             ]
         },
@@ -160,11 +160,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Postventa - bitácora de surtido de aceite bahías Altabrisa',
                 'Postventa - Bitácora acceso vehículos a servicio sin cita',
                 'Control de entrega de unidades en postventa'
+                
 
             ],
             'Nocturno': [
                 'Novedades Servicios',
-                'Postventa - bitácora de surtido de aceite bahías Altabrisa'
+                'Postventa - bitácora de surtido de aceite bahías Altabrisa',
+                'Inventario de unidades en las instalaciones'
+                
             ]
         },
         '8': {// ID Caseta Portón rojo empresa TOYOTA sucursal Altabrisa
@@ -184,6 +187,8 @@ document.getElementById('id_turnos').addEventListener('change', function () {
 
         }
     };
+
+
 
     // Obtener los formatos correspondientes según la caseta y el turno seleccionados
     const formatosPorTurnoYCaseta = formatosPorCasetaYTurno[casetaSeleccionada] && formatosPorCasetaYTurno[casetaSeleccionada][turno] || [];
@@ -231,7 +236,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         //SUCURSAL TOYOTA MONTEJO
 
         //Caseta Servicio
-        'Novedades Servicios': 'novedad_servicio',
+        'Novedades Servicios.': 'novedad_servicio',
         'Control de entrega de unidades en postventa': 'Control_entrega_servicio',
         'Control de unidades en estacionamiento TOYOTA': 'Control_toyota_servicio',
         'Control de acceso a proveedores Montejo': 'control_acceso_proveedores',
@@ -247,6 +252,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
 
         // Caseta Subaru
         'Salida Unidades TOTs': 'salida_unidades_subaru',
+        'Novedades Subaru.': 'novedad_servicio',
         'Control de acceso a proveedores Subaru': 'control_acceso_subaru',
 
         //EMPRESA SUBARU SUCURSAL MÉRIDA 
@@ -394,6 +400,31 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#empleadoNombre').val(empleadoNombre);
     });
 
+    $('#empleadoNoRegistrado').on('change', function () {
+        // Obtener la opción seleccionada
+        var selectedOption = $(this).find('option:selected');
+        var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del puesto
+        var puestoId = selectedOption.data('puesto-id'); // Obtener el nombre
+
+        $('#empleadoNombre').val(empleadoNombre);
+        // console.log('Empleado seleccionado:', empleadoNombre);
+
+        $('#puestoInput').val(puestoId);
+        // console.log('Puesto asignado', puestoId);
+
+        // Mostrar/ocultar contenedor asociado
+        if (selectedOption.val()) {
+            $('#empleadoNoRegistradoContainer').show(); // Mostrar contenedor si hay un valor seleccionado
+        } else {
+            $('#empleadoNoRegistradoContainer').hide(); // Ocultar contenedor si no hay valor
+        }
+    });
+    
+    // $(document).ready(function () {
+    //     $('label:contains("Empleado no registrado")').hide();
+    // });
+    
+
     // Muestra el campo de empleado no registrado
     if (agregarEmpleadoBtn) {
         agregarEmpleadoBtn.addEventListener('click', () => {
@@ -489,7 +520,7 @@ function submitAndResetForm(boton) {
 
         if (!esOpcional && !esOculto && !elemento.disabled) {
             const esVacio =
-                (['text', 'textarea', 'number', 'email'].includes(elemento.type) && elemento.value.trim() === '') ||
+                (['text', 'textarea', 'number', 'email', 'date', 'datetime', 'time'].includes(elemento.type) && elemento.value.trim() === '') ||
                 (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
@@ -548,22 +579,22 @@ function submitAndResetForm(boton) {
 //Consumo por bahías = Acum Final  menos Acum Inicial por día
 //Suma de Consumo por bahías 1-2, 3-4, 5-6, 7-8, 9-10,  =Total de surtido por día<script>
 // Función general para calcular el consumo por bahía
+// Función para calcular el consumo por bahía
 function calcularConsumo(prefix, totalSurtidoClass) {
     const totalSurtido = document.querySelector(totalSurtidoClass);
     let totalConsumo = 0;
 
-    // itero sobre las bahías (1 a 4)
-    for (let i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 10; i++) {
         const bahiaInicial = document.querySelector(`.${prefix}${i}-inicial`);
         const bahiaFinal = document.querySelector(`.${prefix}${i}-final`);
 
-        // verifico si los elementos existen antes de acceder a sus valores
         if (bahiaInicial && bahiaFinal) {
-            totalConsumo += parseFloat(bahiaFinal.value || 0) - parseFloat(bahiaInicial.value || 0);
+            const consumoBahia = parseFloat(bahiaFinal.value || 0) - parseFloat(bahiaInicial.value || 0);
+            totalConsumo += consumoBahia;
+            // console.log(`Consumo de bahía ${i}:`, consumoBahia);
         }
     }
 
-    //mostrar el total surtido si existe el elemento
     if (totalSurtido) {
         totalSurtido.value = totalConsumo.toFixed(2);
     }
@@ -572,12 +603,12 @@ function calcularConsumo(prefix, totalSurtidoClass) {
 // Calcular consumo para Altabrisa
 calcularConsumo('bahiaAL', '.total-surtidoAl');
 
-// Calcular consumo para otro grupo (ejemplo: bahías MO)
+// Calcular consumo para Montejo
 calcularConsumo('bahia', '.total-surtidoMO');
 
-// Agregar eventos para actualizar los consumos
-const bahiasAL = ['bahiaAL1', 'bahiaAL2', 'bahiaAL3', 'bahiaAL4'];
-const bahiasMO = ['bahia1', 'bahia2', 'bahia3', 'bahia4'];
+// agregue mas bahias si en un futuro este llegara a crecer
+const bahiasAL = ['bahiaAL1', 'bahiaAL2', 'bahiaAL3', 'bahiaAL4', 'bahiaAL5', 'bahiaAL6', 'bahiaAL7', 'bahiaAL8', 'bahiaAL9', 'bahiaAL10'];
+const bahiasMO = ['bahia1', 'bahia2', 'bahia3', 'bahia4', 'bahia5', 'bahia6', 'bahia7', 'bahia8', 'bahia9', 'bahia10'];
 
 // Agregar eventos para Altabrisa
 bahiasAL.forEach(bahia => {
@@ -590,7 +621,7 @@ bahiasAL.forEach(bahia => {
     }
 });
 
-// Agregar eventos para bahías MO
+// Agregar eventos para bahías Montejo
 bahiasMO.forEach(bahia => {
     const bahiaInicial = document.querySelector(`.${bahia}-inicial`);
     const bahiaFinal = document.querySelector(`.${bahia}-final`);
@@ -601,9 +632,11 @@ bahiasMO.forEach(bahia => {
     }
 });
 
+//aqui oculto el Total Surtido
 $(document).ready(function () {
     $('label:contains("Total surtido")').closest('tr').hide();
 });
+
 
 
 //boton enviarCorreo

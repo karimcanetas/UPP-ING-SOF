@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            @foreach (['Placas', 'VIN (6 últimos dígitos)', 'Unidad', 'Color', 'Area / Departamento', 'Observaciones / Comentarios'] as $campoNombre)
+            @foreach (['Placas', 'VIN (6 últimos dígitos)', 'Unidad', 'Color', 'Ubicación de la unidad', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -52,9 +52,12 @@
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione una unidad</option>
-                                @foreach ($unidad as $unidad_item)
-                                    <option value="{{ $unidad_item->unidad }}">{{ $unidad_item->unidad }}</option>
-                                @endforeach
+                                <option value="XV">XV</option>
+                                <option value="WRX">WRX</option>
+                                <option value="OUTBACK">OUTBACK</option>
+                                <option value="FORESTER">FORESTER</option>
+                                <option value="CROOSTREK">CROOSTREK</option>
+                                <option value="BRZ">BRZ</option>
                                 <option value="otro">OTRO</option>
                             </select>
 
@@ -68,25 +71,29 @@
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
-                                @elseif ($campoNombre == 'Area / Departamento')
-                                <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
-                                    <option value="">Seleccione un área</option>
-                                    @foreach ($area_departamento as $area_departamentos)
-                                        <option value="{{ $area_departamentos->nombre }}">
-                                            {{ $area_departamentos->nombre }}</option>
-                                    @endforeach
-                                    <option value="otro">OTRO</option>
-                                </select>
-    
-                                <div class="otrosTextareaContainer" style="display: none; margin-top: 10px;">
-                                    <label for="otrosTextarea">Especificar otra área o departamento</label>
-                                    <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                        placeholder="Especifica otra área o departamento"></textarea>
-                                </div>
+                        @elseif ($campoNombre == 'Ubicación de la unidad')
+                            <select class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
+                                <option value="">Seleccione una ubicación</option>
+                                <option value="ESTACIONAMIENTO DE CLIENTES (AV. PROLONGACIÓN)">ESTACIONAMIENTO DE
+                                    CLIENTES (AV. PROLONGACIÓN)</option>
+                                <option value="INSTALACIONES EDIFICIO SUBARU">INSTALACIONES EDIFICIO SUBARU</option>
+                                <option value="TALLER DE SERVICIO">TALLER DE SERVICIO</option>
+                                <option value="AREA DE LAVADO UNIDADES">AREA DE LAVADO UNIDADES</option>
+                                <option value="UNIDADES RECIBIDAS POR GRUA DURANTE EL TURNO">UNIDADES RECIBIDAS POR GRUA
+                                    DURANTE EL TURNO</option>
+                                <option value="otro">OTRO</option>
+                            </select>
+
+                            <div class="otrosTextareaContainer" style="display: none; margin-top: 10px;">
+                                <label for="otrosTextarea">Especificar otra ubicación</label>
+                                <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
+                                    placeholder="Especifica otra ubicación"></textarea>
+                            </div>
                         @elseif($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

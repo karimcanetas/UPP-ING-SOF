@@ -58,7 +58,7 @@
                                 required>
                         @elseif ($campoNombre == 'Area / Departamento')
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroArea(this)" required>
+                                name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione un área</option>
                                 @foreach ($area_departamento as $area_departamentos)
                                     <option value="{{ $area_departamentos->nombre }}">
@@ -67,24 +67,21 @@
                                 <option value="otro">OTRO</option>
                             </select>
 
-                            <div class="otrosTextareaContainer" style="display: none; margin-top: 10px;">
-                                <label for="otrosTextarea3">Especificar otra área o departamento</label>
-                                <textarea class="form-control otrosTextarea" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra área o departamento"></textarea>
+                            <div class="textunidad" style="display: none; margin-top: 10px;">
+                                <label for="otrotextunidad1178">Especificar otra ubicación</label>
+                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
+                                    placeholder="Especifica otra ubicación"></textarea>
                             </div>
                         @elseif($campoNombre == 'Asunto - Motivo visita')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
                                 required>
                         @elseif($campoNombre == 'Hora de entrada')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}" required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}" required>
                         @elseif($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}" required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}" required>
                         @endif
                     </div>
                 @endif

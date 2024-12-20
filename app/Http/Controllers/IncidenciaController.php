@@ -143,16 +143,19 @@ class IncidenciaController extends Controller
         // Insertar datos en campo_incidencias
         $campos = $request->input('campos', []);
         foreach ($campos as $id_campo => $valor) {
-            // Verificar si es nulo
-            if ($valor !== null && $valor !== '') {
-                CampoIncidencia::create([
-                    'id_incidencias' => $incidencia->id_incidencias,
-                    'id_campo' => $id_campo,
-                    'id_formatos' => $request->input('id_formatos'),
-                    'valor' => $valor
-                ]);
+            // si el valor es nulo o vacío, asignar "N/A"
+            if ($valor === null || $valor === '') {
+                $valor = 'N/A';
             }
+
+            CampoIncidencia::create([
+                'id_incidencias' => $incidencia->id_incidencias,
+                'id_campo' => $id_campo,
+                'id_formatos' => $request->input('id_formatos'),
+                'valor' => $valor
+            ]);
         }
+
 
 
         // Redireccionar según el formulario procesado

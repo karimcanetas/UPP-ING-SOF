@@ -27,7 +27,7 @@ class ReporteMailable extends Mailable
     {
         return new Envelope(
             from: new Address('prt@gmail.com', 'Vigilancia PRT'),
-            subject: 'Reporte Vigilancia PRT ' . $this->formatoNombre,
+            subject: 'Reporte Vigilancia PRT ' .  $this->formatoNombre,
         );
     }
 

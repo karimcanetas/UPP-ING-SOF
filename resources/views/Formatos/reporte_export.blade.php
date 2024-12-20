@@ -26,7 +26,7 @@
                 </th>
                 <th
                     style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
-                    Fecha y Hora
+                    Fecha y Hora de creación
                 </th>
             </tr>
         </thead>

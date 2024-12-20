@@ -9,7 +9,7 @@
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:block">
                 <i class="fas fa-arrow-right"></i> Enviar correo
             </button>
         </div>
@@ -131,7 +131,7 @@
     @include('Toyota.Cancún.Encierro.entrada_salida_encierro')
     <!-- Formulario de INVENTARIO DE UNIDADES NUEVAS EN ENCIERRO / PATIO -->
     @include('Toyota.Cancún.Encierro.inventario_nuevas_encierro')
-    <!--Formulatio de Noveadades postventa -->
+    <!--Formulatio de Novedades postventa -->
     @include('Toyota.Cancún.PostVenta.Novedades')
     <!-- Formulario de CONTROL DE ACEITE Y RESIDUOS DEL TALLER -->
     @include('Toyota.Cancún.PostVenta.control_aceite')

@@ -50,9 +50,12 @@
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione una unidad</option>
-                                @foreach ($unidad as $unidad_item)
-                                    <option value="{{ $unidad_item->unidad }}">{{ $unidad_item->unidad }}</option>
-                                @endforeach
+                                <option value="XV">XV</option>
+                                <option value="WRX">WRX</option>
+                                <option value="OUTBACK">OUTBACK</option>
+                                <option value="FORESTER">FORESTER</option>
+                                <option value="CROOSTREK">CROOSTREK</option>
+                                <option value="BRZ">BRZ</option>
                                 <option value="otro">OTRO</option>
                             </select>
 
@@ -81,7 +84,8 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'KM de entrada')
                             <input type="number" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Nombre Taller')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"

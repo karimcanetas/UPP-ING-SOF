@@ -227,62 +227,63 @@
 
 <script>
     $(document).ready(function() {
-        let groupedByCaseta = {}; // variable global para almacenar los datos de la respuesta AJAX7
+        let groupedBySucursal = {};
         $.ajax({
             url: '/checks-formatos',
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                groupedByCaseta = response.groupedByCaseta; // se asigna a la variable global
-                const addedFormats = new Set(); // para evitar formatos duplicados
-                console.log(groupedByCaseta);
+                groupedBySucursal = response.groupedBySucursal;
+                const addedFormats = new Set(); // para evitar formatos duplicados en cada caseta
+                console.log(groupedBySucursal);
                 $('#formatoSelect').empty();
 
-                // agrupo las casetas con sus formatos asignados
-                $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
-                    let optgroup = $('<div>', {
-                        class: 'caseta-group',
-                        'data-caseta': casetaNombre.normalize("NFD").replace(
-                            /[\u0300-\u036f]/g, "").toLowerCase()
-                    }).appendTo('#formatoSelect');
+                // Itera sobre sucursales
+                $.each(groupedBySucursal, function(sucursalNombre, casetas) {
+                    $.each(casetas, function(casetaNombre, formatos) {
+                        let optgroup = $('<div>', {
+                            class: 'caseta-group',
+                            'data-caseta': casetaNombre.normalize("NFD")
+                                .replace(/[\u0300-\u036f]/g, "")
+                                .toLowerCase()
+                        }).appendTo('#formatoSelect');
 
-                    // console.log(formatoCasetas);
+                        const empresa = formatos[0].empresa || 'Sin empresa';
+                        const sucursal = formatos[0].sucursal || 'Sin sucursal';
+                        const caseta = formatos[0].nombre_caseta || 'Sin caseta';
 
-                    const empresa = formatoCasetas[0].empresa || 'Sin empresa';
-                    const sucursal = formatoCasetas[0].sucursal || 'Sin sucursal';
+                        optgroup.append(
+                            `<h5><strong>${empresa} / ${sucursal} / ${caseta}</strong></h5>`
+                        );
 
+                        $.each(formatos, function(index, formatoCaseta) {
+                            const formatoTipo = formatoCaseta.Tipo.charAt(0)
+                                .toUpperCase() + formatoCaseta.Tipo.slice(1)
+                                .toLowerCase();
 
-                    optgroup.append(
-                        `<h5><strong>${empresa} / ${sucursal} / ${casetaNombre}</strong></h5>`
-                    );
-                    // itero sobre los formatos
-                    $.each(formatoCasetas, function(index, formatoCaseta) {
-                        const formatoTipo = formatoCaseta.Tipo.charAt(0)
-                            .toUpperCase() + formatoCaseta.Tipo.slice(1)
-                            .toLowerCase();
-
-                        if (!addedFormats.has(formatoTipo.toLowerCase())) {
-                            // addedFormats.add(formatoTipo.toLowerCase());
-
-                            optgroup.append(
-                                `<label class="formato-label" data-formato="${formatoTipo.toLowerCase()}">
-                                <input type="checkbox" class="formato-checkbox" value="${formatoCaseta.id_formatos}"> ${formatoTipo}
-                                </label>`
-                            );
-
-                            // verifico si 'empleados' es un arreglo antes de usar map
-                            const empleadosList = Array.isArray(formatoCaseta
-                                    .empleados) ?
-                                formatoCaseta.empleados.map(function(empleado) {
-                                    return `<li class="empleado-item" data-email="${empleado.email}" data-formato="${formatoCaseta.id_formatos}" data-nombre="${empleado.nombre}"><strong>${empleado.nombre}</strong></li>`;
-                                }).join('') : '';
-
-                            if (empleadosList) {
+                            if (!addedFormats.has(formatoTipo
+                                    .toLowerCase())) {
                                 optgroup.append(
-                                    `<ul class="empleados-list">${empleadosList}</ul>`
+                                    `<label class="formato-label" data-formato="${formatoTipo.toLowerCase()}">
+                                        <input type="checkbox" class="formato-checkbox" value="${formatoCaseta.id_formatos}"> ${formatoTipo}
+                                    </label>`
                                 );
+
+                                const empleadosList = Array.isArray(
+                                        formatoCaseta.empleados) ?
+                                    formatoCaseta.empleados.map(function(
+                                        empleado) {
+                                        return `<li class="empleado-item" data-email="${empleado.email}" data-formato="${formatoCaseta.id_formatos}" data-nombre="${empleado.nombre}"><strong>${empleado.nombre}</strong></li>`;
+                                    }).join('') :
+                                    '';
+
+                                if (empleadosList) {
+                                    optgroup.append(
+                                        `<ul class="empleados-list">${empleadosList}</ul>`
+                                    );
+                                }
                             }
-                        }
+                        });
                     });
                 });
             },
@@ -300,7 +301,6 @@
 
             let formatoIds = $('#formato_id').val().split(',');
             if ($(this).is(':checked')) {
-                // el valor lo mando al campo oculto
                 formatoIds.push($(this).val());
             } else {
                 const index = formatoIds.indexOf($(this).val());
@@ -354,7 +354,6 @@
                 }
             });
 
-            // Actualiza la lista de correos en el DOM
             $('#correos').empty();
             let correosParaEnviar = [];
 
@@ -364,20 +363,19 @@
                         $.each(casetas, function(caseta, correos) {
                             $('#correos').append(
                                 `<li>
-                            <h4><strong>${empresa} / ${sucursal} / ${caseta}</strong></h4>
-                            <ul>`
+                                    <h4><strong>${empresa} / ${sucursal} / ${caseta}</strong></h4>
+                                    <ul>`
                             );
 
                             $.each(correos, function(index, correo) {
                                 $('#correos').append(
                                     `<li data-email="${correo.email}" data-nombre="${correo.nombre}" data-formato="${correo.formatoId}">
-                                <strong>${correo.nombre}</strong> (${correo.email})
-                                <br>
-                                Formato: <strong>${correo.formato}</strong>
-                            </li>`
+                                        <strong>${correo.nombre}</strong> (${correo.email})
+                                        <br>
+                                        Formato: <strong>${correo.formato}</strong>
+                                    </li>`
                                 );
 
-                                // Agregar los correos al array para el campo oculto
                                 correosParaEnviar.push(correo.email);
                             });
 
@@ -386,25 +384,24 @@
                     });
                 });
 
-                // Asignar los correos al campo oculto
                 $('#email').val(correosParaEnviar.join(','));
             } else {
                 $('#correos').append('<li>No hay correos disponibles.</li>');
             }
         }
 
-
-        // Se encuentra el formato por id
         function findFormatoById(id) {
             let formatoCaseta = null;
-            $.each(groupedByCaseta, function(casetaNombre, formatoCasetas) {
-                $.each(formatoCasetas, function(index, formato) {
-                    if (formato.id_formatos == id) {
-                        formato.casetaNombre =
-                            casetaNombre;
-                        formatoCaseta = formato;
-                        return false;
-                    }
+            $.each(groupedBySucursal, function(sucursalNombre, casetas) {
+                $.each(casetas, function(casetaNombre, formatos) {
+                    $.each(formatos, function(index, formato) {
+                        if (formato.id_formatos == id) {
+                            formato.casetaNombre = casetaNombre;
+                            formatoCaseta = formato;
+                            return false;
+                        }
+                    });
+                    if (formatoCaseta) return false;
                 });
                 if (formatoCaseta) return false;
             });

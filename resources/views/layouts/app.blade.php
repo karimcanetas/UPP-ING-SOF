@@ -19,6 +19,7 @@
 
         <title>{{ config('app.name', 'Sistema administrativo de Vigilancia') }}</title>
 
+        {{-- aqui estaba el logo de prt anteriormente --}}
         <link href="{{ asset('https://serviciosespecializados.grupoprt.com/public/assets/img/logo/prt_Mesa.ico') }}"
             rel='icon' type='image/png'>
 
@@ -51,6 +52,9 @@
         @endif
     @else
         <title>{{ config('app.name', 'Sistema administrativo de vigilancia') }}</title>
+        <link href="{{ asset('https://serviciosespecializados.grupoprt.com/public/assets/img/logo/prt_Mesa.ico') }}"
+        rel='icon' type='image/png'>
+
 
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -241,28 +245,7 @@
     </script>
 
     <!-- puestos dinamicos -->
-    <script>
-        // Manejar el cambio en el select de empleados no registrados
-        $('#empleadoNoRegistrado').on('change', function() {
-            // Obtener el empleado seleccionado
-            var selectedOption = $(this).find('option:selected');
-            var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del empleado
-            var puestoNombre = selectedOption.data('puesto-nombre'); // Obtener el nombre del puesto
 
-            // Rellenar el campo de texto con el nombre del empleado
-            $('#empleadoNombre').val(empleadoNombre);
-
-            // Rellenar el campo de puesto con el nombre del puesto
-            $('#puestoInput').val(puestoNombre); // Rellenar el campo de puesto
-
-            // Manejar la visibilidad de campo asociado interno
-            if (selectedOption.val()) {
-                $('#campoAsociadoInterno').hide();
-            } else {
-                $('#campoAsociadoInterno').show();
-            }
-        });
-    </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 

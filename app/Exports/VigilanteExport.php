@@ -105,6 +105,32 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
                 }
                 $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
                 $lastRow = max(count($this->camposIncidencias) + 3, 10);
+                foreach (range('A', $lastColumn) as $columna) {
+                    $caracteresMaximos = 0;
+                    foreach ($sheet->getRowIterator() as $fila) {
+                        $direccionCelda = $columna . $fila->getRowIndex();
+                        $celda = $sheet->getCell($direccionCelda);
+
+                        if (!is_null($celda->getValue())) {
+                            $lineas = explode("\n", $celda->getValue());
+                            foreach ($lineas as $linea) {
+                                $caracteresMaximos = max($caracteresMaximos, mb_strlen($linea));
+                            }
+                        }
+                    }
+                    if ($caracteresMaximos > 50) {
+                        $sheet->getColumnDimension($columna)->setWidth(60);
+                    } elseif ($caracteresMaximos > 30) {
+                        $sheet->getColumnDimension($columna)->setWidth(30);
+                    } elseif ($caracteresMaximos > 20) {
+                        $sheet->getColumnDimension($columna)->setWidth(19);
+                    } elseif ($caracteresMaximos > 15) {
+                        $sheet->getColumnDimension($columna)->setWidth(13);
+                    } else {
+                        $sheet->getColumnDimension($columna)->setWidth(12);
+                    }
+                    $sheet->getStyle($columna)->getAlignment()->setWrapText(true);
+                }
 
                 // $valor = $nombreConEtiqueta . str_repeat(' ', 10) . $fechaConEtiqueta;
                 // $sheet->setCellValue('A1', $valor);

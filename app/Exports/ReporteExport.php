@@ -77,11 +77,32 @@ class ReporteExport implements FromView, WithTitle, WithEvents
                 $nombresCampos = array_filter($this->view()->getData()['nombresCampos'], fn($campo) => !empty($campo));
                 $columnCount = count($nombresCampos) + 2;
                 $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
-                $lastRow = max(count($this->camposIncidencias) + 5, 10);
+                $lastRow = max(count($this->camposIncidencias), 1);
+                foreach (range('A', $lastColumn) as $columna) {
+                    $caracteresMaximos = 0;
+                    foreach ($sheet->getRowIterator() as $fila) {
+                        $direccionCelda = $columna . $fila->getRowIndex();
+                        $celda = $sheet->getCell($direccionCelda);
 
-                // se define de forma fija el ancho de la columna
-                foreach (range('A', $lastColumn) as $column) {
-                    $sheet->getColumnDimension($column)->setWidth(23);
+                        if (!is_null($celda->getValue())) {
+                            $lineas = explode("\n", $celda->getValue());
+                            foreach ($lineas as $linea) {
+                                $caracteresMaximos = max($caracteresMaximos, mb_strlen($linea));
+                            }
+                        }
+                    }
+                    if ($caracteresMaximos > 50) {
+                        $sheet->getColumnDimension($columna)->setWidth(60);
+                    } elseif ($caracteresMaximos > 30) {
+                        $sheet->getColumnDimension($columna)->setWidth(30);
+                    } elseif ($caracteresMaximos > 20) {
+                        $sheet->getColumnDimension($columna)->setWidth(19);
+                    } elseif ($caracteresMaximos > 15) {
+                        $sheet->getColumnDimension($columna)->setWidth(13);
+                    } else {
+                        $sheet->getColumnDimension($columna)->setWidth(12);
+                    }
+                    $sheet->getStyle($columna)->getAlignment()->setWrapText(true);
                 }
 
                 for ($row = 3; $row <= $lastRow; $row++) {
