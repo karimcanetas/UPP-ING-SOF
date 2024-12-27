@@ -84,7 +84,10 @@ Route::controller(IncidenciaController::class)->group(function () {
 Route::controller(IncidenciaController::class)->group(function () {
     Route::get('/incidencias/create', 'create')->name('incidencias.create');
     Route::post('/incidencias', 'store')->name('incidencias.store');
+    Route::get('/obtenerSalida', 'obtenerHoraSalida');
+    Route::post('/actualizar-salida', 'ActualizarSalida');
 });
+
 
 //ruta de Empleados
 Route::controller(EmpleadosCatologoController::class)->group(function () {
@@ -128,5 +131,8 @@ Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCa
 
 //ruta envio vigilante 
 Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
+
 // Autenticacion
+
+
 require __DIR__ . '/auth.php';

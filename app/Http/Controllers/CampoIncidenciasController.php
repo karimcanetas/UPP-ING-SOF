@@ -17,6 +17,7 @@ use App\Models\Incidencia;
 use App\Models\Turno;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 

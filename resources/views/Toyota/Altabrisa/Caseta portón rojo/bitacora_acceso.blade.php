@@ -30,6 +30,27 @@
                 </div>
             </div>
 
+            <section class="form-group ">
+                <label>Selecciona el tipo de hora:</label><br>
+                <div class="radio-list">
+                    <div class="radio-item">
+                        <input type="radio" name="horaSelect" id="horaEntrada" value="entrada" class="mr-2">
+                        <label for="horaEntrada">Hora entrada</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="horaSelect" id="horaSalida" value="salida" class="mr-2">
+                        <label for="horaSalida">Hora salida</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" name="horaSelect" id="ambas" value="ambas" class="mr-2">
+                        <label for="ambas">Ambas</label>
+                    </div>
+                </div>
+                <div id="horaSelectError" style="color: red; display: none;">
+                    Por favor, selecciona un tipo de hora.
+                </div>
+            </section>
+
             @foreach (['Nombre asociado interno', 'Empleado no registrado', 'Puesto', 'Hora de entrada', 'Hora de salida', 'Unidad - Vehiculo personal', 'Placas', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
@@ -38,7 +59,7 @@
 
                         @if ($campoNombre == 'Nombre asociado interno')
                             <div class="align-items-center" id="campoAsociadoInterno">
-                                <select name="campos[{{ $campo->id_campo }}]" id="empleadoSelect"
+                                <select name="campos[{{ $campo->id_campo }}]" id="campoAsociadoInterno"
                                     class="form-control js-example-tokenizer"
                                     style="width: 100%; text-transform: uppercase;">
                                     <option value="" selected disabled>Selecciona un empleado</option>
@@ -51,7 +72,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>                           
+                            </div>
                             <br>
                             <div class="d-flex align-items-center">
                                 <button type="button" class="btn btn-outline-primary mr-2" data-toggle="modal"
@@ -59,37 +80,46 @@
                                     style="font-size: 18px; padding: 10px 20px;" id="agregarEmpleadoBtn">
                                     <i class="fas fa-user-plus"></i> Agregar Empleado
                                 </button>
+
+                                <button type="button" class="btn btn-outline-primary mr-2"  data-bs-toggle="modal"
+                                    data-bs-target="#HoraModal" aria-label="Consulta la hora de entrada"
+                                    style="font-size: 18px; padding: 10px 20px; display: none" id="agregarhoraBtn">
+                                    <i class="fas fa-user-plus"></i> Actualizar salida
+                                </button>
                             </div>
-                            
-                            @elseif ($campoNombre == 'Empleado no registrado')
-                                <div id="empleadoNoRegistradoContainer" style="display: none;">
-                                    <input type="text" class="form-control" id="empleadoNombre"
-                                        name="campos[{{ $campo->id_campo }}]"
-                                        value="{{ old('campos.' . $campo->id_campo) }}">
-                                </div>
-                            @elseif ($campoNombre == 'Puesto')
-                                <input type="text" class="form-control" id="puestoInput" style="text-transform: uppercase"
+                        @elseif ($campoNombre == 'Empleado no registrado')
+                            <div id="empleadoNoRegistradoContainer" style="display: none;">
+                                <input type="text" class="form-control" id="empleadoNombre"
                                     name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}" disabled required>
-                            @elseif ($campoNombre == 'Hora de entrada')
+                                    value="{{ old('campos.' . $campo->id_campo) }}">
+                            </div>
+                        @elseif ($campoNombre == 'Puesto')
+                            <input type="text" class="form-control" id="puestoInput"
+                                style="text-transform: uppercase" name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}"  required>
+                        @elseif ($campoNombre == 'Hora de entrada')
+                            <div id="campoHoraEntrada" style="display: none;">
                                 <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                     name="campos[{{ $campo->id_campo }}]"
                                     value="{{ old('campos.' . $campo->id_campo) }}">
-                            @elseif ($campoNombre == 'Hora de salida')
+                            </div>
+                        @elseif ($campoNombre == 'Hora de salida')
+                            <div id="campoHoraSalida" style="display: none;">
                                 <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                     name="campos[{{ $campo->id_campo }}]"
                                     value="{{ old('campos.' . $campo->id_campo) }}">
-                            @elseif ($campoNombre == 'Unidad - Vehiculo personal')
-                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}">
-                            @elseif($campoNombre == 'Placas')
-                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos. ' . $campo->id_campo) }}">
-                            @elseif ($campoNombre == 'Observaciones / Comentarios')
-                                <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                    rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                            </div>
+                        @elseif ($campoNombre == 'Unidad - Vehiculo personal')
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}">
+                        @elseif($campoNombre == 'Placas')
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos. ' . $campo->id_campo) }}">
+                        @elseif ($campoNombre == 'Observaciones / Comentarios')
+                            <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @endif
                     </div>
                 @endif
@@ -101,20 +131,3 @@
     @endif
 </form>
 
-
-{{-- 
-
-<script>
-    $('.js-example-tokenizer').select2({
-        tags: true,
-        tokenSeparators: [',', ' ']
-    });
-</scrip> --}}
-
-{{-- <script>
-    $(".js-example-tokenizer").select2({
-        etiquetas: true,
-        tokenSeparators: [',', ' '],
-        width: '100%'
-    })
-</script> --}}

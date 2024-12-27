@@ -18,18 +18,21 @@
 
 <script>
     $(document).ready(function() {
-        @if ($message = Session::get('success'))
-            Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "¡Incidencia creada!",
-                text: "{{ $message }}",
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                window.history.back();
-            });
-        @endif
+    @if ($message = Session::get('success'))
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "¡Incidencia creada!",
+            text: "{{ $message }}",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            window.history.back();
+        });
+        //cuando este se muestre mostrar el div con el id campoAsociadoInterno
+        $('#campoAsociadoInterno').show();
+        $('#empleadoSelect').show();
+    @endif
 
         // Muestra de éxito al agregar un empleado
         @if ($message = Session::get('empleado_success'))

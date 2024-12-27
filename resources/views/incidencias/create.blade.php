@@ -9,18 +9,11 @@
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:block">
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
                 <i class="fas fa-arrow-right"></i> Enviar correo
             </button>
         </div>
     </form>
-
-
-    <div class="buttonEnviar-container">
-        <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
-            <i class="fas fa-arrow-right"></i>Enviar correo
-        </button>
-    </div>
 
     @if ($errors->any())
         <script>
@@ -220,8 +213,9 @@
     <!-- js -->
     <script src="{{ asset('js/incidencias/incidencias.js') }}"></script>
 </x-app-layout>
+<x-modalhorarios :empleados="$empleadosNoRegistrados" />
 
-<x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleados="$empleadosNoRegistrados" />
+<x-modalEmpleados :puestos="$puestos" :tipos-asociados="$tiposAsociados" :empleadosp="$empleadosNoRegistrados" />
 
 <script>
     $(document).ready(function() {

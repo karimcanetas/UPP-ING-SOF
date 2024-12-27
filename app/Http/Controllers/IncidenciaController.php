@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AreaDepartamento;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Incidencia;
 use App\Models\Caseta;
@@ -15,12 +16,14 @@ use App\Models\Ubicacionunidad;
 use App\Models\Unidad;
 use App\Models\Unidadesutilitarias;
 use App\Models\Campo;
+use Carbon\Carbon;
 use App\Models\CampoIncidencia;
 use App\Models\EmpleadosCatalogo;
 use App\Models\Puestos;
 use App\Models\TipoAsociado;
 use App\Models\EmpleadosNoRegistrados;
 use App\Models\Empresa;
+use Illuminate\Support\Facades\DB;
 
 class IncidenciaController extends Controller
 {
@@ -42,7 +45,9 @@ class IncidenciaController extends Controller
         $empleados = EmpleadosCatalogo::all();
         $tiposAsociados = TipoAsociado::all();
         $empleadosNoRegistrados = EmpleadosNoRegistrados::all();
+        $empleadosNoRegistrados = EmpleadosNoRegistrados::with('puesto')->get();
         $empresas = Empresa::all();
+
 
         // Capturar el id_caseta desde la URL
         $id_caseta = $request->query('id_caseta');
@@ -140,13 +145,15 @@ class IncidenciaController extends Controller
                 return redirect()->back()->withErrors(['formulario' => 'Formulario no reconocido.']);
         }
 
-        // Insertar datos en campo_incidencias
+        // insertar datos en campo_incidencias
         $campos = $request->input('campos', []);
         foreach ($campos as $id_campo => $valor) {
             // si el valor es nulo o vacío, asignar "N/A"
-            if ($valor === null || $valor === '') {
+            if (is_null($valor) || trim($valor) === '') {
                 $valor = 'N/A';
             }
+
+
 
             CampoIncidencia::create([
                 'id_incidencias' => $incidencia->id_incidencias,
@@ -161,4 +168,89 @@ class IncidenciaController extends Controller
         // Redireccionar según el formulario procesado
         return redirect()->route('incidencias.create')->with('success', 'Incidencia creada exitosamente.');
     }
+
+    public function obtenerHoraSalida()
+    {
+        $hoy = Carbon::today();
+        $resultados = Incidencia::where('id_formatos', 34)
+            ->whereHas('campos', function ($query) {
+                $query->whereIn('id_campo', [67, 76, 34])
+                    ->where(function ($subQuery) {
+                        $subQuery->where(function ($campo34) {
+                            $campo34->where('id_campo', 34)
+                                ->where(function ($valor) {
+                                    $valor->whereNull('valor')
+                                        ->orWhere('valor', 'N/A')
+                                        ->orWhereRaw("valor NOT REGEXP '^[0-9]{2}:[0-9]{2}$'");
+                                });
+                        })->orWhereNotIn('id_campo', [34]);
+                    });
+            })
+            ->whereDate('fecha_hora', '=', $hoy)
+            ->with(['campoIncidencias' => function ($query) {
+                $query->select('id_incidencias', 'id_campo', 'valor');
+            }])
+            ->get()
+            ->map(function (Incidencia $incidencia) {
+                $HoraSalida34 = $incidencia->campoIncidencias
+                    ->where('id_campo', 34)
+                    ->first()?->valor;
+
+                if ($HoraSalida34 !== null && $HoraSalida34 !== 'N/A') {
+                    return null;
+                }
+
+                $empleados67 = $incidencia->campoIncidencias
+                    ->where('id_campo', 67)
+                    ->first()?->valor ?? null;
+
+                $empleados76 = $incidencia->campoIncidencias
+                    ->where('id_campo', 76)
+                    ->first()?->valor ?? null;
+
+                $empleados = [
+                    'empleado_67' => $empleados67,
+                    'empleado_76' => $empleados76,
+                ];
+
+                return [
+                    'id_incidencias' => $incidencia->id_incidencias,
+                    'id_formatos' => $incidencia->id_formatos,
+                    'fecha_hora' => $incidencia->fecha_hora,
+                    'valor_campo_34' => $HoraSalida34,
+                    'empleados' => $empleados,
+                ];
+            })
+            ->filter();
+
+        return response()->json($resultados);
+    }
+
+    public function ActualizarSalida(Request $request)
+    {
+        $validated = $request->validate([
+            'id_incidencias' => 'required|exists:mysql_2.campo_incidencias,id_incidencias',
+            'HoraSalida' => 'required|date_format:H:i',
+        ]);
+    
+        $id_incidencias = $request->input('id_incidencias');
+        $HoraSalida = $request->input('HoraSalida');
+    
+        $campoIncidencia = DB::connection('mysql_2')->table('campo_incidencias')
+            ->where('id_incidencias', $id_incidencias)
+            ->where('id_campo', 34)
+            ->first();
+    
+        if ($campoIncidencia) {
+            DB::connection('mysql_2')->table('campo_incidencias')
+                ->where('id_incidencias', $id_incidencias)
+                ->where('id_campo', 34)
+                ->update(['valor' => $HoraSalida]);
+    
+            return response()->json(['success' => 'Hora de salida actualizada exitosamente.']);
+        } else {
+            return response()->json(['error' => 'No se encontró el registro en campo_incidencias.'], 404);
+        }
+    }
+    
 }

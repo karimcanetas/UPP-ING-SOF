@@ -37,15 +37,36 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
 });
 
 
+// function mostrarSegundaEtapa() {
+//     // Swal.fire({
+//     //     title: 'Atención',
+//     //     text: 'Es muy importante que primero complete y envíe cada uno de los formatos que se requieren. Una vez que haya terminado de llenar y enviar todos los formatos, deberá esperar hasta que falten solo 15 minutos para que su turno termine. Cuando eso suceda, aparecerá un botón que dice "Enviar Correo". Presione ese botón para completar su tarea antes de que su turno termine. Si no ve el botón, es porque su turno aún no ha llegado a los 15 minutos finales.',
+//     //     icon: 'info',
+//     //     confirmButtonText: 'Entendido'
+//     // });
+//     document.getElementById('primeraEtapa').style.display = 'none';
+//     document.getElementById('detallesForm').style.display = 'none';
+// }
+
+
 function mostrarSegundaEtapa() {
-    // Swal.fire({
-    //     title: 'Atención',
-    //     text: 'Es muy importante que primero complete y envíe cada uno de los formatos que se requieren. Una vez que haya terminado de llenar y enviar todos los formatos, deberá esperar hasta que falten solo 15 minutos para que su turno termine. Cuando eso suceda, aparecerá un botón que dice "Enviar Correo". Presione ese botón para completar su tarea antes de que su turno termine. Si no ve el botón, es porque su turno aún no ha llegado a los 15 minutos finales.',
-    //     icon: 'info',
-    //     confirmButtonText: 'Entendido'
-    // });
-    document.getElementById('primeraEtapa').style.display = 'none';
-    document.getElementById('detallesForm').style.display = 'none';
+    var nombreVigilante = document.getElementById("Nombre_vigilante").value;
+
+    if (nombreVigilante === "") {
+        Swal.fire({
+            title: 'Error',
+            text: 'Se requiere el nombre del vigilante.',
+            icon: "error",
+            showConfirmButton: false,
+            timer: 1500
+        });
+        location.reload();
+        return;
+    } else {
+        // Ocultar las etapas si el campo tiene texto
+        document.getElementById('primeraEtapa').style.display = 'none';
+        document.getElementById('detallesForm').style.display = 'none';
+    }
 }
 
 
@@ -160,14 +181,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Postventa - bitácora de surtido de aceite bahías Altabrisa',
                 'Postventa - Bitácora acceso vehículos a servicio sin cita',
                 'Control de entrega de unidades en postventa'
-                
+
 
             ],
             'Nocturno': [
                 'Novedades Servicios',
                 'Postventa - bitácora de surtido de aceite bahías Altabrisa',
                 'Inventario de unidades en las instalaciones'
-                
+
             ]
         },
         '8': {// ID Caseta Portón rojo empresa TOYOTA sucursal Altabrisa
@@ -317,10 +338,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
+    const campoAsociadoInternoSelect = $('#campoAsociadoInterno');
     const puestoInput = document.getElementById('puestoInput');
     const nuevoEmpleadoForm = document.getElementById('nuevoEmpleadoForm');
     const empleadoNoRegistradoContainer = document.getElementById('empleadoNoRegistradoContainer');
     const agregarEmpleadoBtn = document.getElementById('agregarEmpleadoBtn');
+    const empleadoNombreInput = $('#empleadoNombre');
     const empleadoNoRegistradoSelect = $('#empleadoNoRegistrado');
     // Inicializa Select2 solo si el elemento existe
     if (empleadoSelect) {
@@ -337,7 +360,43 @@ document.addEventListener('DOMContentLoaded', function () {
     function updatePuestoInput() {
         const selectedOption = this.options[this.selectedIndex];
         puestoInput.value = selectedOption ? selectedOption.getAttribute('data-puesto') : '';
-        // console.log(updatePuestoInput);
+        console.log(updatePuestoInput);
+    }
+
+
+    if (empleadoNoRegistradoSelect.length) {
+        // Inicializamos select2 en el select
+        empleadoNoRegistradoSelect.select2({
+            width: '100%',
+            placeholder: "Selecciona un empleado",
+            allowClear: true
+        }).on('select2:select', function (e) {
+            const puestoId = e.params.data.element.value;
+            const puestoNombre = e.params.data.element.dataset.puestoNombre;
+            if (puestoInput) {
+                puestoInput.value = puestoNombre || '';
+            }
+            if (puestoInputId) {
+                puestoInputId.value = puestoId || '';
+            }
+        });
+    }
+
+
+
+    if (campoAsociadoInternoSelect.length) {
+        campoAsociadoInternoSelect.select2({
+            width: '100%',
+            placeholder: "Selecciona un empleado",
+            allowClear: true
+        }).on('select2:select', function (e) {
+            const puesto = e.params.data.element.dataset.puesto;
+            if (puestoInput) {
+                puestoInput.value = puesto || '';
+            }
+        });
+    } else {
+        console.log('Select2 de empleado no encontrado');
     }
 
     // Maneja el evento de envio del nuevo empleado
@@ -392,19 +451,25 @@ document.addEventListener('DOMContentLoaded', function () {
         // console.log(data.message);
     }
 
-    // Cambia el campo asociado interno al cambiar el select de no registrados
+    // cambia el campo asociado interno al cambiar el select de no registrados
     empleadoNoRegistradoSelect.on('change', function () {
         const selectedValue = $(this).val();
         $('#campoAsociadoInterno').toggle(!selectedValue);
         const empleadoNombre = $(this).find('option:selected').data('nombres');
         $('#empleadoNombre').val(empleadoNombre);
+
+        if (empleadoNombreInput.val()) {
+            $('label:contains("Nombre asociado interno")').hide();
+        } else {
+            $('label:contains("Empleado no registrado")').hide();
+            $('label:contains("Nombre asociado interno")').show();
+        }
     });
 
     $('#empleadoNoRegistrado').on('change', function () {
-        // Obtener la opción seleccionada
         var selectedOption = $(this).find('option:selected');
-        var empleadoNombre = selectedOption.data('nombres'); // Obtener el nombre del puesto
-        var puestoId = selectedOption.data('puesto-id'); // Obtener el nombre
+        var empleadoNombre = selectedOption.data('nombres');
+        var puestoId = selectedOption.data('puesto-id');
 
         $('#empleadoNombre').val(empleadoNombre);
         // console.log('Empleado seleccionado:', empleadoNombre);
@@ -412,18 +477,20 @@ document.addEventListener('DOMContentLoaded', function () {
         $('#puestoInput').val(puestoId);
         // console.log('Puesto asignado', puestoId);
 
-        // Mostrar/ocultar contenedor asociado
         if (selectedOption.val()) {
-            $('#empleadoNoRegistradoContainer').show(); // Mostrar contenedor si hay un valor seleccionado
+            $('#empleadoNoRegistradoContainer').show();
+            $('label:contains("Empleado no registrado")').show();
         } else {
-            $('#empleadoNoRegistradoContainer').hide(); // Ocultar contenedor si no hay valor
+            $('#empleadoNoRegistradoContainer').hide();
+            $('label:contains("Empleado no registrado")').hide();
         }
+
     });
-    
+
     // $(document).ready(function () {
     //     $('label:contains("Empleado no registrado")').hide();
     // });
-    
+
 
     // Muestra el campo de empleado no registrado
     if (agregarEmpleadoBtn) {
@@ -452,8 +519,13 @@ function toggleOtroUnidad(select) {
     const otrotextunidad = textunidad.querySelector('textarea');
 
     textunidad.style.display = (select.value === 'otro') ? 'block' : 'none';
-    if (select.value !== 'otro') otrotextunidad.value = select.value;
-    // console.log(select.value);
+
+    if (select.value !== 'otro') {
+        otrotextunidad.value = select.value;
+        otrotextunidad.removeAttribute('required');
+    } else {
+        otrotextunidad.setAttribute('required', 'required');
+    }
 }
 
 // function toggleOtroArea(selectElement) {
@@ -514,6 +586,26 @@ function submitAndResetForm(boton) {
     let esValido = true;
     let mensajeError = "";
 
+    // Solo ejecutar esta parte para el formulario con id 'bitacora_acceso_porton'
+    if (formulario.id === 'bitacora_acceso_porton') {
+        const radioSeleccionado = formulario.querySelector('input[name="horaSelect"]:checked');
+        if (!radioSeleccionado) {
+            esValido = false;
+            mensajeError = "Por favor, selecciona un tipo de hora.";
+        }
+        $('#campoAsociadoInterno').show();
+        $('#empleadoSelect').show();
+        $('label:contains("Nombre asociado interno")').show();
+        $('label:contains("Empleado no registrado:")').hide();
+        // $('label:contains("Hora de entrada")').hide();
+        // $('label:contains("Hora de salida")').hide();
+        // $('#campoHoraSalida').hide();
+        // $('#campoHoraEntrada').hide();
+        $('#empleadoNoRegistradoContainer').hide();
+        // $('#agregarhoraBtn').hide();
+    }
+
+    // Lógica común para validar los campos de todos los formularios
     elementos.forEach(elemento => {
         const esOpcional = !elemento.hasAttribute('required');
         const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
@@ -524,7 +616,7 @@ function submitAndResetForm(boton) {
                 (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
-            // valido que el vin tenga los 6 digitos exactos
+            // Validación específica para el VIN (6 dígitos)
             if (elemento.classList.contains('vin')) {
                 const valorVin = elemento.value.trim();
                 if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
@@ -536,7 +628,7 @@ function submitAndResetForm(boton) {
             if (esVacio) {
                 esValido = false;
 
-                // obtengo el label del campo si existe
+                // Obtengo el label del campo si existe
                 const label = formulario.querySelector(`label[for="${elemento.id}"]`);
                 const nombreCampo = label ? label.textContent.trim() : elemento.name || "campo requerido";
                 mensajeError = mensajeError || `Favor de completar el campo: ${nombreCampo}`;
@@ -544,6 +636,7 @@ function submitAndResetForm(boton) {
         }
     });
 
+    // Si el formulario no es válido, mostramos el mensaje de error
     if (!esValido) {
         $(document).ready(function () {
             Swal.fire({
@@ -555,7 +648,10 @@ function submitAndResetForm(boton) {
         return;
     }
 
+    // Si el formulario es válido, lo enviamos
     formulario.submit();
+
+    // Después de enviar el formulario, restablecemos los campos
     setTimeout(() => {
         elementos.forEach(elemento => {
             const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
@@ -566,12 +662,13 @@ function submitAndResetForm(boton) {
                 } else if (elemento.tagName === 'SELECT') {
                     elemento.selectedIndex = 0;
                 } else {
-                    elemento.value = ''; // restablece el valor del campo
+                    elemento.value = ''; // Restablece el valor del campo
                 }
             }
         });
     }, 500);
 }
+
 
 
 
@@ -702,3 +799,156 @@ function limpiarEstado() {
 }
 
 iniciarTurno();
+
+
+
+
+$(document).ready(function () {
+    EmpleadosSinSalida();
+});
+
+function EmpleadosSinSalida() {
+    $.ajax({
+        url: '/obtenerSalida',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            console.log("Datos obtenidos:", response);
+
+            let data = Array.isArray(response) ? response : Object.values(response);
+            $('#miSelect').empty().append('<option value="">Selecciona una opción</option>');
+
+            data.forEach(function (item) {
+                let valorCampo34 = item.valor_campo_34;
+                let empleadoTexto = `${item.empleados?.empleado_67 || item.empleados?.empleado_76 || 'Empleado no disponible'} ${valorCampo34 === null || valorCampo34 === 'N/A' ? '(Sin hora de salida)' : ''}`;
+
+                let option = $('<option>', {
+                    text: empleadoTexto,
+                    value: item.id_incidencias
+                });
+
+                $('#miSelect').append(option);
+            });
+            $('#miSelect').select2({
+                placeholder: 'Selecciona una opción',
+                allowClear: true,
+                minimumResultsForSearch: 0,
+                with: '100%'
+            });
+            if (data.length === 1) {
+                $('#miSelect').val(data[0].id_incidencias).trigger('change');
+            }
+
+            $('#miSelect').on('change', function () {
+                const selectedIncidencia = $(this).val();
+                const selectedItem = data.find(item => item.id_incidencias == selectedIncidencia);
+                if (selectedItem) {
+                    $('#empleadoSalida').val(`${selectedItem.empleados?.empleado_67 || selectedItem.empleados?.empleado_76 || 'Empleado no disponible'}`);
+                    $('#id_fecha_hora_Salida').val(selectedItem.fecha_hora || 'Fecha y hora no disponibles');
+                    $('#id_incidencias_Salida').val(selectedItem.id_incidencias);
+                }
+            });
+        },
+        error: function (error) {
+            console.error("Error en la solicitud:", error);
+
+            $.ajax({
+                url: '/obtenerSalida',
+                type: 'GET',
+                success: function (errorDetails) {
+                    console.error("Detalles del error:", errorDetails);
+                },
+                error: function (innerError) {
+                    console.error("Error adicional al obtener detalles:", innerError);
+                }
+            });
+        }
+    });
+}
+
+$(document).ready(function () {
+    EmpleadosSinSalida();
+    $('#actualizarHoraForm').on('submit', function (e) {
+        e.preventDefault();
+        let submitButton = $(this).find('button[type="submit"]');
+        submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...');
+
+        let formData = {
+            id_incidencias: $('#id_incidencias_Salida').val(),
+            HoraSalida: $('#Hora_salida').val(),
+        };
+        $.ajax({
+            url: '/actualizar-salida',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function (response) {
+                submitButton.prop('disabled', false).html('Guardar cambios');
+                if (response.success) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.success,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error en la solicitud',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function (xhr) {
+                submitButton.prop('disabled', false).html('Guardar cambios');
+                alert('Ocurrió un error: ' + xhr.responseJSON.message);
+            },
+        });
+    });
+});
+
+
+
+$(document).ready(function () {
+    var formSelector = '#bitacora_acceso_porton';
+    $(`${formSelector} label:contains("Empleado no registrado")`).hide();
+    $(`${formSelector} #campoHoraEntrada`).hide();
+    $(`${formSelector} #campoHoraSalida`).hide();
+    $(`${formSelector} label:contains("Hora de entrada")`).hide();
+    $(`${formSelector} label:contains("Hora de salida")`).hide();
+    $(`${formSelector} #agregarhoraBtn`).hide();
+    $(`${formSelector} input[name="horaSelect"]`).change(function () {
+        $(`${formSelector} #campoHoraEntrada`).hide();
+        $(`${formSelector} #campoHoraSalida`).hide();
+        $(`${formSelector} input[type="time"]`).removeAttr('required');
+        if ($(this).val() === 'entrada') {
+            $(`${formSelector} #campoHoraEntrada`).show();
+            $(`${formSelector} label:contains("Hora de entrada")`).show();
+            $(`${formSelector} #campoHoraEntrada input`).attr('required', true);
+            $(`${formSelector} #agregarhoraBtn`).hide();
+            $(`${formSelector} label:contains("Hora de salida")`).hide();
+        } else if ($(this).val() === 'salida') {
+            $(`${formSelector} #agregarhoraBtn`).show();
+            $(`${formSelector} label:contains("Hora de entrada")`).hide();
+        } else if ($(this).val() === 'ambas') {
+            $(`${formSelector} #campoHoraEntrada`).show();
+            $(`${formSelector} #campoHoraSalida`).show();
+            $(`${formSelector} label:contains("Hora de entrada")`).show();
+            $(`${formSelector} label:contains("Hora de salida")`).show();
+            $(`${formSelector} #agregarhoraBtn`).hide();
+            $(`${formSelector} input[type="time"]`).attr('required', true);
+        }
+    });
+    $(`${formSelector}`).submit(function (e) {
+        if (!$(`${formSelector} input[name="horaSelect"]:checked`).length) {
+            $(`${formSelector} #horaSelectError`).show();
+            e.preventDefault();
+        } else {
+            $(`${formSelector} #horaSelectError`).hide();
+        }
+    });
+});

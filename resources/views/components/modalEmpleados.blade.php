@@ -38,19 +38,18 @@
                         <select class="form-control js-example-tokenizer"
                             style="width: 100%; text-transform: uppercase;" id="empleadoNoRegistrado"
                             name="empleadoNoRegistrado">
-                            <option value="" selected>Selecciona un empleado</option>
-                            @foreach ($empleados as $empleadoNoRegistrado)
-                                <option data-id="{{ $empleadoNoRegistrado->id_empleado }}"
+                            <option value="" disabled selected>Selecciona un empleado</option>
+                            @foreach ($empleadosp as $empleadoNoRegistrado)
+                                <option data-id="{{ $empleadoNoRegistrado->id_puesto }}"
                                     data-nombres="{{ $empleadoNoRegistrado->nombres }}"
-                                    data-puesto-id="{{ $empleadoNoRegistrado->id_puesto }}">
+                                    data-puesto-id="{{ $empleadoNoRegistrado->id_puesto }}"
+                                    data-puesto-nombre="{{ $empleadoNoRegistrado->puesto ? $empleadoNoRegistrado->puesto->nombre : 'Sin puesto' }}">
                                     {{ $empleadoNoRegistrado->nombres }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-
-                    <!-- Formulario completo de nuevo empleado -->
                     <div id="formNuevoEmpleado" style="display: none;">
                         <div class="label-group">
                             <label for="nombres" class="modal-text font-weight-bold">
@@ -104,8 +103,6 @@
                             </select>
                         </div>
                     </div> --}}
-
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                 style="border-radius: 5px;">
@@ -116,11 +113,9 @@
                                     <button type="submit" class="btn btn-primary btn-sm" id="guardarBtn">
                                         <i class="fas fa-save"></i> Guardar Empleado
                                         <span class="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true" style="display: none;"></span> 
+                                            aria-hidden="true" style="display: none;"></span>
                                     </button>
                                 </div>
-
-
             </form>
         </div>
     </div>
@@ -201,9 +196,8 @@
     }
 
     #guardarBtn {
-    border-radius: 3px; 
-    padding: 5px 10px; 
-    font-size: 1.3rem; 
-}
-
+        border-radius: 3px;
+        padding: 5px 10px;
+        font-size: 1.3rem;
+    }
 </style>

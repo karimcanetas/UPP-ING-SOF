@@ -81,7 +81,7 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'KM de entrada')
                             <input type="number" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif ($campoNombre == 'Nombre Taller')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"

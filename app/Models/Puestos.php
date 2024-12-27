@@ -9,6 +9,7 @@ class Puestos extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mysql'; // bd concentradora
     protected $table = 'puestos';
 
     protected $primaryKey = 'id_puesto';
@@ -34,5 +35,10 @@ class Puestos extends Model
     public function empleados()
     {
         return $this->hasMany(EmpleadosCatalogo::class);
+    }
+
+    public function empleadosNoRegistrados()
+    {
+        return $this->hasMany(EmpleadosNoRegistrados::class, 'id_puesto');
     }
 }

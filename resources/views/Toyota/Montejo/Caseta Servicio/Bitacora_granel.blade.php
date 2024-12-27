@@ -67,7 +67,7 @@
                                                     name="campos[{{ $campo->id_campo }}]"
                                                     value="{{ old('campos.' . $campo->id_campo) }}"
                                                     style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                                    required>
+                                                    disabled required>
                                             @elseif ($campoNombre == 'Acum. Ini.' || $campoNombre == 'Acum. Fin')
                                                 <input type="number" step="0.01" class="form-control"
                                                     id="campos[{{ $campo->id_campo }}]"

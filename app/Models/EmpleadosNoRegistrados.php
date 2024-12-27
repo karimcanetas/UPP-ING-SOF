@@ -18,7 +18,11 @@ class EmpleadosNoRegistrados extends Model
         'nombres',
         'apellido_p',
         'apellido_m',
-        'puesto',
+        'id_puesto',
         'tipo_asociado,'
     ];
+    public function puesto()
+    {
+        return $this->belongsTo(Puestos::class, 'id_puesto');
+    }
 }
