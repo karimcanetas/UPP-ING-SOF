@@ -29,7 +29,7 @@
                     <input type="text" class="form-control" name="id_formatos" id="formatos_tots" readonly>
                 </div>
             </div>
-            @foreach (['Fecha', 'Hora', 'Nombre Taller', 'VIN (6 últimos dígitos)', 'Folio/Num de pase', 'Persona (Proveedor)', 'Unidad'] as $campoNombre)
+            @foreach (['Fecha', 'Hora', 'Nombre Taller', 'VIN (6 últimos dígitos)', 'Folio / Num de pase', 'Persona (Proveedor)', 'Unidad'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -53,12 +53,12 @@
                                 required>
                         @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
                             <!-- campo VIN, restringido a solo 6 numeros -->
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
                                 required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
                                 required>
-                        @elseif($campoNombre == 'Folio/Num de pase')
+                        @elseif($campoNombre == 'Folio / Num de pase')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
                                 required>

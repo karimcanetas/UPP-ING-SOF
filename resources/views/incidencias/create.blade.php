@@ -9,7 +9,7 @@
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:none">
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:block">
                 <i class="fas fa-arrow-right"></i> Enviar correo
             </button>
         </div>
@@ -30,6 +30,11 @@
             window.hasErrors = false;
         </script>
     @endif
+
+    <script>
+        window.hasErrors = {{ $errors->any() ? 'true' : 'false' }};
+    </script>
+    
 
     <div class="form-container" id="primeraEtapa">
         <h1 class="primera">Iniciar sesión</h1>

@@ -2,8 +2,7 @@
  <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_servcio">
      @csrf
      @if (
-         $casetaSeleccionada &&
-             ($casetaSeleccionada->nombre === 'Caseta Servicio' || $casetaSeleccionada->nombre === 'Caseta Subaru'))
+         $casetaSeleccionada && ($casetaSeleccionada->nombre === 'Caseta Servicio' || $casetaSeleccionada->nombre === 'Caseta Subaru'))
          <div id="novedad_servicio" style="display: none;">
              <div class="card horizontal-card d-none">
                  <div class="form-group">

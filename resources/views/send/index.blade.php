@@ -48,13 +48,13 @@
                             <div class="form-group">
                                 <label for="fecha_inicio">Fecha de Inicio:</label>
                                 <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio"
-                                    required>
+                                    min="1111-01-01T00:00" max="9999-12-31T23:59" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="fecha_fin">Fecha de Fin:</label>
                                 <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin"
-                                    required>
+                                    min="1111-01-01T00:00" max="9999-12-31T23:59" required>
                             </div>
 
                             <div class="d-flex justify-content-center mt-4">
@@ -235,7 +235,7 @@
             success: function(response) {
                 groupedByCaseta = response.groupedByCaseta; // se asigna a la variable global
                 const addedFormats = new Set(); // para evitar formatos duplicados
-            console.log(groupedByCaseta);
+                console.log(groupedByCaseta);
                 $('#formatoSelect').empty();
 
                 // agrupo las casetas con sus formatos asignados

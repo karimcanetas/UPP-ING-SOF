@@ -1,7 +1,9 @@
 <form action="{{ route('incidencias.store') }}" method="POST" id="Novedades_unidades" enctype="multipart/form-data">
     @csrf
-    @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Área de Demos')
-        <div id="Novedades_demos" style="display: block;">
+    @if (
+        $casetaSeleccionada &&
+            ($casetaSeleccionada->nombre === 'Área de Demos' || $casetaSeleccionada->nombre === 'Encierro'))
+        <div id="Novedades_demos" style="display: none;">
             <!-- Asegúrate de que sea visible cuando se cumpla la condición -->
 
             <div class="card horizontal-card d-none">

@@ -33,27 +33,29 @@
 
 
 
-            @foreach (['Unidad', 'Placas', 'Color', 'Nombre conductor', 'Hora de entrada', 'Hora de salida', 'Origen / Destino'] as $campoNombre)
+            @foreach (['Vehículo', 'Placas', 'Color', 'Nombre conductor', 'Hora de entrada', 'Hora de salida', 'Origen / Destino'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
 
-                        @if ($campoNombre == 'Unidad')
+                        @if ($campoNombre == 'Vehículo')
                             <!-- campo Unidad (select) -->
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
-                                <option value="">Seleccione una unidad</option>
-                                @foreach ($unidad as $unidad_item)
-                                    <option value="{{ $unidad_item->unidad }}">{{ $unidad_item->unidad }}</option>
+                                <option value="">Seleccione un Vehiculo</option>
+                                @foreach ($unidades_utilitarias as $ut)
+                                    <option value="{{ $ut->id }}" data-nombre="{{ $ut->nombre }}">
+                                        {{ $ut->nombre }}
+                                    </option>
                                 @endforeach
                                 <option value="otro">OTRO</option>
                             </select>
 
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
-                                <label for="otrotextunidad3">Especificar otra unidad</label>
+                                <label for="otrotextunidad80">Especificar otro Vehículo</label>
                                 <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                    placeholder="Especifica otro Vehículo"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Placas')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"

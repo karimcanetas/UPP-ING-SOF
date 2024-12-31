@@ -54,22 +54,85 @@
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                                min="1111-01-01" max="9999-12-31"
+                                                min="1111-01-01" max="9999-12-31" 
                                                 required>
-                                        @elseif (str_contains($campoNombre, 'Bahía'))
-                                            <input type="number" step="0.01" class="form-control"
+                                        @elseif ($campoNombre == 'Bahía 1-2. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahia1-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 1-2. Final')
+                                            <input type="number" step="0.01" class="form-control bahia1-final"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 3-4. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahia2-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 3-4. Final')
+                                            <input type="number" step="0.01" class="form-control bahia2-final"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 5-6. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahia2-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 5-6. Final')
+                                            <input type="number" step="0.01" class="form-control bahia2-final"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 7-8. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahia3-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 7-8. Final')
+                                            <input type="number" step="0.01" class="form-control bahia3-final"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 9-10. Inicial')
+                                            <input type="number" step="0.01" class="form-control bahia4-inicial"
+                                                id="campos[{{ $campo->id_campo }}]"
+                                                name="campos[{{ $campo->id_campo }}]"
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
+                                                style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
+                                                required>
+                                        @elseif ($campoNombre == 'Bahía 9-10. Final')
+                                            <input type="number" step="0.01" class="form-control bahia4-final"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
                                                 value="{{ old('campos.' . $campo->id_campo) }}"
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
                                                 required>
                                         @elseif ($campoNombre == 'Total surtido')
-                                            <input type="decimal" class="form-control"
+                                            <input type="hidden" step="0.01" class="form-control total-surtidoMO"
                                                 id="campos[{{ $campo->id_campo }}]"
                                                 name="campos[{{ $campo->id_campo }}]"
-                                                value="{{ old('campos.' . $campo->id_campo) }}" disabled
+                                                value="{{ old('campos.' . $campo->id_campo) }}"
                                                 style="background-color: #333333; color: #ffffff; border: 1px solid #444444; border-radius: 8px; padding: 10px; transition: background-color 0.3s ease, border-color 0.3s ease;"
-                                                disabled>
+                                                required>
                                         @endif
                                     </td>
                                 </tr>

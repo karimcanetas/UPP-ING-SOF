@@ -1,4 +1,4 @@
-{{-- <section>
+<section>
     <div class="form-group">
         <label for="id_unidadut">Vehiculo</label>
         <select name="id_unidadut" id="id_unidadut" class="unidades_utilitarias form-control" required>

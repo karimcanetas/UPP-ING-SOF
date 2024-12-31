@@ -142,6 +142,45 @@ class CampoIncidenciasController extends Controller
             ->where('id_turnos', $idTurnos)
             ->get();
 
+        $fechaActual = Carbon::now()->startOfDay();
+        $findemes = Carbon::now()->endOfMonth()->startOfDay();
+
+        $formatosCoincidentes = $formatosCoincidentes->filter(function ($incidencia) use ($findemes, $fechaActual) {
+            $idFormatos = $incidencia->id_formatos;
+
+            if (!$fechaActual->eq($findemes) && in_array($idFormatos, [27, 29, 43])) {
+                return false;
+            }
+
+            return true;
+        });
+
+        if ($fechaActual->eq($findemes)) {
+            $formatosCoincidentes = $formatosCoincidentes->merge(
+                Incidencia::whereIn('id_formatos', [27, 29, 43])
+                    ->whereBetween('fecha_hora', [
+                        $fechaActual->startOfMonth(),
+                        $findemes
+                    ])
+                    ->get()
+            );
+        }
+
+        // $fechaActual = Carbon::now()->startOfDay();
+        // $finDeMes = Carbon::now()->endOfMonth()->startOfDay();
+
+        // $formatosCoincidentes = Incidencia::whereIn('id_formatos', [27, 29, 43])
+        //     ->where(function ($query) use ($fechaActual, $finDeMes) {
+        //         $query->whereBetween('fecha_hora', [$fechaActual, $finDeMes]);
+
+        //         if ($fechaActual->eq($finDeMes)) {
+        //             $query->orWhereBetween('fecha_hora', [
+        //                 $fechaActual->startOfMonth(),
+        //                 $finDeMes->subDay()
+        //             ]);
+        //         }
+        //     })
+        //     ->get();
         // actualizar el campo enviado 1 es enviado
         $formatosCoincidentes->each(function ($incidencia) {
             $incidencia->enviado = 1;

@@ -11,54 +11,54 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        console.log("El DOM está cargado.");
+        // console.log("El DOM está cargado.");
 
         function iniciarTurno() {
-            console.log("Inicializando lógica para el turno.");
+            
 
             const selectedOption = document.querySelector('option[data-hora-fin]');
-            if (!selectedOption) {
-                console.warn("No se encontró un turno activo con 'data-hora-fin'.");
-                return;
-            }
+            // if (!selectedOption) {
+            //     console.warn("No se encontró un turno activo con 'data-hora-fin'.");
+            //     return;
+            // }
 
             const horaFin = selectedOption.getAttribute('data-hora-fin');
-            console.log("Hora final obtenida del atributo:", horaFin);
+            // console.log("Hora final obtenida del atributo:", horaFin);
 
-            if (!horaFin) {
-                console.error("El atributo 'data-hora-fin' no tiene valor.");
-                return;
-            }
+            // if (!horaFin) {
+            //     console.error("El atributo 'data-hora-fin' no tiene valor.");
+            //     return;
+            // }
 
             const horaParts = horaFin.split(':');
             if (horaParts.length < 2 || isNaN(horaParts[0]) || isNaN(horaParts[1])) {
-                console.error("Formato de hora inválido:", horaFin);
+                // console.error("Formato de hora inválido:", horaFin);
                 return;
             }
 
             const ahora = new Date();
-            console.log("Hora actual:", ahora);
+            // console.log("Hora actual:", ahora);
 
             const horaFinDate = new Date(ahora);
             horaFinDate.setHours(horaParts[0], horaParts[1], 0, 0);
-            console.log("Hora final convertida a objeto Date:", horaFinDate);
+            // console.log("Hora final convertida a objeto Date:", horaFinDate);
 
             if (isNaN(horaFinDate.getTime())) {
-                console.error("La hora final es inválida:", horaFinDate);
+                // console.error("La hora final es inválida:", horaFinDate);
                 return;
             }
 
             const diferencia = horaFinDate - ahora;
-            console.log("Diferencia en milisegundos entre hora actual y hora final:", diferencia);
+            // console.log("Diferencia en milisegundos entre hora actual y hora final:", diferencia);
 
             if (diferencia <= 0) {
-                console.warn("La hora final ya pasó o está demasiado cerca.");
+                // console.warn("La hora final ya pasó o está demasiado cerca.");
                 limpiarEstado();
                 return;
             }
 
             const tiempoAlerta = diferencia - 900000; // 15 minutos antes
-            console.log("Tiempo hasta la alerta en milisegundos:", tiempoAlerta);
+            // console.log("Tiempo hasta la alerta en milisegundos:", tiempoAlerta);
 
             setTimeout(() => {
                 Swal.fire({
@@ -82,13 +82,13 @@
 
 
             setTimeout(() => {
-                console.log("El turno ha finalizado. Limpiando el estado...");
+                // console.log("El turno ha finalizado. Limpiando el estado...");
                 limpiarEstado();
             }, diferencia);
         }
 
         function limpiarEstado() {
-            console.log("Restableciendo el estado del sistema...");
+            // console.log("Restableciendo el estado del sistema...");
             // Ocultar el botón de enviar
             const btnEnviar = document.getElementById('btnEnviar');
             if (btnEnviar) {
@@ -98,7 +98,7 @@
             if (selectedOption) {
                 selectedOption.removeAttribute('data-hora-fin');
             }
-            console.log("Esperando nuevo turno...");
+            // console.log("Esperando nuevo turno...");
         }
         iniciarTurno();
     });

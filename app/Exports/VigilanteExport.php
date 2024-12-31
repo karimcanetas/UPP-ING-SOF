@@ -61,7 +61,7 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
         }
 
         // devuelve la vista con los datos procesados
-        return view('Formatos.reporte_export', [
+        return view('Formatos.vigilante_export', [ //el que tenia es reporte_export
             'nombresCampos' => $nombresCampos,
             'valoresPorCampo' => $valoresPorCampo,
             'formatoNombre' => $this->formatoNombre,
@@ -80,7 +80,8 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
-                $sheet->mergeCells('A2:B2');
+
+                // $sheet->mergeCells('A2:B2');
                 // obtengo los datos procesados
                 $data = $this->view()->getData();
                 $vigilantesYFechas = $data['vigilantesYFechas'];
@@ -91,12 +92,24 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
 
                 //etiquetas
                 $nombreConEtiqueta = "Nombre Vigilante: $primerNombreVigilante";
-                $fechaConEtiqueta = "Fecha: $primerFechaHora";
+                $fechaConEtiqueta = "Fecha de creacion: $primerFechaHora";
 
                 $nombresCampos = $data['nombresCampos'];
-                $columnCount = count($nombresCampos) + 1;
+                $columnCount = count($nombresCampos);
+                if (count($nombresCampos) == 1) {
+                    $lastRow = $sheet->getHighestRow();
+                    for ($row = 2; $row <= $lastRow; $row++) {
+                        $sheet->mergeCells("A{$row}:B{$row}");
+                    }
+                    $columnCount = count($nombresCampos) + 1;
+                }
                 $lastColumn = Coordinate::stringFromColumnIndex($columnCount);
                 $lastRow = max(count($this->camposIncidencias) + 3, 10);
+
+                // $valor = $nombreConEtiqueta . str_repeat(' ', 10) . $fechaConEtiqueta;
+                // $sheet->setCellValue('A1', $valor);
+                // $sheet->getStyle('A1')->getAlignment()->setWrapText(true);
+
 
                 // muevo los datos una fila hacia abajo
                 $sheet->insertNewRowBefore(2);
@@ -130,9 +143,9 @@ class VigilanteExport implements FromView, WithTitle, WithEvents, ShouldAutoSize
 
                 $lastRow = $sheet->getHighestRow();
 
-                for ($row = 3; $row <= $lastRow; $row++) {
-                    $sheet->mergeCells("A{$row}:B{$row}");
-                }
+                // for ($row = 3; $row <= $lastRow; $row++) {
+                //     $sheet->mergeCells("A{$row}:B{$row}");
+                // }
 
                 // une y aplica estilo al encabezado general
                 $this->mergeAndStyleHeader($sheet, "A2:{$lastColumn}2", "Reporte Vigilancia PRT - {$this->formatoNombre}");

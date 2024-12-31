@@ -81,7 +81,7 @@ class ReporteExport implements FromView, WithTitle, WithEvents
 
                 // se define de forma fija el ancho de la columna
                 foreach (range('A', $lastColumn) as $column) {
-                    $sheet->getColumnDimension($column)->setWidth(55);
+                    $sheet->getColumnDimension($column)->setWidth(23);
                 }
 
                 for ($row = 3; $row <= $lastRow; $row++) {

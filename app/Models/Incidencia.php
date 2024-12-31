@@ -52,4 +52,5 @@ class Incidencia extends Model
     {
         return $this->hasMany(CampoIncidencia::class, 'id_incidencias');
     }
+    
 }

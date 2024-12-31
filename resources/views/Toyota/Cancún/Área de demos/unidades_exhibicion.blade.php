@@ -78,11 +78,10 @@
                                 required>
                         @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
                             <!-- campo VIN, restringido a solo 6 numeros -->
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                            <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
-                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
-                                required>
+                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
                         @elseif ($campoNombre == 'Condición de seguridad de la unidad')
                             <section class="form-group">
                                 <div class="radio-list">
@@ -99,24 +98,29 @@
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'Condición de daños de la unidad')
-                            <section class="form-group ">
+                            <section class="form-group">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="con_golpes" type="radio"
-                                            value="Con golpes" required>
+                                            value="Con golpes">
                                         <label for="con_golpes">Con golpes</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="rayones" type="radio"
-                                            value="Rayones" required>
+                                            value="Rayones">
                                         <label for="rayones">Rayones</label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input name="campos[{{ $campo->id_campo }}]" id="ninguno" type="radio"
+                                            value="Ningún daño">
+                                        <label for="ninguno">Ningún daño</label>
                                     </div>
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" required>
+                                value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

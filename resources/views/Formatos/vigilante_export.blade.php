@@ -14,20 +14,17 @@
         <thead>
             <tr>
                 @foreach ($nombresCampos as $nombreCampo)
-                    <th
-                        style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
+                    <th style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
                         {{ $nombreCampo }}
                     </th>
                 @endforeach
                 <!-- Cabecera para Nombre_vigilante y fecha_hora -->
-                <th
-                    style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
+                {{-- <th style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
                     Nombre Vigilante
                 </th>
-                <th
-                    style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
+                <th style="padding: 15px; text-align: center; border: 2px solid #3e3e3e; background-color: #757575; color: white; font-size: 18px; white-space: nowrap; font-weight: bold;">
                     Fecha y Hora
-                </th>
+                </th> --}}
             </tr>
         </thead>
         <tbody>
@@ -39,21 +36,18 @@
             @for ($i = 0; $i < $maxFilas; $i++)
                 <tr>
                     @foreach ($nombresCampos as $nombreCampo)
-                        <td
-                            style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        <td style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                             {{ $valoresPorCampo[$nombreCampo][$i] ?? '' }}
                         </td>
                     @endforeach
 
                     <!-- Mostrar los valores de Nombre_vigilante y fecha_hora en el lado derecho -->
-                    <td
-                        style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    {{-- <td style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         {{ $vigilantesYFechas[$i]['nombre_vigilante'] ?? 'No asignado' }}
                     </td>
-                    <td
-                        style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    <td style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         {{ $vigilantesYFechas[$i]['fecha_hora'] ?? 'Sin fecha' }}
-                    </td>
+                    </td> --}}
                 </tr>
             @endfor
         </tbody>

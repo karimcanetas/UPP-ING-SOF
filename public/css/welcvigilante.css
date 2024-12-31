@@ -27,8 +27,13 @@ css goBack
     transition: opacity 0.3s ease;
 }
 
-
-
+/* Contenedor del botón */
+.buttonEnviar-container {
+    position: fixed;
+    bottom: 700px;
+    right: 20px;
+    z-index: 1000;
+}
 
 body {
     display: flex;

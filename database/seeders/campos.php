@@ -32,7 +32,7 @@ class campos extends Seeder
             ['id_campo' => 15, 'campo' => 'Unidad', 'tipo' => 'SELECT'],
             ['id_campo' => 16, 'campo' => 'Nombre Taller', 'tipo' => 'VARCHAR'],
             ['id_campo' => 17, 'campo' => 'Persona (Proveedor)', 'tipo' => 'VARCHAR'],
-            ['id_campo' => 18, 'campo' => 'Folio/Num de pase', 'tipo' => 'VARCHAR'],
+            ['id_campo' => 18, 'campo' => 'Folio / Num de pase', 'tipo' => 'VARCHAR'],
             ['id_campo' => 19, 'campo' => 'Persona(Cliente - Asociado)', 'tipo' => 'VARCHAR'],
             ['id_campo' => 20, 'campo' => 'Otro', 'tipo' => 'VARCHAR'],
             ['id_campo' => 21, 'campo' => 'Puerta', 'tipo' => 'VARCHAR'],

@@ -1,7 +1,7 @@
-<form action="{{ route('incidencias.store') }}" method="POST" id="novedades_encierro" enctype="multipart/form-data">
+<form action="{{ route('incidencias.store') }}" method="POST" id="Novedades_encierro_matutino" enctype="multipart/form-data">
     @csrf
     @if ($casetaSeleccionada && $casetaSeleccionada->nombre === 'Encierro')
-        <div id="Novedades_encierro" style="display: none;">
+        <div id="Novedades_encierro_matutino" style="display: none;">
             <div class="card horizontal-card d-none">
                 <div class="form-group">
                     <label for="caseta_nov_encierro">Caseta:</label>
@@ -31,17 +31,13 @@
                 </div>
             </div>
 
-            @foreach (['Detalle incidencia', 'Lt Gasolina Inicial', 'Lt Gasolina Final'] as $campoNombre)
+            @foreach (['Detalle incidencia'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
                         @if ($campoNombre == 'Detalle incidencia')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]" rows="4"
                                 required>{{ old('campos.' . $campo->id_campo) }}</textarea>
-                        @else
-                            <input type="number" step="0.01" class="form-control"
-                                id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @endif
                     </div>
                 @endif

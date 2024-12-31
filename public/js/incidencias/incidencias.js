@@ -8,13 +8,14 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
     const turno = document.getElementById('id_turnos').value;
     const caseta = document.getElementById('id_casetas').value;
     const vigilante = document.getElementById('Nombre_vigilante').value;
+    const camposGasolina = ['Lt Gasolina Inicial', 'Lt Gasolina Final'];
 
     if (!turno) return Swal.fire({ icon: 'warning', title: '¡Atención!', text: 'Por favor, seleccione un turno.', confirmButtonText: 'Aceptar' }).then(() => location.reload());
 
-    ['fecha_hora', 'fecha_hora_detalles', 'fecha_hora_tots', 'fecha_hora_demos', 'fecha_hora_control', 'fecha_hora_revision', 'fecha_hora_unidades', 'fecha_hora_proveedores', 'fecha_hora_salida', 'fecha_hora_entrada', 'fecha_hora_inventario', 'fecha_hora_novedades', 'fecha_hora_nov_encierro', 'fecha_hora_post', 'fecha_hora_siniestradas', 'fecha_hora_lavados', 'fecha_hora_taller', 'fecha_hora_fuera', 'fecha_hora_exhibicion', 'fecha_hora_clientes', 'fecha_hora_azotea', 'fecha_hora_estadia', 'fecha_hora_servicios', 'fecha_hora_entrega', 'fecha_hora_servicio', 'fecha_hora_acceso', 'fecha_hora_altabrisa_servicio', 'fecha_hora_granel', 'fecha_hora_subaru', 'fecha_hora_subarutot', 'fecha_hora_m', 'fecha_hora_empresasub', 'fecha_hora_salidasubaru', 'fecha_hora_estacionamientosub', 'fecha_hora_porton', 'fecha_hora_acceso', 'fecha_hora_invaltabrisa', 'fecha_hora_vehiculos', 'fecha_hora_bitacora', 'fecha_hora_ingreso', 'fecha_hora_aceite'].forEach(id => setField(id, fechaHora));
-    ['caseta_detalles', 'caseta_tots', 'caseta_demos', 'caseta_control', 'caseta_revision', 'caseta_unidades', 'caseta_proveedores', 'caseta_salida', 'caseta_entrada', 'caseta_inventario', 'caseta_novedades', 'caseta_nov_encierro', 'caseta_post', 'caseta_siniestradas', 'caseta_lavados', 'caseta_taller', 'caseta_fuera', 'caseta_exhibicion', 'caseta_clientes', 'caseta_azotea', 'caseta_estadia', 'caseta_servicios', 'caseta_entrega', 'caseta_servicio', 'caseta_acceso', 'caseta_altabrisa_servicio', 'caseta_granel', 'caseta_subaru', 'caseta_subaru_tot', 'caseta_subaru_m', 'caseta_empresasub', 'caseta_salida_subaru', 'caseta_estacionamiento_sub', 'caseta_porton', 'caseta_acceso', 'caseta_inventario_altabrisa', 'caseta_vehiculos', 'caseta_bitacora', 'caseta_ingreso', 'caseta_aceite'].forEach(id => setField(id, caseta));
-    ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa', 'turno_vehiculos', 'turno_bitacora', 'turno_ingreso', 'turno_aceite'].forEach(id => setField(id, turno));
-    ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa', 'Nombre_vigilante_vehiculos', 'Nombre_vigilante_bitacora', 'Nombre_vigilante_ingreso', 'Nombre_vigilante_aceite'].forEach(id => setField(id, vigilante));
+    ['fecha_hora', 'fecha_hora_detalles', 'fecha_hora_tots', 'fecha_hora_demos', 'fecha_hora_control', 'fecha_hora_revision', 'fecha_hora_unidades', 'fecha_hora_proveedores', 'fecha_hora_salida', 'fecha_hora_entrada', 'fecha_hora_inventario', 'fecha_hora_novedades', 'fecha_hora_nov_encierro', 'fecha_hora_post', 'fecha_hora_siniestradas', 'fecha_hora_lavados', 'fecha_hora_taller', 'fecha_hora_fuera', 'fecha_hora_exhibicion', 'fecha_hora_clientes', 'fecha_hora_azotea', 'fecha_hora_estadia', 'fecha_hora_servicios', 'fecha_hora_entrega', 'fecha_hora_servicio', 'fecha_hora_acceso', 'fecha_hora_altabrisa_servicio', 'fecha_hora_granel', 'fecha_hora_subaru', 'fecha_hora_subarutot', 'fecha_hora_m', 'fecha_hora_empresasub', 'fecha_hora_salidasubaru', 'fecha_hora_estacionamientosub', 'fecha_hora_porton', 'fecha_hora_acceso', 'fecha_hora_invaltabrisa', 'fecha_hora_vehiculos', 'fecha_hora_bitacora', 'fecha_hora_ingreso', 'fecha_hora_aceite', 'fecha_hora_nov_post'].forEach(id => setField(id, fechaHora));
+    ['caseta_detalles', 'caseta_tots', 'caseta_demos', 'caseta_control', 'caseta_revision', 'caseta_unidades', 'caseta_proveedores', 'caseta_salida', 'caseta_entrada', 'caseta_inventario', 'caseta_novedades', 'caseta_nov_encierro', 'caseta_post', 'caseta_siniestradas', 'caseta_lavados', 'caseta_taller', 'caseta_fuera', 'caseta_exhibicion', 'caseta_clientes', 'caseta_azotea', 'caseta_estadia', 'caseta_servicios', 'caseta_entrega', 'caseta_servicio', 'caseta_acceso', 'caseta_altabrisa_servicio', 'caseta_granel', 'caseta_subaru', 'caseta_subaru_tot', 'caseta_subaru_m', 'caseta_empresasub', 'caseta_salida_subaru', 'caseta_estacionamiento_sub', 'caseta_porton', 'caseta_acceso', 'caseta_inventario_altabrisa', 'caseta_vehiculos', 'caseta_bitacora', 'caseta_ingreso', 'caseta_aceite', 'caseta_nov_post'].forEach(id => setField(id, caseta));
+    ['turno_detalles', 'turno_tots', 'turno_demos', 'turno_control', 'turno_revision', 'turno_unidades', 'turno_proveedores', 'turno_salida', 'turno_entrada', 'turno_inventario', 'turno_novedades', 'turno_nov_encierro', 'turno_post', 'turno_siniestradas', 'turno_lavados', 'turno_taller', 'turno_fuera', 'turno_exhibicion', 'turno_caseta', 'turno_clientes', 'turno_azotea', 'turno_estadia', 'turno_servicios', 'turno_entrega', 'turno_servicio', 'turno_acceso', 'turno_altabrisa_servicio', 'turno_granel', 'turno_subaru', 'turno_subaru_tot', 'turno_subaru_m', 'turno_empresasub', 'turno_salida_subaru', 'turno_estacionamiento_sub', 'turno_porton', 'turno_acceso', 'turno_inventario_altabrisa', 'turno_vehiculos', 'turno_bitacora', 'turno_ingreso', 'turno_aceite', 'turno_nov_post'].forEach(id => setField(id, turno));
+    ['Nombre_vigilante_detalles', 'Nombre_vigilante_tots', 'Nombre_vigilante_demos', 'Nombre_vigilante_control', 'Nombre_vigilante_revision', 'Nombre_vigilante_unidades', 'Nombre_vigilante_proveedores', 'Nombre_vigilante_salida', 'Nombre_vigilante_entrada', 'Nombre_vigilante_inventario', 'Nombre_vigilante_novedades', 'Nombre_vigilante_nov_encierro', 'Nombre_vigilante_post', 'Nombre_vigilante_siniestradas', 'Nombre_vigilante_lavados', 'Nombre_vigilante_taller', 'Nombre_vigilante_fuera', 'Nombre_vigilante_exhibicion', 'Nombre_vigilante_clientes', 'Nombre_vigilante_azotea', 'Nombre_vigilante_estadia', 'Nombre_vigilante_servicios', 'Nombre_vigilante_entrega', 'Nombre_vigilante_servicio', 'Nombre_vigilante_acceso', 'Nombre_altabrisa_servicio', 'Nombre_vigilante_granel', 'Nombre_vigilante_subaru', 'Nombre_vigilante_subarutot', 'Nombre_vigilante_m', 'Nombre_vigilante_empresasub', 'Nombre_vigilante_salidasubaru', 'Nombre_vigilante_estacionamientosub', 'Nombre_vigilante_porton', 'Nombre_vigilante_acceso', 'Nombre_vigilante_invaltabrisa', 'Nombre_vigilante_vehiculos', 'Nombre_vigilante_bitacora', 'Nombre_vigilante_ingreso', 'Nombre_vigilante_aceite', 'Nombre_vigilante_nov_post'].forEach(id => setField(id, vigilante));
 
     setField('hidden_fecha_hora', fechaHora);
     setField('hidden_id_turnos', turno);
@@ -22,12 +23,26 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
     setField('hidden_nombre_vigilante', vigilante);
     document.getElementById('incidenciaForm').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'block';
+
+    document.querySelectorAll('.form-group').forEach((campo) => {
+        const campoNombre = campo.querySelector('label') ? campo.querySelector('label').textContent.trim() : '';
+
+        // Verificar si el campo es de gasolina y si el turno es 6
+        if (turno === "6" && camposGasolina.includes(campoNombre)) {
+            campo.style.display = "none";  // Ocultar campo
+        } else {
+            campo.style.display = "block";  // Mostrar campo
+        }
+    });
 });
+
 
 function mostrarSegundaEtapa() {
     document.getElementById('primeraEtapa').style.display = 'none';
     document.getElementById('detallesForm').style.display = 'none';
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
-        ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa', 'formatos_vehiculos', 'formatos_bitacora', 'formatos_ingreso', 'formatos_aceite'].forEach(id => setField(id, formatos));
+        ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa', 'formatos_vehiculos', 'formatos_bitacora', 'formatos_ingreso', 'formatos_aceite', 'formatos_nov_post'].forEach(id => setField(id, formatos));
 
         document.getElementById('incidenciaForm').style.display = 'none';
         document.getElementById('detallesForm').style.display = 'block';
@@ -46,32 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
-
-// function toggleOtroUnidad(selectElement) {
-//     const container = document.getElementById('otroUnidadContainer');
-//     container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
-//     container.querySelector('input').required = selectElement.value === 'OTRO';
-// }
-
-// document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
-//     select.addEventListener('change', function () {
-//         this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
-//     });
-// });
-
-// function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
-
-// function toggleOtroUnidad(selectElement) {
-//     const container = document.getElementById('otroUnidadContainer');
-//     container.style.display = selectElement.value === 'OTRO' ? 'block' : 'none';
-//     container.querySelector('input').required = selectElement.value === 'OTRO';
-// }
-
-// document.querySelectorAll('.area_departamento, .ubicacion_unidad, .unidades_utilitarias').forEach(select => {
-//     select.addEventListener('change', function () {
-//         this.closest('.form-group').nextElementSibling.style.display = this.value === 'OTRO' ? 'block' : 'none';
-//     });
-// });
 
 document.getElementById('id_turnos').addEventListener('change', function () {
     const turno = this.options[this.selectedIndex].dataset.nombre;
@@ -82,13 +71,15 @@ document.getElementById('id_turnos').addEventListener('change', function () {
         '3': { // ID de la caseta Área de demos
             'Matutino': [
                 'Novedades',
-                'Control de Unidades',
+                'Unidades nuevas entregadas a clientes',
+                'Control de acceso a proveedores',
                 'Control de proveedores TOTs',
-                'Uso Unidades demos (Pruebas de manejo y/o diligencias)'
+                'Uso Unidades demos (Pruebas de manejo y/o diligencias)',
+
             ],
             'Nocturno': [
                 'Novedades',
-                'Revisión de instalaciones',
+                'Revision de instalaciones',
                 'Inventario de unidades en exhibición',
                 'Control de acceso a proveedores'
             ]
@@ -100,14 +91,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Entrada y salida de unidades del encierro'
             ],
             'Nocturno': [
-                'Novedades.',
+                'Novedades',
                 'Inventario de unidades nuevas en encierro / patio'
             ]
         },
         '16': { // ID de la caseta Postventa
             'Matutino': [
                 'Novedades Postventa',
-                'Control de acceso de unidades por el área de taller postventa',
+                'Servicios sin citas (ordenes tipo n clientes toyota)',
                 'Vehículos por siniestros (ORDENES TIPO B SEGUROS)',
                 'Vehículo para lavado (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS)'
             ],
@@ -206,7 +197,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         // Caseta Área de demos
         'Novedades': 'Novedades_demos',
         'Novedades Postventa': 'Novedades_post',
-        'Control de Unidades': 'controlUnidades',
+        'Unidades nuevas entregadas a clientes': 'controlUnidades',
         'Control de proveedores TOTs': 'controlProv',
         'Uso Unidades demos (Pruebas de manejo y/o diligencias)': 'controlDemos',
         'Revision de instalaciones': 'instalaciones',
@@ -227,7 +218,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'Registro de otras unidades en estacionamientos de clientes': 'registro_clientes',
         'Unidades estadía en taller': 'estadia_taller',
         'Unidades estadía en azotea': 'estadia_azotea',
-        'Control de acceso de unidades por el área de taller postventa': 'taller_postventa',
+        'Servicios sin citas (ordenes tipo n clientes toyota)': 'taller_postventa',
         'Vehículos por siniestros (ORDENES TIPO B SEGUROS)': 'vehiculos_siniestros',
         'Vehículo para lavado (ORDENES TIPO I,D,A,S Y E INTERNAS Y EMPLEADOS)': 'vehiculo_lavado',
 
@@ -297,34 +288,6 @@ document.getElementById('btnAtras').addEventListener('click', function () {
         }, 300);
     }
 });
-// document.getElementById('btnAtras').addEventListener('click', function () {
-//     const primeraEtapa = document.getElementById('primeraEtapa');
-//     const incidenciaForm = document.getElementById('incidenciaForm');
-//     const detallesForm = document.getElementById('detallesForm');
-
-
-//     if (window.history.length > 1 && detallesForm.style.display === 'block') {
-//         detallesForm.classList.add('fade-out');
-
-//         setTimeout(function () {
-//             detallesForm.style.display = 'none';
-//             detallesForm.classList.remove('fade-out');
-
-
-//             primeraEtapa.style.display = 'block';
-//             incidenciaForm.style.display = 'block';
-//             primeraEtapa.classList.add('fade-in');
-
-//         }, 300);
-
-//     } else {
-//         document.body.classList.add('fade-out');
-//         setTimeout(function () {
-//             window.history.back();
-//         }, 300);
-//     }
-// });
-
 //estilo
 document.addEventListener('DOMContentLoaded', function () {
     const style = document.createElement('style');
@@ -520,6 +483,13 @@ function submitAndResetForm(boton) {
                 (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
+                if (elemento.classList.contains('vin')) {
+                    const valorVin = elemento.value.trim();
+                    if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
+                        esValido = false;
+                    }
+                }
+
             if (esVacio) {
                 esValido = false;
             }
@@ -536,26 +506,145 @@ function submitAndResetForm(boton) {
         });
         return;
     }
-
     formulario.submit();
+    setTimeout(() => {
+        elementos.forEach(elemento => {
+            const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
 
-    if (!window.hasErrors) {
-        setTimeout(() => {
-            elementos.forEach(elemento => {
-                const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
-
-                if (!esOculto && !elemento.disabled) {
-                    if (['checkbox', 'radio'].includes(elemento.type)) {
-                        elemento.checked = false;
-                    } else if (elemento.tagName === 'SELECT') {
-                        elemento.selectedIndex = 0;
-                    } else {
-                        elemento.value = '';
-                    }
+            if (!esOculto && !elemento.disabled) {
+                if (['checkbox', 'radio'].includes(elemento.type)) {
+                    elemento.checked = false;
+                } else if (elemento.tagName === 'SELECT') {
+                    elemento.selectedIndex = 0;
+                } else {
+                    elemento.value = '';  // Restablece el valor del campo
                 }
-            });
-        }, 500);
-    }
+            }
+        });
+    }, 500);
 }
 
 
+//Formula
+//Consumo por bahías = Acum Final  menos Acum Inicial por día
+//Suma de Consumo por bahías 1-2, 3-4, 5-6, 7-8, 9-10,  =Total de surtido por día<script>
+// Función general para calcular el consumo por bahía
+function calcularConsumo(prefix, totalSurtidoClass) {
+    const totalSurtido = document.querySelector(totalSurtidoClass);
+    let totalConsumo = 0;
+
+    // Iterar sobre las bahías (1 a 4)
+    for (let i = 1; i <= 4; i++) {
+        const bahiaInicial = document.querySelector(`.${prefix}${i}-inicial`);
+        const bahiaFinal = document.querySelector(`.${prefix}${i}-final`);
+
+        // Verificar si los elementos existen antes de acceder a sus valores
+        if (bahiaInicial && bahiaFinal) {
+            totalConsumo += parseFloat(bahiaFinal.value || 0) - parseFloat(bahiaInicial.value || 0);
+        }
+    }
+
+    // Mostrar el total surtido si existe el elemento
+    if (totalSurtido) {
+        totalSurtido.value = totalConsumo.toFixed(2);
+    }
+}
+
+// Calcular consumo para Altabrisa
+calcularConsumo('bahiaAL', '.total-surtidoAl');
+
+// Calcular consumo para otro grupo (ejemplo: bahías MO)
+calcularConsumo('bahia', '.total-surtidoMO');
+
+// Agregar eventos para actualizar los consumos
+const bahiasAL = ['bahiaAL1', 'bahiaAL2', 'bahiaAL3', 'bahiaAL4'];
+const bahiasMO = ['bahia1', 'bahia2', 'bahia3', 'bahia4'];
+
+// Agregar eventos para Altabrisa
+bahiasAL.forEach(bahia => {
+    const bahiaInicial = document.querySelector(`.${bahia}-inicial`);
+    const bahiaFinal = document.querySelector(`.${bahia}-final`);
+
+    if (bahiaInicial && bahiaFinal) {
+        bahiaInicial.addEventListener("input", () => calcularConsumo('bahiaAL', '.total-surtidoAl'));
+        bahiaFinal.addEventListener("input", () => calcularConsumo('bahiaAL', '.total-surtidoAl'));
+    }
+});
+
+// Agregar eventos para bahías MO
+bahiasMO.forEach(bahia => {
+    const bahiaInicial = document.querySelector(`.${bahia}-inicial`);
+    const bahiaFinal = document.querySelector(`.${bahia}-final`);
+
+    if (bahiaInicial && bahiaFinal) {
+        bahiaInicial.addEventListener("input", () => calcularConsumo('bahia', '.total-surtidoMO'));
+        bahiaFinal.addEventListener("input", () => calcularConsumo('bahia', '.total-surtidoMO'));
+    }
+});
+
+$(document).ready(function () {
+    $('label:contains("Total surtido")').closest('tr').hide();
+});
+
+
+//boton enviarCorreo
+function iniciarTurno() {
+    const selectedOption = document.querySelector('option[data-hora-fin]');
+    const horaFin = selectedOption.getAttribute('data-hora-fin');
+    if (!horaFin) {
+        console.error("El atributo 'data-hora-fin' no tiene valor.");
+        return;
+    }
+    const horaParts = horaFin.split(':');
+    if (horaParts.length < 2 || isNaN(horaParts[0]) || isNaN(horaParts[1])) {
+        return;
+    }
+    const ahora = new Date();
+    const horaFinDate = new Date(ahora);
+    horaFinDate.setHours(horaParts[0], horaParts[1], 0, 0);
+    if (isNaN(horaFinDate.getTime())) {
+        return;
+    }
+
+    const diferencia = horaFinDate - ahora;
+    if (diferencia <= 0) {
+        limpiarEstado();
+        return;
+    }
+
+    const tiempoAlerta = diferencia - 900000; // 15 minutos antes
+    setTimeout(() => {
+        Swal.fire({
+            title: '¡Alerta!',
+            text: 'Faltan 15 minutos para que termine el turno.',
+            icon: 'warning',
+            confirmButtonText: 'Cerrar',
+            toast: true,
+            position: 'bottom-end',
+            timer: horaFinDate,
+            timerProgressBar: true,
+        });
+
+        const btnEnviar = document.getElementById('btnEnviar');
+        if (btnEnviar) {
+            btnEnviar.style.display = 'block';
+        }
+    }, tiempoAlerta);
+
+    setTimeout(() => {
+        limpiarEstado();
+    }, diferencia);
+}
+
+function limpiarEstado() {
+    const btnEnviar = document.getElementById('btnEnviar');
+    if (btnEnviar) {
+        btnEnviar.style.display = 'none';
+    }
+    const selectedOption = document.querySelector('option[data-hora-fin]');
+    if (selectedOption) {
+        selectedOption.removeAttribute('data-hora-fin');
+    }
+}
+
+iniciarTurno();
