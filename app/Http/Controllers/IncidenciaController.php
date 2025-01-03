@@ -145,7 +145,7 @@ class IncidenciaController extends Controller
                 return redirect()->back()->withErrors(['formulario' => 'Formulario no reconocido.']);
         }
 
-        // insertar datos en campo_incidencias
+        // insertar datos en campo_incidencias 
         $campos = $request->input('campos', []);
         foreach ($campos as $id_campo => $valor) {
             // si el valor es nulo o vacío, asignar "N/A"

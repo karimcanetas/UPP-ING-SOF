@@ -192,6 +192,7 @@
             .catch(error => {
                 console.error('Error al obtener campos:', error);
             });
+            
     }
 
     document.getElementById('fecha_inicio').addEventListener('change', () => {
@@ -199,6 +200,8 @@
         if (formatoId) {
             obtenerCampos(formatoId);
         }
+
+        console.log(formatoId);
     });
 
     document.getElementById('fecha_fin').addEventListener('change', () => {
@@ -206,6 +209,7 @@
         if (formatoId) {
             obtenerCampos(formatoId);
         }
+        console.log(formatoId);
     });
 
     function filtrarCorreos() {

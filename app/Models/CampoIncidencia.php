@@ -9,7 +9,7 @@ class CampoIncidencia extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql_2'; // Base de datos vigilancia
+    protected $connection = 'mysql_2'; // bd vigilancia
     protected $table = 'campo_incidencias';
     protected $primaryKey = 'id_campo_incidencias';
     public $timestamps = false;

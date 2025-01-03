@@ -37,7 +37,6 @@ class Formato extends Model
         return $this->belongsToMany(Turno::class, 'formato_caseta', 'id_formatos', 'id_turnos')
             ->withPivot('id_casetas');
     }
-
     public function campoIncidencias()
     {
         return $this->hasMany(CampoIncidencia::class, 'id_formatos');

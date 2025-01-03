@@ -62,7 +62,7 @@
                                 <select name="campos[{{ $campo->id_campo }}]" id="campoAsociadoInterno"
                                     class="form-control js-example-tokenizer"
                                     style="width: 100%; text-transform: uppercase;">
-                                    <option value="" selected disabled>Selecciona un empleado</option>
+                                    <option value="N/A" selected>Selecciona un empleado</option>
                                     @foreach ($empleados as $empleado)
                                         <option value="{{ $empleado->nombres }}"
                                             data-puesto="{{ $empleado->puestos->nombre ?? 'Sin puesto' }}"
@@ -94,7 +94,7 @@
                                     value="{{ old('campos.' . $campo->id_campo) }}">
                             </div>
                         @elseif ($campoNombre == 'Puesto')
-                            <input type="text" class="form-control" id="puestoInput"
+                            <input type="text" class="form-control puestoInput" id="campos[{{ $campo->id_campo }}]"
                                 style="text-transform: uppercase" name="campos[{{ $campo->id_campo }}]"
                                 value="{{ old('campos.' . $campo->id_campo) }}"  required>
                         @elseif ($campoNombre == 'Hora de entrada')

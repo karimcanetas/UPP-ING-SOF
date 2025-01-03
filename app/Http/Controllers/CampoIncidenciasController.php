@@ -61,6 +61,19 @@ class CampoIncidenciasController extends Controller
                 continue; // si no hay incidencias se omite el formato
             }
 
+            // $incidenciasAgrupadas = $camposIncidencias->groupBy(function ($campoIncidencia) {
+            //     return $campoIncidencia->incidencia->id_incidencias; // Agrupar por id_incidencias
+            // });
+            // Log::info('formatos: ' . $formato->Tipo);
+            // foreach ($incidenciasAgrupadas as $incidencia) {
+            //     $nombreVigilante = $incidencia->first()->incidencia->nombre_vigilante;
+            //     $fechaHora = $incidencia->first()->incidencia->fecha_hora;
+            //     Log::info("incidencia con id_incidencias: " . $incidencia->first()->incidencia->id_incidencias);
+            //     Log::info("campos de la incidencia: {$incidencia->first()->incidencia->id_incidencias} - Nombre vigilante: $nombreVigilante, Fecha y hora: $fechaHora");
+            //     foreach ($incidencia as $campoIncidencia) {
+            //         Log::info("campos de la incidencia {$campoIncidencia->incidencia->id_incidencias} - Valor: " . $campoIncidencia->valor);
+            //     }
+            // }
             $empleadosHabilitados = EmpleadosFormatos::where('id_formatos', $formatoId)
                 ->where('status', 1)
                 ->get();

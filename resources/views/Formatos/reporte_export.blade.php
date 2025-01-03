@@ -54,6 +54,7 @@
                         style="padding: 10px; text-align: center; border: 1px solid #BDC3C7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         {{ $vigilantesYFechas[$i]['fecha_hora'] ?? 'Sin fecha' }}
                     </td>
+
                 </tr>
             @endfor
         </tbody>

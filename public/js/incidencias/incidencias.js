@@ -339,7 +339,8 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
     const campoAsociadoInternoSelect = $('#campoAsociadoInterno');
-    const puestoInput = document.getElementById('puestoInput');
+    // const puestoInput = document.getElementById('puestoInput');
+    const puestoInput = document.querySelector('.form-control.puestoInput');
     const nuevoEmpleadoForm = document.getElementById('nuevoEmpleadoForm');
     const empleadoNoRegistradoContainer = document.getElementById('empleadoNoRegistradoContainer');
     const agregarEmpleadoBtn = document.getElementById('agregarEmpleadoBtn');
@@ -586,7 +587,7 @@ function submitAndResetForm(boton) {
     let esValido = true;
     let mensajeError = "";
 
-    // Solo ejecutar esta parte para el formulario con id 'bitacora_acceso_porton'
+    // ejecutar esta parte para el formulario con id 'bitacora_acceso_porton'
     if (formulario.id === 'bitacora_acceso_porton') {
         const radioSeleccionado = formulario.querySelector('input[name="horaSelect"]:checked');
         if (!radioSeleccionado) {
@@ -605,7 +606,6 @@ function submitAndResetForm(boton) {
         // $('#agregarhoraBtn').hide();
     }
 
-    // Lógica común para validar los campos de todos los formularios
     elementos.forEach(elemento => {
         const esOpcional = !elemento.hasAttribute('required');
         const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
@@ -613,10 +613,9 @@ function submitAndResetForm(boton) {
         if (!esOpcional && !esOculto && !elemento.disabled) {
             const esVacio =
                 (['text', 'textarea', 'number', 'email', 'date', 'datetime', 'time'].includes(elemento.type) && elemento.value.trim() === '') ||
-                (['checkbox', 'radio'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
+                (['checkbox', 'radio', 'select'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
-            // Validación específica para el VIN (6 dígitos)
             if (elemento.classList.contains('vin')) {
                 const valorVin = elemento.value.trim();
                 if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
@@ -628,15 +627,17 @@ function submitAndResetForm(boton) {
             if (esVacio) {
                 esValido = false;
 
-                // Obtengo el label del campo si existe
                 const label = formulario.querySelector(`label[for="${elemento.id}"]`);
+
+
+                // const label = formulario.querySelector(`label[for="campos[{{ $campo->id_campo }}]"]`);
                 const nombreCampo = label ? label.textContent.trim() : elemento.name || "campo requerido";
                 mensajeError = mensajeError || `Favor de completar el campo: ${nombreCampo}`;
+
             }
         }
     });
 
-    // Si el formulario no es válido, mostramos el mensaje de error
     if (!esValido) {
         $(document).ready(function () {
             Swal.fire({
@@ -648,13 +649,13 @@ function submitAndResetForm(boton) {
         return;
     }
 
-    // Si el formulario es válido, lo enviamos
-    formulario.submit();
+    formulario.submit(boton);
 
     // Después de enviar el formulario, restablecemos los campos
     setTimeout(() => {
         elementos.forEach(elemento => {
             const esOculto = elemento.type === 'hidden' || elemento.closest('.d-none') !== null || elemento.readOnly;
+            const select2 = $('#campoAsociadoInterno');
 
             if (!esOculto && !elemento.disabled) {
                 if (['checkbox', 'radio'].includes(elemento.type)) {
@@ -662,7 +663,8 @@ function submitAndResetForm(boton) {
                 } else if (elemento.tagName === 'SELECT') {
                     elemento.selectedIndex = 0;
                 } else {
-                    elemento.value = ''; // Restablece el valor del campo
+                    elemento.value = '';
+                    $('#campoAsociadoInterno').val('').trigger('change');
                 }
             }
         });
@@ -892,8 +894,13 @@ $(document).ready(function () {
                         icon: 'success',
                         title: response.success,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
+
                     });
+                    $('#cerrar').click();
+                    $('#miSelect').val('').trigger('change');
+                    $('#actualizarHoraForm input').val('');
+                    $('#actualizarHoraForm label.error').remove();
                 } else {
                     Swal.fire({
                         position: 'center',
@@ -934,6 +941,7 @@ $(document).ready(function () {
         } else if ($(this).val() === 'salida') {
             $(`${formSelector} #agregarhoraBtn`).show();
             $(`${formSelector} label:contains("Hora de entrada")`).hide();
+            $(`${formSelector} input[type="time"]`).attr('required', true);
         } else if ($(this).val() === 'ambas') {
             $(`${formSelector} #campoHoraEntrada`).show();
             $(`${formSelector} #campoHoraSalida`).show();

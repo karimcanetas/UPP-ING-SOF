@@ -33,26 +33,39 @@ class ReporteExport implements FromView, WithTitle, WithEvents
         $this->formato = $formato;
     }
 
+
     public function view(): View
     {
+        // dd($this->camposIncidencias);
         $nombresCampos = [];
         $valoresPorCampo = [];
         $vigilantesYFechas = [];
 
-        foreach ($this->camposIncidencias as $incidencia) {
-            $nombreCampo = $incidencia->campo->campo;
+        // agrupo las incidencias por id_incidencias, para trabajar con cada incidencia por separado
+        $incidenciasAgrupadas = $this->camposIncidencias->groupBy(function ($campoIncidencia) {
+            return $campoIncidencia->incidencia->id_incidencias;
+        });
 
-            if (!in_array($nombreCampo, $nombresCampos)) {
-                $nombresCampos[] = $nombreCampo;
-            }
+        // reccoro cada grupo de incidencias
+        foreach ($incidenciasAgrupadas as $incidencia) {
+            // obtengo el nombre del vigilante y la fecha de la primera incidencia de cada grupo
+            $nombreVigilante = $incidencia->first()->incidencia->Nombre_vigilante;
+            $fechaHora = $incidencia->first()->incidencia->fecha_hora;
 
-            $valoresPorCampo[$nombreCampo][] = $incidencia->valor ?? '';
-
-            // obtengo Nombre_vigilante y fecha_hora directamente desde la incidencia
             $vigilantesYFechas[] = [
-                'nombre_vigilante' => nl2br($incidencia->incidencia->Nombre_vigilante ?? 'No asignado'),
-                'fecha_hora' => nl2br($incidencia->incidencia->fecha_hora ?? 'Sin fecha'),
+                'nombre_vigilante' => nl2br($nombreVigilante ?? 'No asignado'),
+                'fecha_hora' => nl2br($fechaHora ?? 'Sin fecha'),
             ];
+
+            foreach ($incidencia as $campoIncidencia) {
+                $nombreCampo = $campoIncidencia->campo->campo;
+
+                if (!in_array($nombreCampo, $nombresCampos)) {
+                    $nombresCampos[] = $nombreCampo;
+                }
+
+                $valoresPorCampo[$nombreCampo][] = $campoIncidencia->valor ?? '';
+            }
         }
 
         return view('Formatos.reporte_export', [

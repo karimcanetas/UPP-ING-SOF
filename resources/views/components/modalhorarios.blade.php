@@ -1,5 +1,4 @@
 <div class="modal fade" id="HoraModal" tabindex="-1" aria-labelledby="HoraModalLabel" aria-hidden="true">
-    {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -37,7 +36,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cerrar">Cancelar</button>
                         <button type="submit" class="btn btn-primary">
                             <span id="spinner" class="spinner-border spinner-border-sm d-none me-2" role="status"
                                 aria-hidden="true"></span>
@@ -49,5 +48,3 @@
         </div>
     </div>
 </div>
-
-
