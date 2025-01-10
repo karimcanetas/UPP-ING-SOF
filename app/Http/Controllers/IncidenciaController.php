@@ -163,10 +163,10 @@ class IncidenciaController extends Controller
             ]);
         }
 
-
+        return redirect()->route('incidencias.create', ['id_caseta' => $request->input('id_casetas')])->with('success', 'Incidencia creada exitosamente.');
 
         // Redireccionar según el formulario procesado
-        return redirect()->route('incidencias.create')->with('success', 'Incidencia creada exitosamente.');
+        // return redirect()->route('incidencias.create')->with('success', 'Incidencia creada exitosamente.');
     }
 
     public function obtenerHoraSalida()
@@ -232,25 +232,24 @@ class IncidenciaController extends Controller
             'id_incidencias' => 'required|exists:mysql_2.campo_incidencias,id_incidencias',
             'HoraSalida' => 'required|date_format:H:i',
         ]);
-    
+
         $id_incidencias = $request->input('id_incidencias');
         $HoraSalida = $request->input('HoraSalida');
-    
+
         $campoIncidencia = DB::connection('mysql_2')->table('campo_incidencias')
             ->where('id_incidencias', $id_incidencias)
             ->where('id_campo', 34)
             ->first();
-    
+
         if ($campoIncidencia) {
             DB::connection('mysql_2')->table('campo_incidencias')
                 ->where('id_incidencias', $id_incidencias)
                 ->where('id_campo', 34)
                 ->update(['valor' => $HoraSalida]);
-    
+
             return response()->json(['success' => 'Hora de salida actualizada exitosamente.']);
         } else {
             return response()->json(['error' => 'No se encontró el registro en campo_incidencias.'], 404);
         }
     }
-    
 }

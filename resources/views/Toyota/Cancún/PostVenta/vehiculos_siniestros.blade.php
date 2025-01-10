@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group">
                     <label for="fecha_hora_nov_encierro">Fecha y hora del envío:</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_siniestradas" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_siniestradas" readonly>
                 </div>
             </div>
 

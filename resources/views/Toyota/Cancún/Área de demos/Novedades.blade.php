@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="fecha_hora">Fecha y hora del envío:</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_novedades" readonly
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_novedades" readonly
                         value="{{ now()->format('Y-m-d H:i:s') }}">
                 </div>
             </div>

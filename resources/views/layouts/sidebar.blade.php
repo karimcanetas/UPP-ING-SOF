@@ -176,16 +176,30 @@
                         fill="#ffffff"></path>
                 </g>
             </svg> --}}
-            <svg @if (Route::is('send.index')) width="60px" height="60px" @else width="45px" height="45px" @endif
-                xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 24 24">
-                <path fill="currentColor"
-                    d="M21 3a1 1 0 0 1 1 1v16.007a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V19h18V7.3l-8 7.2l-10-9V4a1 1 0 0 1 1-1h18ZM8 15v2H0v-2h8Zm-3-5v2H0v-2h5Zm14.566-5H4.434L12 11.81L19.566 5Z" />
+            <svg @if (Route::is('send.index')) width="60px" height="60px" @else width="55px" height="55px" @endif
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5">
+                    <path d="M9 9l4.5 3L18 9M3 13.5h2m-4-3h4" strokeLinejoin="round" />
+                    <path d="M5 7.5V7a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-.5" />
+                </g>
             </svg>
-            <span> {{ __('Enviar correos') }}</span>
+            <span>{{ __('Enviar correos') }}</span>
         </a>
     </li>
 
 
+
+    {{-- <svg height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5">
+            <path d="m9 9l4.5 3L18 9M3 13.5h2m-4-3h4" strokeLinejoin="round" />
+            <path d="M5 7.5V7a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-.5" />
+        </g>
+    </svg> --}}
+
+    {{-- <svg height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 2L11 13M22 2l-7 20l-4-9l-9-4l20-7z" fill="none" stroke="currentColor" strokeLinecap="round"
+            strokeLinejoin="round" strokeWidth="2" />
+    </svg> --}}
     {{-- <li class="nav-item anim-left anim-pause-1 @if (Route::is('dashboard') || Route::is('dashboard')) font-weight-bold active @endif">
         <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover" data-content="Pulsar para ir al modulo de usuarios">
             <svg @if (Route::is('dashboard') || Route::is('dashboard')) width="70px" height="70px" @else width="30px" height="30px" @endif viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

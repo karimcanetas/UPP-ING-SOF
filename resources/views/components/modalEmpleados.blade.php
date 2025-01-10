@@ -91,18 +91,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="label-group">
-                            <label for="id_tipo_asociado" class="modal-text font-weight-bold">
-                                <i class="fas fa-tags"></i> Tipo Asociado
-                            </label>
-                            <select class="form-control" id="id_tipo_asociado" name="id_tipo_asociado" required>
-                                <option value="" disabled selected>Selecciona un tipo de asociado</option>
-                                @foreach ($tiposAsociados as $tipo)
-                                    <option value="{{ $tipo->id_tipo_asociado }}">{{ $tipo->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div> --}}
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                 style="border-radius: 5px;">

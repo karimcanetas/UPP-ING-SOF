@@ -19,7 +19,7 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_estacionamientosub"
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_estacionamientosub"
                         readonly>
                 </div>
             </div>

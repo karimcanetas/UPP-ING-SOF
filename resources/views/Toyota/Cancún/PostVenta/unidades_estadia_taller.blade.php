@@ -19,7 +19,7 @@
                 </div>
                 <div class="form-group">
                     <label for="fecha_hora_nov_encierro">Fecha y hora del envío:</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_estadia" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_estadia" readonly>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
             </div>
 
 
-            @foreach (['Fecha', 'Unidad', 'Color', 'Placas', 'VIN (6 últimos dígitos)', 'Area', 'Cono/Observaciones'] as $campoNombre)
+            @foreach (['Fecha', 'Unidad', 'Color', 'Placas', 'VIN (6 últimos dígitos)', 'Area', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -79,7 +79,7 @@
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
-                        @elseif ($campoNombre == 'Cono/Observaciones')
+                        @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif

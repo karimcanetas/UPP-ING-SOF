@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_revision" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_revision"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -30,7 +31,7 @@
                 </div>
             </div>
 
-            @foreach (['Fecha', 'Hora', 'Otro', 'Puerta', 'Luces', 'Aire Acondicionado', 'TV'] as $campoNombre)
+            @foreach (['Fecha', 'Hora', 'Area', 'Puerta', 'Luces', 'Aire Acondicionado', 'TV', 'Otro'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
@@ -38,10 +39,13 @@
                         @if ($campoNombre == 'Fecha')
                             <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                min="1111-01-01" max="9999-12-31"
-                                required>
+                                min="1111-01-01" max="9999-12-31" required>
                         @elseif ($campoNombre == 'Hora')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                                required>
+                        @elseif ($campoNombre == 'Area')
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
                         @elseif ($campoNombre == 'Puerta')

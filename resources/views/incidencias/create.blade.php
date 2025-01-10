@@ -2,17 +2,44 @@
     <!-- contenido -->
 
     <x-btn-atras />
-    <form action="{{ route('envio.vigilante') }}" method="POST" id="envio" enctype="multipart/form-data">
+    <form action="{{ route('envio.vigilante') }}" method="POST" id="envioCORREO" enctype="multipart/form-data">
         @csrf
         <input type="hidden" id="hidden_fecha_hora" name="fecha_hora">
         <input type="hidden" id="hidden_nombre_vigilante" name="Nombre_vigilante">
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display:block">
-                <i class="fas fa-arrow-right"></i> Enviar correo
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display: block; position: relative;">
+                <span id="spinner" class="spinner-border spinner-border-sm" style="display: none; margin-right: 5px;"
+                    role="status" aria-hidden="true"></span>
+                <span id="btnText">Enviar correo</span>
             </button>
         </div>
+        @if (session('EnvioCorreoVigilante'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    $('#primeraEtapa').hide();
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: '{{ session('EnvioCorreoVigilante') }}',
+                        icon: 'error',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'Aceptar',
+                        background: '#f8d7da',
+                        iconColor: '#721c24',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        didClose: () => {
+                            window.history.back();
+                        },
+                        willClose: () => {
+                            $('#primeraEtapa').show();
+                        }
+                    });
+                });
+            </script>
+        @endif
     </form>
 
     @if ($errors->any())

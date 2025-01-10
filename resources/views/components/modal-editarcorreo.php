@@ -1,97 +1,208 @@
 <div class="modal fade" id="modalEditarCorreo" tabindex="-1" aria-labelledby="modalEditarCorreoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #83072D; border-bottom: 2px solid #f5c6cb;">
+            <div class="modal-encabezado">
                 <h5 class="modal-title" id="modalEditarCorreoLabel">Destinatarios Correos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            <div class="modal-body" style="padding: 20px; background-color: #f9f9f9;">
-                <!-- Mensaje explicativo -->
-                <div class="alert alert-info" role="alert" style="margin-bottom: 20px;">
-                    <i class="fa fa-info-circle" aria-hidden="true"></i>
-                    <strong>Información:</strong> En este apartado puedes gestionar los destinatarios de los correos electrónicos. Selecciona con ✔ los empleados a los que deseas enviar el correo y activa o desactiva sus correos según sea necesario.
-                    Si no encuentras empleados disponibles, asegúrate de que han sido asignados correctamente a la sucursal y departamento correspondientes.
+            <div class="modal-body">
+                <div class="info-message">
+                    <i class="fa fa-info-circle"></i>
+                    <p>
+                        En este apartado puedes gestionar los destinatarios de los correos electrónicos. Selecciona con ✔ los empleados a los que deseas enviar el correo y activa o desactiva sus correos según sea necesario. Si no encuentras empleados disponibles, asegúrate de que han sido asignados correctamente a la sucursal y departamento correspondientes.
+                    </p>
                 </div>
-                <!--habilitar o deshabilitar de correo -->
-                <div id="empleadosorganizados" style="padding: 50px; max-height: 450px; overflow-y: scroll;"></div>
+                <div class="buscador">
+                    <div class="buscador-contenedor">
+                        <i class="fas fa-search buscador-icono"></i>
+                        <input type="text" id="buscarCasetaFormato" placeholder="Buscar caseta o formato..." class="form-control buscador-input">
+                    </div>
+                </div>
+
+                <div id="empleadosorganizados" class="empleados-contenedor"></div>
             </div>
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-danger btn-lg w-100" data-bs-dismiss="modal" id="cerrar">Cerrar</button>
+            <div class="modal-footer">
+                <button type="button" class="botonCerrar" data-bs-dismiss="modal" id="cerrar">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
 
 <style>
+    :root {
+        --modal-bg: #ffffff;
+        --modal-header-bg: #0d1117;
+        --modal-header-text: #ffffff;
+        --modal-border: #e1e4e8;
+        --body-bg: #f6f8fa;
+        --text-color: #24292f;
+        --primary: #0366d6;
+        --primary-hover: #0056b3;
+        --info-bg: #eef6ff;
+        --info-icon: #0366d6;
+        --scrollbar-track: #f0f0f0;
+        --scrollbar-thumb: #c0c0c0;
+        --button-bg: #21262d;
+        --button-hover: #2d333b;
+    }
+
+    .modal-content {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-encabezado {
+        background-color: var(--modal-header-bg);
+        color: var(--modal-header-text);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .modal-title {
-        font-size: 1.5em;
-        color: white;
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
     }
 
     .btn-close {
-        background-color: #f44336;
+        background: none;
         border: none;
-        color: white;
-        font-size: 1.2em;
+        font-size: 1.2rem;
+        color: var(--modal-header-text);
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .btn-close:hover {
+        color: var(--primary);
     }
 
     .modal-body {
-        background-color: #f9f9f9;
-        padding: 20px;
+        padding: 24px;
+        background-color: var(--body-bg);
+        font-size: 1rem;
+        line-height: 1.6;
+        color: var(--text-color);
     }
 
     .modal-footer {
-        border-top: 2px solid #e9ecef;
-        text-align: right;
-        padding: 10px 20px;
+        padding: 16px 24px;
+        background-color: var(--body-bg);
+        border-top: 1px solid var(--modal-border);
+        display: flex;
+        justify-content: flex-end;
     }
 
-    .btn-secondary {
-        background-color: #6c757d;
+    .info-message {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+        background-color: var(--info-bg);
+        border-radius: 8px;
+        margin-bottom: 24px;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+
+    .info-message i {
+        font-size: 1.6rem;
+        color: var(--info-icon);
+    }
+
+    .empleados-contenedor {
+        max-height: 400px;
+        overflow-y: auto;
+        background-color: var(--modal-bg);
+        border: 1px solid var(--modal-border);
+        border-radius: 8px;
+        padding: 16px;
+    }
+
+    .empleados-contenedor::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .empleados-contenedor::-webkit-scrollbar-track {
+        background-color: var(--scrollbar-track);
+    }
+
+    .empleados-contenedor::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb);
+        border-radius: 4px;
+    }
+
+    .empleados-contenedor::-webkit-scrollbar-thumb:hover {
+        background-color: var(--primary);
+    }
+
+    .botonCerrar {
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
         border: none;
+        border-radius: 8px;
+        background-color: var(--button-bg);
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
+    .botonCerrar:hover {
+        background-color: var(--button-hover);
     }
 
-    .formato-tipo {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #050505;
-        margin-top: 20px;
-        max-height: 500px;
-        overflow-y: scroll;
-
+    .botonCerrar:active {
+        transform: scale(0.97);
     }
 
-    .empleado-item {
+    .buscador {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .buscador-contenedor {
         display: flex;
         align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #e9ecef;
-        font-size: 1em;
-        color: #495057;
+        position: relative;
+        width: 100%;
     }
 
-    .empleado-item:last-child {
-        border-bottom: none;
-    }
-
-    .empleado-icon {
+    .buscador-icono {
+        position: absolute;
+        right: 10px;
+        font-size: 1.2rem;
         color: #6c757d;
-        font-size: 0.8em;
-        margin-right: 8px;
     }
 
-    .empleado-nombre {
-        flex-grow: 1;
-        font-weight: 500;
+    .buscador-input {
+        padding: 10px 10px 10px 35px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    .status-checkbox {
-        transform: scale(1.2);
-        accent-color: #007bff;
+    .buscador-input:focus {
+        outline: none;
+        border-color: var(--primary-color, #007bff);
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    }
+
+    .buscador {
+        margin-bottom: 20px;
+    }
+
+    #buscarCasetaFormato {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 100%;
     }
 </style>

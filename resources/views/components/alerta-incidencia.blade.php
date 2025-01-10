@@ -18,21 +18,47 @@
 
 <script>
     $(document).ready(function() {
-    @if ($message = Session::get('success'))
-        Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "¡Incidencia creada!",
-            text: "{{ $message }}",
-            showConfirmButton: false,
-            timer: 1500
-        }).then(() => {
-            window.history.back();
-        });
-        //cuando este se muestre mostrar el div con el id campoAsociadoInterno
-        $('#campoAsociadoInterno').show();
-        $('#empleadoSelect').show();
-    @endif
+        @if ($message = Session::get('success'))
+            $('#primeraEtapa').hide();
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                //color 
+                background: '#e4ffe0',
+                title: "¡Incidencia creada!",
+                text: "{{ $message }}",
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.history.back();
+            });
+            //cuando este se muestre mostrar el div con el id campoAsociadoInterno
+            $('#campoAsociadoInterno').show();
+            $('#empleadoSelect').show();
+        @endif
+
+        
+
+        @if ($message = Session::get('successCorreos'))
+            $('#primeraEtapa').hide();
+            Swal.fire({
+                position: 'top-center',
+                icon: 'success',
+                title: '¡Correos enviados!',
+                text: '{{ $message }}',
+                background: '#d4edda',
+                iconColor: '#155724',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didClose: () => {
+                    $('#campoAsociadoInterno').show();
+                    $('#empleadoSelect').show();
+                }
+            }).then(() => {
+                window.history.back();
+            });
+        @endif
 
         // Muestra de éxito al agregar un empleado
         @if ($message = Session::get('empleado_success'))

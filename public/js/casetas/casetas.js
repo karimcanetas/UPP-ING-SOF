@@ -44,7 +44,15 @@ function showForm(casetaNombre, id_caseta) {
     window.location.href = '/incidencias/create?id_caseta=' + id_caseta + '&caseta_nombre=' + encodeURIComponent(casetaNombre);
 }
 
-
+// function showForm(casetaNombre, id_caseta) { 
+//     const casetaButton = document.getElementById('caseta-buttons');
+//     casetaButton.style.display = 'visible';
+//     casetaButton.dataset.casetaNombre = casetaNombre;
+//     window.location.href = '/incidencias/create?id_caseta=' + id_caseta;
+// }
+// document.addEventListener('DOMContentLoaded', function() {
+//     const casetaNombre = document.getElementById('caseta-buttons').dataset.casetaNombre;
+// });
 
 // function showForm(casetaNombre, id_caseta) {
 //     document.getElementById('caseta-buttons').style.display = 'visible';

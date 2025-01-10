@@ -363,6 +363,124 @@
 
                         for (let nombreCaseta in casetas) {
                             let casetaData = casetas[nombreCaseta];
+                            let casetaElement = `
+                        <div class="caseta" data-caseta="${casetaData.caseta}" data-formatos="${Object.keys(casetaData.formatos).join(',')}">
+                            <h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${casetaData.caseta}</strong></h5>
+                    `;
+
+                            for (let tipo in casetaData.formatos) {
+                                casetaElement += `
+                            <div class="formato-tipo" style="font-size: 0.9">${tipo}</div>
+                            <ul style="list-style-type: none; padding-left: 20px;">
+                        `;
+
+                                casetaData.formatos[tipo].forEach(item => {
+                                    let checkbox = item.status == 1 ? 'checked' : '';
+                                    let listItem = `
+                                <li class="empleado-item">
+                                    <span class="empleado-icon fa fa-user-circle"></span>
+                                    <span class="empleado-nombre">${item.nombres}</span>
+                                    <input type="checkbox" class="status-checkbox" data-id="${item.id_empleado}" data-formato-id="${item.id_formatos}" ${checkbox}>
+                                </li>
+                            `;
+                                    casetaElement += listItem;
+                                });
+
+                                casetaElement += `</ul>`;
+                            }
+
+                            casetaElement += `</div>`;
+                            $('#empleadosorganizados').append(casetaElement);
+                        }
+
+                        // un buscador
+                        $('#buscarCasetaFormato').on('input', function() {
+                            let query = $(this).val().toLowerCase();
+
+                            $('.caseta').each(function() {
+                                let caseta = $(this).data('caseta').toLowerCase();
+                                let formatos = $(this).data('formatos').toLowerCase();
+
+                                if (caseta.includes(query) || formatos.includes(
+                                        query)) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        });
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $('#empleadosorganizados').on('change', '.status-checkbox', function() {
+                            let empleadoId = $(this).data('id');
+                            let formatoId = $(this).data('formato-id');
+                            let nuevoStatus = $(this).prop('checked') ? 1 : 0;
+                            $.ajax({
+                                url: `/empleados/actualizar-status/${empleadoId}/${formatoId}`,
+                                type: 'PUT',
+                                data: {
+                                    status: nuevoStatus
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        console.log(
+                                            'Estado actualizado correctamente.');
+                                    } else {
+                                        console.error(
+                                            'Error al actualizar el estado.');
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error en la solicitud:', error);
+                                }
+                            });
+                        });
+                    } else {
+                        console.error('Error en la respuesta del servidor.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error al realizar la solicitud GET:', error);
+                }
+            });
+        });
+    </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '/empleados/formatos',
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#empleadosorganizados').empty();
+
+                        let casetas = {};
+
+                        response.data.forEach(item => {
+                            if (!casetas[item.id_casetas]) {
+                                casetas[item.id_casetas] = {
+                                    empresa: item.empresa,
+                                    sucursal: item.sucursal,
+                                    caseta: item.nombre_caseta,
+                                    formatos: {}
+                                };
+                            }
+
+                            if (!casetas[item.id_casetas].formatos[item.Tipo]) {
+                                casetas[item.id_casetas].formatos[item.Tipo] = [];
+                            }
+
+                            casetas[item.id_casetas].formatos[item.Tipo].push(item);
+                        });
+
+                        for (let nombreCaseta in casetas) {
+                            let casetaData = casetas[nombreCaseta];
                             $('#empleadosorganizados').append(
                                 `<h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${casetaData.caseta}</strong></h5>`
                             );
@@ -427,7 +545,7 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 
     <style>
         .submit-button-container {

@@ -35,7 +35,17 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
         }
     });
 });
+$(document).ready(function () {
+    function actualizarFechaHora() {
+        const ahora = new Date();
+        const opciones = { timeZone: 'America/Mexico_City', hour12: false };
+        const fechaHoraFormato = ahora.toLocaleString('sv-SE', opciones).replace(' ', 'T');
+        $('.form-control.fechahora').val(fechaHoraFormato.replace('T', ' '));
+    }
 
+    actualizarFechaHora();
+    setInterval(actualizarFechaHora, 1000);
+});
 
 // function mostrarSegundaEtapa() {
 //     // Swal.fire({
@@ -97,7 +107,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
     const formatosPorCasetaYTurno = {
         '3': { // ID de la caseta Área de demos
             'Matutino': [
-                'Novedades',
+                'Novedades Area de Demos',
                 'Unidades nuevas entregadas a clientes',
                 'Control de acceso a proveedores',
                 'Control de proveedores TOTs',
@@ -180,14 +190,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
                 'Novedades Servicios',
                 'Postventa - bitácora de surtido de aceite bahías Altabrisa',
                 'Postventa - Bitácora acceso vehículos a servicio sin cita',
-                'Control de entrega de unidades en postventa'
+                'Control de entrega de unidades en postventa Altabrisa'
 
 
             ],
             'Nocturno': [
                 'Novedades Servicios',
                 'Postventa - bitácora de surtido de aceite bahías Altabrisa',
-                'Inventario de unidades en las instalaciones'
+                'Inventario de unidades en las instalaciones servicios'
 
             ]
         },
@@ -227,7 +237,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         //SUCURSAL TOYOTA CANCÚN
 
         // Caseta Área de demos
-        'Novedades': 'Novedades_demos',
+        'Novedades Area de Demos': 'Novedades_demos',
         'Novedades Postventa': 'Novedades_post',
         'Unidades nuevas entregadas a clientes': 'controlUnidades',
         'Control de proveedores TOTs': 'controlProv',
@@ -266,9 +276,11 @@ document.getElementById('id_formatos').addEventListener('change', function () {
 
         //SUCURSAL TOYOTA ALTABRISA
         'Novedades Servicios': 'novedad_servicio',
+        'Control de entrega de unidades en postventa Altabrisa': 'Control_entrega_servicio',
         'Novedades Portón rojo': 'Novedades_porton_rojo',
         'Bitacora de control de acceso personal y vehicular': 'bitacora_acceso',
         'Inventario de unidades en las instalaciones': 'inventario_instalaciones',
+        'Inventario de unidades en las instalaciones servicios': 'inventario_instalaciones',
         'Postventa - Bitácora acceso vehículos a servicio sin cita': 'bitacora_servicio',
 
         // Caseta Subaru
@@ -397,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     } else {
-        console.log('Select2 de empleado no encontrado');
+        // console.log('Select2 de empleado no encontrado');
     }
 
     // Maneja el evento de envio del nuevo empleado
@@ -764,6 +776,51 @@ function iniciarTurno() {
         limpiarEstado();
         return;
     }
+    // document.getElementById('envioCORREO').addEventListener('submit', function (event) {
+    //     event.preventDefault(); // Evita el envío normal del formulario
+
+    //     const form = event.target;
+    //     const formData = new FormData(form);
+    //     const btnEnviar = document.getElementById('btnEnviar');
+    //     const spinner = document.getElementById('spinner');
+    //     const btnText = document.getElementById('btnText');
+
+    //     // Mostrar spinner y deshabilitar botón
+    //     spinner.style.display = 'inline-block';
+    //     btnText.textContent = 'Enviando...';
+    //     btnEnviar.disabled = true;
+
+    //     fetch(form.action, {
+    //         method: 'POST',
+    //         body: formData,
+    //         headers: {
+    //             'X-Requested-With': 'XMLHttpRequest',
+    //         }
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 return response.json().then(data => {
+    //                     throw new Error(data.error || 'Ocurrió un error inesperado.');
+    //                 });
+    //             }
+    //             return response.json();
+    //         })
+    //         .catch(error => {
+    //             // Ocultar spinner y habilitar botón
+    //             spinner.style.display = 'none';
+    //             btnText.textContent = 'Enviar correo';
+    //             btnEnviar.disabled = false;
+
+    //             // Mostrar SweetAlert de error
+    //             Swal.fire({
+    //                 title: '¡Error!',
+    //                 text: error.message,
+    //                 icon: 'error',
+    //                 confirmButtonColor: '#f15252',
+    //                 confirmButtonText: 'Aceptar'
+    //             });
+    //         });
+    // });
 
     const tiempoAlerta = diferencia - 900000;
     setTimeout(() => {
@@ -803,11 +860,9 @@ function limpiarEstado() {
 iniciarTurno();
 
 
-
-
-$(document).ready(function () {
-    EmpleadosSinSalida();
-});
+// $(document).ready(function () {
+//     EmpleadosSinSalida();
+// });
 
 function EmpleadosSinSalida() {
     $.ajax({
@@ -815,8 +870,6 @@ function EmpleadosSinSalida() {
         type: 'GET',
         dataType: 'json',
         success: function (response) {
-            console.log("Datos obtenidos:", response);
-
             let data = Array.isArray(response) ? response : Object.values(response);
             $('#miSelect').empty().append('<option value="">Selecciona una opción</option>');
 
@@ -831,45 +884,60 @@ function EmpleadosSinSalida() {
 
                 $('#miSelect').append(option);
             });
+
             $('#miSelect').select2({
                 placeholder: 'Selecciona una opción',
                 allowClear: true,
                 minimumResultsForSearch: 0,
-                with: '100%'
+                width: '100%'
             });
-            if (data.length === 1) {
-                $('#miSelect').val(data[0].id_incidencias).trigger('change');
-            }
+
+
+            Swal.fire({
+                title: 'Actualización',
+                text: 'Se actualizaron los empleados',
+                icon: 'success',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__slideInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__slideOutUp'
+                }
+            });
 
             $('#miSelect').on('change', function () {
                 const selectedIncidencia = $(this).val();
-                const selectedItem = data.find(item => item.id_incidencias == selectedIncidencia);
-                if (selectedItem) {
-                    $('#empleadoSalida').val(`${selectedItem.empleados?.empleado_67 || selectedItem.empleados?.empleado_76 || 'Empleado no disponible'}`);
-                    $('#id_fecha_hora_Salida').val(selectedItem.fecha_hora || 'Fecha y hora no disponibles');
-                    $('#id_incidencias_Salida').val(selectedItem.id_incidencias);
+                if (selectedIncidencia) {
+                    const selectedItem = data.find(item => item.id_incidencias == selectedIncidencia);
+                    if (selectedItem) {
+                        $('#empleadoSalida').val(`${selectedItem.empleados?.empleado_67 || selectedItem.empleados?.empleado_76 || 'Empleado no disponible'}`);
+                        $('#id_fecha_hora_Salida').val(selectedItem.fecha_hora || 'Fecha y hora no disponibles');
+                        $('#id_incidencias_Salida').val(selectedItem.id_incidencias);
+                    }
+                } else {
+                    $('#empleadoSalida').val('');
+                    $('#id_fecha_hora_Salida').val('');
+                    $('#id_incidencias_Salida').val('');
                 }
             });
         },
         error: function (error) {
             console.error("Error en la solicitud:", error);
-
-            $.ajax({
-                url: '/obtenerSalida',
-                type: 'GET',
-                success: function (errorDetails) {
-                    console.error("Detalles del error:", errorDetails);
-                },
-                error: function (innerError) {
-                    console.error("Error adicional al obtener detalles:", innerError);
-                }
-            });
         }
     });
 }
 
+// $('#ActualizarHora').on('click', function () {
+//     EmpleadosSinSalida();
+// });
+
 $(document).ready(function () {
-    EmpleadosSinSalida();
+    // EmpleadosSinSalida();
     $('#actualizarHoraForm').on('submit', function (e) {
         e.preventDefault();
         let submitButton = $(this).find('button[type="submit"]');
@@ -918,6 +986,43 @@ $(document).ready(function () {
     });
 });
 
+// $('#incidenciaForm').submit(function (e) {
+//     e.preventDefault();
+
+//     var formData = new FormData(this);
+
+//     $.ajax({
+//         url: '/incidenciassss',  // La URL para el POST
+//         method: 'POST',
+//         data: formData,
+//         processData: false,
+//         contentType: false,
+//         success: function (response) {
+//             // Aquí, response es el objeto JSON que contiene el mensaje
+//             Swal.fire({
+//                 position: "center",
+//                 icon: "success",
+//                 title: "¡Incidencia creada!",
+//                 text: response.message,  // Mostrar el mensaje que se pasa en el JSON
+//                 showConfirmButton: false,
+//                 timer: 1500
+//             }).then(() => {
+//                 window.history.back();  // Retrocede a la página anterior
+//             });
+
+//             // Mostrar los divs adicionales después de la alerta
+//             $('#campoAsociadoInterno').show();
+//             $('#empleadoSelect').show();
+//         },
+//         error: function (xhr) {
+//             alert('Hubo un error al procesar la solicitud');
+//         }
+//     });
+// });
+
+
+
+
 
 
 $(document).ready(function () {
@@ -939,6 +1044,7 @@ $(document).ready(function () {
             $(`${formSelector} #agregarhoraBtn`).hide();
             $(`${formSelector} label:contains("Hora de salida")`).hide();
         } else if ($(this).val() === 'salida') {
+            EmpleadosSinSalida();
             $(`${formSelector} #agregarhoraBtn`).show();
             $(`${formSelector} label:contains("Hora de entrada")`).hide();
             $(`${formSelector} input[type="time"]`).attr('required', true);
@@ -958,5 +1064,11 @@ $(document).ready(function () {
         } else {
             $(`${formSelector} #horaSelectError`).hide();
         }
+    });
+});
+
+$(document).ready(function () {
+    $('.desab').on('focus mousedown selectstart', function (e) {
+        e.preventDefault();
     });
 });

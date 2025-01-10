@@ -184,6 +184,49 @@ figure {
   margin: 0 0 1rem;
 }
 
+.navbar-nav {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: auto;
+  transition: width 0.5s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .navbar-nav.active {
+    width: 250px;
+  }
+}
+
+.navbar-toggler {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .navbar-toggler {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    margin: 10px;
+  }
+}
+
+.sidebar {
+  background: linear-gradient(to right, black, rgb(62, 62, 62));
+  transition: all 0.3s ease-in-out;
+}
+
+.animated {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
 img {
   vertical-align: middle;
   border-style: none;
@@ -12611,7 +12654,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 .border-45 {
-  border-radius: 45px;  
+  border-radius: 45px;
 }
 
 .border-50 {

@@ -210,7 +210,7 @@ class CampoIncidenciasController extends Controller
         ]);
 
         if ($formatosCoincidentes->isEmpty()) {
-            return response()->json(['error' => 'no se encontraron formatos'], 404);
+            return redirect()->route('incidencias.create')->with('EnvioCorreoVigilante', 'Envia al menos un registro de algún formato');
         }
 
         // agrupo las incidencias por el id_formatos
@@ -305,8 +305,8 @@ class CampoIncidenciasController extends Controller
             }
         }
 
-        Log::info('cantidad de archivos excel generados: ' . $archivosGenerados);
+        // Log::info('cantidad de archivos excel generados: ' . $archivosGenerados);
 
-        return redirect()->route('incidencias.create')->with('success', 'Enviaste los correos exitosamente.');
+        return redirect()->route('incidencias.create')->with('successCorreos', 'Enviaste los correos exitosamente.');
     }
 }

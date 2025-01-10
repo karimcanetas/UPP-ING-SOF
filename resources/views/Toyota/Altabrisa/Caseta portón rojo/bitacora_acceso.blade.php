@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_acceso" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_acceso"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -64,11 +65,14 @@
                                     style="width: 100%; text-transform: uppercase;">
                                     <option value="N/A" selected>Selecciona un empleado</option>
                                     @foreach ($empleados as $empleado)
-                                        <option value="{{ $empleado->nombres }}"
+                                        <option
+                                            value="{{ $empleado->nombres }} {{ $empleado->apellido_p }} {{ $empleado->apellido_m }}"
                                             data-puesto="{{ $empleado->puestos->nombre ?? 'Sin puesto' }}"
                                             {{ old('campos.' . $campo->id_campo) == $empleado->nombres ? 'selected' : '' }}
                                             style="text-transform: uppercase;">
                                             {{ strtoupper($empleado->nombres) }}
+                                            {{ strtoupper($empleado->apellido_p) }}
+                                            {{ strtoupper($empleado->apellido_m) }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -81,7 +85,7 @@
                                     <i class="fas fa-user-plus"></i> Agregar Empleado
                                 </button>
 
-                                <button type="button" class="btn btn-outline-primary mr-2"  data-bs-toggle="modal"
+                                <button type="button" class="btn btn-outline-primary mr-2" data-bs-toggle="modal"
                                     data-bs-target="#HoraModal" aria-label="Consulta la hora de entrada"
                                     style="font-size: 18px; padding: 10px 20px; display: none" id="agregarhoraBtn">
                                     <i class="fas fa-user-plus"></i> Actualizar salida
@@ -94,9 +98,10 @@
                                     value="{{ old('campos.' . $campo->id_campo) }}">
                             </div>
                         @elseif ($campoNombre == 'Puesto')
-                            <input type="text" class="form-control puestoInput" id="campos[{{ $campo->id_campo }}]"
-                                style="text-transform: uppercase" name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}"  required>
+                            <input type="text" class="form-control puestoInput desab"
+                                id="campos[{{ $campo->id_campo }}]" style="text-transform: uppercase"
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif ($campoNombre == 'Hora de entrada')
                             <div id="campoHoraEntrada" style="display: none;">
                                 <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -130,4 +135,3 @@
         </div>
     @endif
 </form>
-

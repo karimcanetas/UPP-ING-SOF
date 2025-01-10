@@ -2,7 +2,8 @@
  <form action="{{ route('incidencias.store') }}" method="POST" id="novedades_servcio">
      @csrf
      @if (
-         $casetaSeleccionada && ($casetaSeleccionada->nombre === 'Caseta Servicio' || $casetaSeleccionada->nombre === 'Caseta Subaru'))
+         $casetaSeleccionada &&
+             ($casetaSeleccionada->nombre === 'Caseta Servicio' || $casetaSeleccionada->nombre === 'Caseta Subaru'))
          <div id="novedad_servicio" style="display: none;">
              <div class="card horizontal-card d-none">
                  <div class="form-group">
@@ -20,7 +21,7 @@
                  </div>
                  <div>
                      <label for="fecha_hora">Fecha y hora del envio</label>
-                     <input type="text" class="form-control" name="fecha_hora" id="fecha_hora_servicios" readonly>
+                     <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_servicios" readonly>
                  </div>
              </div>
              <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -49,4 +50,3 @@
      @endif
  </form>
 
- 
