@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envío</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_servicio" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_servicio"
+                        readonly>
                 </div>
             </div>
 
@@ -62,8 +63,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad15">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Color')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -95,8 +96,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad845">Especificar otra Area o Departamento</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra area"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra area"></textarea>
                             </div>
                         @elseif($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"

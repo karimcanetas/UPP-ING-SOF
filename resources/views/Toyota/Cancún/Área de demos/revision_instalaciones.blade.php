@@ -49,61 +49,61 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
                         @elseif ($campoNombre == 'Puerta')
-                            <section class="form-group ">
+                            <section class="form-group ErrorPuerta">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="abierta" type="radio"
-                                            value="Abierta" required>
+                                            value="Abierta">
                                         <label for="abierta">Abierta</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="cerrada" type="radio"
-                                            value="Cerrada" required>
+                                            value="Cerrada">
                                         <label for="cerrada">Cerrada</label>
                                     </div>
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'Luces')
-                            <section class="form-group ">
+                            <section class="form-group ErrorLuces">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="encendido" type="radio"
-                                            value="Encendido" required>
+                                            value="Encendido">
                                         <label for="encendido">Encendido</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="apagado" type="radio"
-                                            value="Apagado" required>
+                                            value="Apagado">
                                         <label for="apagado">Apagado</label>
                                     </div>
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'Aire Acondicionado')
-                            <section class="form-group ">
+                            <section class="form-group ErrorAire">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="encendido1" type="radio"
-                                            value="Encendido" required>
+                                            value="Encendido" >
                                         <label for="encendido1">Encendido</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="apagado1" type="radio"
-                                            value="Apagado" required>
+                                            value="Apagado">
                                         <label for="apagado1">Apagado</label>
                                     </div>
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'TV')
-                            <section class="form-group ">
+                            <section class="form-group ErrorTV">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="encendido2" type="radio"
-                                            value="Encendido" required>
+                                            value="Encendido">
                                         <label for="encendido2">Encendido</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="apagado2" type="radio"
-                                            value="Apagado" required>
+                                            value="Apagado">
                                         <label for="apagado2">Apagado</label>
                                     </div>
                                 </div>

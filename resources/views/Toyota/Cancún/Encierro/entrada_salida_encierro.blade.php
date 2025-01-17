@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_entrada" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_entrada"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -38,19 +39,18 @@
                         @if ($campoNombre == 'Fecha')
                             <input type="date" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                min="1111-01-01" max="9999-12-31"
-                                required>
+                                min="1111-01-01" max="9999-12-31" required>
                         @elseif ($campoNombre == 'Situación')
-                            <section class="form-group ">
+                            <section class="form-group ErrorRadios">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="baja" type="radio"
-                                            value="Baja" required>
+                                            value="Baja">
                                         <label for="baja">Baja</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="ingreso" type="radio"
-                                            value="Ingreso" required>
+                                            value="Ingreso">
                                         <label for="ingreso">Ingreso</label>
                                     </div>
                                 </div>
@@ -69,8 +69,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad7">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Color')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -79,15 +79,12 @@
                         @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
                             <!-- campo VIN, restringido a solo 6 numeros -->
                             <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" maxlength="6" pattern="\d{6}"
-                                title="Debe contener exactamente 6 dígitos numéricos" required
-                                placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                                maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
+                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}">
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif

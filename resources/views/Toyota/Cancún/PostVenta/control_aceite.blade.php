@@ -54,26 +54,26 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 step="0.01" required>
                         @elseif ($campoNombre == 'Bodega residuos')
-                            <section class="form-group ">
+                            <section class="form-group ErrorResiduos">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="vacio" type="radio"
-                                            value="Vacío" required>
+                                            value="Vacío">
                                         <label for="vacio">Vacío</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="medio_lleno" type="radio"
-                                            value="Medio lleno" required>
+                                            value="Medio lleno">
                                         <label for="medio_lleno">Medio lleno</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="lleno" type="radio"
-                                            value="Lleno" required>
+                                            value="Lleno">
                                         <label for="lleno">Lleno</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="sobre_lleno" type="radio"
-                                            value="Sobre lleno" required>
+                                            value="Sobre lleno">
                                         <label for="sobre_lleno">Sobre lleno</label>
                                     </div>
                                 </div>

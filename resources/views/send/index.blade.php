@@ -1,15 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight text-center">
             {{ __('Enviar Correos') }}
         </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="container-fluid max-w-7xl mx-auto px-4">
+    <div class="py-8 sm:py-10 lg:py-12">
+        <div class="container mx-auto px-0 sm:px-6 lg:px-8">
             <div class="card shadow-lg">
-                <div class="card-header text-center bg-light shadow-sm py-4">
-                    <h3 class="text-lg font-semibold mb-3 text-primary">
+                <div class="card-header text-center bg-gray-100 shadow-sm p-4">
+                    <h3 class="text-base sm:text-lg font-semibold mb-2 sm:mb-3 text-primary">
                         <i class="fa-solid fa-paper-plane"></i>
                         {{ __('Enviar correos') }}
                     </h3>
@@ -38,38 +37,43 @@
                         <input type="hidden" id="email" name="email">
 
                         <div class="container">
-                            <h1 class="h3 mb-4 text-center">
+                            <h1 class="h3 mb-4 text-center responsive-header">
                                 <i class="fa-solid fa-file-alt"></i> Seleccionar Formato
                             </h1>
-                            <button type="button" class="btn btn-danger d-block mx-auto mb-3" id="botonAbrirModal">
-                                <i class="fa-solid fa-list"></i> Seleccionar Formatos
+                        </div>
+
+                        <button type="button" class="btn btn-danger d-block mx-auto mb-3" id="botonAbrirModal">
+                            <i class="fa-solid fa-list"></i> Seleccionar Formatos
+                        </button>
+                        <x-modalFormatos />
+                        <div class="form-group">
+                            <label for="fecha_inicio">Fecha de Inicio:</label>
+                            <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio"
+                                min="1111-01-01T00:00" max="9999-12-31T23:59" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fecha_fin">Fecha de Fin:</label>
+                            <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin"
+                                min="1111-01-01T00:00" max="9999-12-31T23:59" required>
+                        </div>
+
+                        <div class="d-flex justify-content-center mt-4 position-relative">
+                            <button type="submit" class="btn btn-success px-5 py-2 shadow-lg" id="generarReporte">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
+                                    id="spinner"></span>
+                                <i class="fa-solid fa-check-circle" id="checkIcon"></i> Generar Reporte
                             </button>
-                            <x-modalFormatos />
-                            <div class="form-group">
-                                <label for="fecha_inicio">Fecha de Inicio:</label>
-                                <input type="datetime-local" class="form-control" id="fecha_inicio" name="fecha_inicio"
-                                    min="1111-01-01T00:00" max="9999-12-31T23:59" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="fecha_fin">Fecha de Fin:</label>
-                                <input type="datetime-local" class="form-control" id="fecha_fin" name="fecha_fin"
-                                    min="1111-01-01T00:00" max="9999-12-31T23:59" required>
-                            </div>
-
-                            <div class="d-flex justify-content-center mt-4">
-                                <button type="submit" class="btn btn-success px-5 py-2 shadow-lg">
-                                    <i class="fa-solid fa-check-circle"></i> Generar Reporte
-                                </button>
-                            </div>
                         </div>
                     </form>
-                    <div class="container">
-                        <div class="correo-container">
-                            <h4 class="h4 text-center mb-4">
-                                <strong><i class="fa-solid fa-envelope"></i> Se enviará a:</strong>
+
+                    <div class="container mt-5">
+                        <div class="correo-container p-4 rounded shadow">
+                            <h4 class="h4 text-center mb-4 text-primary">
+                                <strong><i class="fa-solid fa-envelope me-2"></i> Se enviará a:</strong>
                             </h4>
-                            <ul class="correo-list" id="correos"></ul>
+                            <ul class="correo-list list-group" id="correos">
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -77,6 +81,242 @@
         </div>
     </div>
 </x-app-layout>
+<style>
+    .responsive-header {
+        font-size: 1.75rem;
+    }
+
+    .responsive-header {
+        font-size: 1.5rem;
+    }
+    }
+
+    @media (max-width: 576px) {
+        .responsive-header {
+            font-size: 1.25rem;
+        }
+    }
+
+    */ @media (max-width: 360px) {
+        .responsive-header {
+            font-size: 1.4rem;
+        }
+
+        .responsive-header i {
+            font-size: 0.8rem;
+        }
+    }
+
+    #spinner {
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+
+    #spinner.fade-in {
+        opacity: 1;
+    }
+
+    #checkIcon {
+        transition: opacity 0.5s ease;
+    }
+
+    .formato-label {
+        display: block;
+        margin-bottom: 5px;
+        /* espacio entre cada checkbox */
+    }
+
+    .correo-container {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        /* Bordes redondeados */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h4.h4 {
+        font-size: 1.5rem;
+        color: #007bff;
+    }
+
+    ul.correo-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    ul.correo-list li {
+        padding: 10px 15px;
+        margin-bottom: 5px;
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        transition: transform 0.2s ease;
+    }
+
+    ul.correo-list li:hover {
+        transform: translateY(-3px);
+        background-color: #f1f1f1;
+    }
+
+
+    .caseta-group {
+        margin-bottom: 15px;
+    }
+
+    .caseta-group h5 {
+        font-weight: bold;
+    }
+
+    @media (max-width: 360px) {
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h4.h4 {
+            font-size: 1.2rem;
+        }
+
+        ul.correo-list li {
+            padding: 6px 8px;
+        }
+
+        .formato-label {
+            font-size: 10px;
+        }
+
+        .correo-container {
+            padding: 10px;
+        }
+
+        .caseta-group h5 {
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        #buscador {
+            font-size: 0.8rem;
+            padding: 8px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .formato-label {
+            font-size: 14px;
+        }
+
+        .caseta-group {
+            margin-bottom: 10px;
+        }
+
+        .caseta-group h5 {
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .formato-label {
+            font-size: 16px;
+        }
+
+        .caseta-group {
+            margin-bottom: 12px;
+        }
+
+        .caseta-group h5 {
+            font-size: 18px;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .formato-label {
+            font-size: 18px;
+        }
+
+        .caseta-group {
+            margin-bottom: 20px
+        }
+
+        .caseta-group h5 {
+            font-size: 20px;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .formato-label {
+            font-size: 20px;
+        }
+
+        .caseta-group {
+            margin-bottom: 25px;
+        }
+
+        .caseta-group h5 {
+            font-size: 22px;
+        }
+
+
+
+        #buscador {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+
+
+        .correo-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .correo-item:hover {
+            background-color: #f1f1f1;
+        }
+
+
+
+        .correo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .correo-item:hover {
+            background-color: #f0f8ff;
+        }
+
+        .correo-item i {
+            margin-left: auto;
+            color: #007bff;
+            transition: color 0.3s;
+        }
+
+        .correo-item:hover i {
+            color: #0056b3;
+        }
+
+        .asociados-list {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    }
+</style>
 <script>
     function agregarCorreo(correo) {
         const lista = document.getElementById('correos-asociados');
@@ -90,7 +330,7 @@
             //prueba en consola
             actualizarCampoOculto();
         } else {
-            console.log('Este correo ya está agregado.');
+            // console.log('Este correo ya está agregado.');
         }
     }
 
@@ -163,7 +403,7 @@
         const fechaFin = document.getElementById('fecha_fin').value;
 
         if (!fechaInicio || !fechaFin) {
-            console.error('Por favor, ingrese ambas fechas para realizar la búsqueda.');
+            // console.error('Por favor, ingrese ambas fechas para realizar la búsqueda.');
             return;
         }
 
@@ -186,13 +426,13 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Campos obtenidos:', data);
+                // console.log('Campos obtenidos:', data);
 
             })
             .catch(error => {
-                console.error('Error al obtener campos:', error);
+                // console.error('Error al obtener campos:', error);
             });
-            
+
     }
 
     document.getElementById('fecha_inicio').addEventListener('change', () => {
@@ -201,7 +441,7 @@
             obtenerCampos(formatoId);
         }
 
-        console.log(formatoId);
+        // console.log(formatoId);
     });
 
     document.getElementById('fecha_fin').addEventListener('change', () => {
@@ -209,7 +449,7 @@
         if (formatoId) {
             obtenerCampos(formatoId);
         }
-        console.log(formatoId);
+        // console.log(formatoId);
     });
 
     function filtrarCorreos() {
@@ -239,7 +479,7 @@
             success: function(response) {
                 groupedBySucursal = response.groupedBySucursal;
                 const addedFormats = new Set(); // para evitar formatos duplicados en cada caseta
-                console.log(groupedBySucursal);
+                // console.log(groupedBySucursal);
                 $('#formatoSelect').empty();
 
                 // Itera sobre sucursales
@@ -414,35 +654,36 @@
 
         // Filtro para los formatos
         function filterFormatos() {
-            const input = document.getElementById('formato_search');
-            const filter = input.value.toLowerCase(); // Obtenemos el valor del filtro
+            const input = document.getElementById('formato_search').value.toLowerCase();
             const casetaGroups = document.querySelectorAll('#formatoSelect .caseta-group');
 
             casetaGroups.forEach(group => {
-                const casetaName = group.getAttribute('data-caseta');
+                const casetaName = group.dataset.caseta.toLowerCase();
                 const labels = group.querySelectorAll('.formato-label');
                 let hasVisibleLabel = false;
 
                 labels.forEach(label => {
-                    const formatoName = label.getAttribute('data-formato');
-                    if (casetaName.includes(filter) || formatoName.includes(filter)) {
-                        label.style.display =
-                            'block'; // Mostrar formato que coincida con el filtro
+                    const formatoName = label.dataset.formato.toLowerCase();
+                    if (casetaName.includes(input) || formatoName.includes(input)) {
+                        label.style.display = 'block';
                         hasVisibleLabel = true;
                     } else {
-                        label.style.display = 'none'; // Ocultar el formato que no coincida
+                        label.style.display = 'none';
                     }
                 });
 
-                // Solo mostrar el grupo de caseta si hay al menos un formato visible
                 group.style.display = hasVisibleLabel ? 'block' : 'none';
             });
         }
 
-        // Llamar al filtro cada vez que el usuario escriba
-        $('#formato_search').on('input', function() {
-            filterFormatos();
-        });
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+        document.getElementById('formato_search').addEventListener('input', debounce(filterFormatos, 300));
     });
 </script>
 
@@ -466,134 +707,22 @@
     });
 </script>
 
-<style>
-    .formato-label {
-        display: block;
-        margin-bottom: 5px;
-        /* Espacio entre cada checkbox */
-    }
+<script>
+    $(document).ready(function() {
+        function toggleAriaHidden(modalId) {
+            $(modalId).on('show.bs.modal', function() {
+                $(this).removeAttr('aria-hidden');
+            });
 
-    .caseta-group {
-        margin-bottom: 15px;
-    }
-
-    .caseta-group h5 {
-        font-weight: bold;
-    }
-
-    @media (max-width: 576px) {
-        .formato-label {
-            font-size: 14px;
+            $(modalId).on('hidden.bs.modal', function() {
+                $(this).attr('aria-hidden', 'true');
+            });
         }
 
-        .caseta-group {
-            margin-bottom: 10px;
-        }
+        toggleAriaHidden('#modalFormatos');
 
-        .caseta-group h5 {
-            font-size: 16px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .formato-label {
-            font-size: 16px;
-        }
-
-        .caseta-group {
-            margin-bottom: 12px;
-        }
-
-        .caseta-group h5 {
-            font-size: 18px;
-        }
-    }
-
-    @media (min-width: 992px) {
-        .formato-label {
-            font-size: 18px;
-        }
-
-        .caseta-group {
-            margin-bottom: 20px
-        }
-
-        .caseta-group h5 {
-            font-size: 20px;
-        }
-    }
-
-    @media (min-width: 1200px) {
-        .formato-label {
-            font-size: 20px;
-        }
-
-        .caseta-group {
-            margin-bottom: 25px;
-        }
-
-        .caseta-group h5 {
-            font-size: 22px;
-        }
-
-
-
-        #buscador {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-
-
-        .correo-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .correo-item:hover {
-            background-color: #f1f1f1;
-        }
-
-
-
-        .correo-item {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 5px 0;
-            transition: background-color 0.3s;
-            cursor: pointer;
-        }
-
-        .correo-item:hover {
-            background-color: #f0f8ff;
-        }
-
-        .correo-item i {
-            margin-left: auto;
-            color: #007bff;
-            transition: color 0.3s;
-        }
-
-        .correo-item:hover i {
-            color: #0056b3;
-        }
-
-        .asociados-list {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    }
-</style>
+    });
+</script>
 
 <script>
     $(document).ready(function() {
@@ -614,5 +743,27 @@
                 icon: "error"
             });
         @endif
+    });
+</script>
+
+{{-- boton generarReporte --}}
+
+<script>
+    //boton generar reporte
+    document.getElementById('generarReporte').addEventListener('click', function(event) {
+        event.preventDefault();
+        var spinner = document.getElementById('spinner');
+        var checkIcon = document.getElementById('checkIcon');
+        var button = this;
+        checkIcon.style.opacity = 0;
+        spinner.classList.remove('d-none');
+        spinner.style.position = 'absolute';
+        spinner.style.left = checkIcon.offsetLeft + 'px';
+        spinner.style.top = checkIcon.offsetTop + 'px';
+
+        button.disabled = true;
+        setTimeout(function() {
+            button.form.submit();
+        }, 500); // tiempo de restraso
     });
 </script>

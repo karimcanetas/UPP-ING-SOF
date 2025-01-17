@@ -9,10 +9,9 @@
         <input type="hidden" id="hidden_id_turnos" name="id_turnos">
 
         <div class="buttonEnviar-container">
-            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display: block; position: relative;">
-                <span id="spinner" class="spinner-border spinner-border-sm" style="display: none; margin-right: 5px;"
-                    role="status" aria-hidden="true"></span>
-                <span id="btnText">Enviar correo</span>
+            <button type="submit" id="btnEnviar" class="btn btn-primary" style="display: none; position: relative;">
+                <i id="checkIcon"></i>
+                <span id="btnText"> Enviar correo</span>
             </button>
         </div>
         @if (session('EnvioCorreoVigilante'))
@@ -41,7 +40,6 @@
             </script>
         @endif
     </form>
-
     @if ($errors->any())
         <script>
             window.hasErrors = true;
@@ -59,14 +57,10 @@
 
     <div class="form-container" id="primeraEtapa">
         <h1 class="primera">Iniciar sesión</h1>
-
         <x-alerta-incidencia />
-
-        <form id="incidenciaForm">
+        <form id="incidenciaForm" style="display: block">
             @csrf
-            {{-- select casetas --}}
             <x-select-casetas :casetaSeleccionada="$casetaSeleccionada" />
-
             <div class="form-group">
                 <label for="Nombre_vigilante">Nombre Vigilante:</label>
                 <input type="text" class="form-control" id="Nombre_vigilante" name="Nombre_vigilante" required>
@@ -93,15 +87,6 @@
         action="{{ route('incidencias.store') }}" method="POST">
         @csrf
         <!-- Primer Card -->
-
-        {{-- <div class="alert alert-success"
-            style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 1050; padding: 12px 25px; font-size: 15px; max-width: 60%; background-color: #4CAF50; color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
-            <strong>¡Atención!</strong>
-            <span style="margin-left: 10px;">Complete y envíe todos los formatos. Luego, espere 15 minutos antes de que
-                termine su turno. Aparecerá el botón <strong>"Enviar Correo"</strong> para finalizar.</span>
-        </div> --}}
-
-
 
         <div class="card horizontal-card d-none">
             <div class="form-group">
@@ -145,6 +130,8 @@
     @include('Toyota.Cancún.Área de demos.control_acceso_proveedores')
     <!-- Formulario Novedades Encierro >! -->
     @include('Toyota.Cancún.Encierro.NovedadesEncierro')
+    <!-- Formulario Novedades Matutino -->
+    @include('Toyota.Cancún.Encierro.NovedadesMatutino')
     <!-- Formulario de ACCESO Y SALIDA DE UNIDADES SINIESTRADAS -->
     @include('Toyota.Cancún.Encierro.acceso_salida_siniestradas')
     <!-- Formulario de ENTRADA Y SALIDA DE UNIDADES DEL ENCIERRO -->
@@ -218,7 +205,6 @@
 
     -->
     <!-- NOVEDADES DE CASETA PORTÓN ROJO -->
-
     @include('Toyota.Altabrisa.Caseta portón rojo.Novedades')
     <!-- BITACORA DE CONTROL DE ACCESO PERSONAL Y VEHICULAR -->
     @include('Toyota.Altabrisa.Caseta portón rojo.bitacora_acceso')
@@ -236,7 +222,6 @@
     -->
     <!-- FORMATO CONTROL DE INGRESO/SALIDA DE UNIDADES B&P -->
     @include('Toyota.Altabrisa.Caseta portón rojo.control_unidades_ingreso_salida')
-    </div>
     <!-- js -->
     <script src="{{ asset('js/incidencias/incidencias.js') }}"></script>
 </x-app-layout>

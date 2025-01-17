@@ -1,5 +1,5 @@
-<!-- Modal de Formatos -->
-<div class="modal fade" id="modalFormatos" tabindex="-1" aria-labelledby="modalFormatosLabel" aria-hidden="true">
+<!-- Modal de Formatos en el area administrativa -->
+<div class="modal fade" id="modalFormatos" tabindex="-1" aria-labelledby="modalFormatosLabel" aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 shadow">
             <div class="modal-header border-0">
@@ -9,19 +9,20 @@
                 <!-- Campo de busqueda para los formatos -->
                 <div class="input-group mb-3">
                     <span class="input-group-text bg-primary text-white"><i class="bi bi-search"></i></span>
-                    <input type="text" id="formato_search" class="form-control border-0 shadow-sm" placeholder="Buscar formato...">
+                    <input type="text" id="formato_search" class="form-control border-0 shadow-sm"
+                        placeholder="Buscar formato...">
                 </div>
-                
+
                 <!-- Contenedor para los checks -->
                 <div id="formatoSelect" class="check-scroll-container"></div>
             </div>
             <div class="modal-footer border-0">
-                <button type="button" class="btn btn-danger btn-lg w-100" data-bs-dismiss="modal" id="closeModalButton">Cerrar</button>
+                <button type="button" class="btn btn-danger btn-lg w-100" data-bs-dismiss="modal"
+                    id="closeModalButton">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
-
 <style>
     /* Estilo del contenedor de los checkboxes con scroll */
     .check-scroll-container {

@@ -21,7 +21,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_acceso" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_acceso"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -69,8 +70,8 @@
 
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad1178">Especificar otra ubicación</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra ubicación"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra ubicación"></textarea>
                             </div>
                         @elseif($campoNombre == 'Asunto - Motivo visita')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -78,10 +79,12 @@
                                 required>
                         @elseif($campoNombre == 'Hora de entrada')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}" required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
+                                required>
                         @elseif($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}" required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos. ' . $campo->id_campo) }}"
+                                required>
                         @endif
                     </div>
                 @endif

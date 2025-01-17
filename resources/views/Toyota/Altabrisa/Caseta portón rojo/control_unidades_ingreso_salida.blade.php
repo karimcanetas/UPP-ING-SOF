@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_ingreso" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_ingreso"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -62,8 +63,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad4">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif($campoNombre == 'VIN (6 últimos dígitos)')
                             <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"

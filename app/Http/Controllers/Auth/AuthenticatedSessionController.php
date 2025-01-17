@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
                 'success'
             );
 
-            return redirect()->route('dashboard');
+            return redirect()->route('send.index');
         } else {
             // Si las credenciales son inválidas
             Alert::error('Error', 'Credenciales inválidas.');

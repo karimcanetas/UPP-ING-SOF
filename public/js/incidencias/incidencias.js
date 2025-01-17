@@ -5,6 +5,8 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
 
     const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
 
+
+    //aqui lo que hago es pasar los datos, turno, casetas y el nombre de vigilante del inicio de sesion a los formatos
     const turno = document.getElementById('id_turnos').value;
     const caseta = document.getElementById('id_casetas').value;
     const vigilante = document.getElementById('Nombre_vigilante').value;
@@ -26,6 +28,9 @@ document.getElementById('crearIncidenciaBtn').addEventListener('click', () => {
 
     document.querySelectorAll('.form-group').forEach((campo) => {
         const campoNombre = campo.querySelector('label') ? campo.querySelector('label').textContent.trim() : '';
+
+
+        //esto es para encierro
 
         // Verificar si el campo es de gasolina y si el turno es 6
         if (turno === "6" && camposGasolina.includes(campoNombre)) {
@@ -58,7 +63,7 @@ $(document).ready(function () {
 //     document.getElementById('detallesForm').style.display = 'none';
 // }
 
-
+//Funcion para el inicio de sesion
 function mostrarSegundaEtapa() {
     var nombreVigilante = document.getElementById("Nombre_vigilante").value;
 
@@ -73,7 +78,6 @@ function mostrarSegundaEtapa() {
         location.reload();
         return;
     } else {
-        // Ocultar las etapas si el campo tiene texto
         document.getElementById('primeraEtapa').style.display = 'none';
         document.getElementById('detallesForm').style.display = 'none';
     }
@@ -89,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Por favor, selecciona un formato.');
             return;
         }
+        //nuevamente paso el id del formato que este contiene a los siguientes campos
         const setField = (id, value) => { const elem = document.getElementById(id); if (elem) elem.value = value; };
         ['formatos_tots', 'formatos_demos', 'formatos_control', 'formatos_revision', 'formatos_unidades', 'formatos_proveedores', 'formatos_salida', 'formatos_entrada', 'formatos_inventario', 'formatos_novedades', 'formatos_nov_encierro', 'formatos_post', 'formatos_siniestradas', 'formatos_lavados', 'formatos_taller', 'formatos_fuera', 'formatos_exhibicion', 'formatos_clientes', 'formatos_azotea', 'formatos_estadia', 'formatos_servicios', 'formatos_entrega', 'formatos_servicio_montejo', 'formatos_servicio_acceso', 'formatos_altabrisa_servicio', 'formatos_granel', 'formatos_subaru', 'formatos_subaru_tot', 'formatos_subaru_m', 'formatos_empresasub', 'formatos_salida_subaru', 'formatos_estacionamiento_sub', 'formatos_porton', 'formatos_acceso', 'formatos_inventario_altabrisa', 'formatos_vehiculos', 'formatos_bitacora', 'formatos_ingreso', 'formatos_aceite', 'formatos_nov_post'].forEach(id => setField(id, formatos));
 
@@ -97,8 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+//una restriccion para los campps que tengan dicha funcion, limita el campo a que contengan mas de 6 digitos
 function validateNumberInput(input) { input.value = input.value.replace(/\D/g, '').slice(0, 6); }
 
+//aqui organizo la casetas con sus formatos y para que turno seran si seran matutino o nocturno
 document.getElementById('id_turnos').addEventListener('change', function () {
     const turno = this.options[this.selectedIndex].dataset.nombre;
     const casetaSeleccionada = document.getElementById('id_casetas').value;  // Obtener el ID de la caseta seleccionada
@@ -106,7 +113,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
 
     const formatosPorCasetaYTurno = {
         '3': { // ID de la caseta Área de demos
-            'Matutino': [
+            'Matutino': [ // Es tal cual lo tengo escrito en base de datos 
                 'Novedades Area de Demos',
                 'Unidades nuevas entregadas a clientes',
                 'Control de acceso a proveedores',
@@ -115,7 +122,7 @@ document.getElementById('id_turnos').addEventListener('change', function () {
 
             ],
             'Nocturno': [
-                'Novedades',
+                'Novedades Area de Demos',
                 'Revision de instalaciones',
                 'Inventario de unidades en exhibición',
                 'Control de acceso a proveedores'
@@ -230,11 +237,14 @@ document.getElementById('id_turnos').addEventListener('change', function () {
     });
 });
 
+//aqui determino que formatos y en que vista estan
 document.getElementById('id_formatos').addEventListener('change', function () {
     const formatoSeleccionado = this.options[this.selectedIndex].text;
 
     const formularios = {
         //SUCURSAL TOYOTA CANCÚN
+
+        //Nombre del formato tal cual esta en la base de datos // nombre del include
 
         // Caseta Área de demos
         'Novedades Area de Demos': 'Novedades_demos',
@@ -249,6 +259,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
 
         // Caseta Encierro
         'Novedades.': 'Novedades_encierro',
+        'Novedades': 'Novedades_demos',
         'Acceso y salida de unidades siniestradas': 'acceso_salida',
         'Entrada y salida de unidades del encierro': 'unidades_encierro',
         'Inventario de unidades nuevas en encierro / patio': 'inventario_unidades',
@@ -298,10 +309,6 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         'Control de ingreso/salida de unidades B&P': 'control_ingreso_salida',
         'Control de entrega de unidades en Postventa Subaru': 'control_subaru',
         'Control de entrega de unidades en Postventa': 'entrega_unidades_altabrisa'
-
-
-
-
     };
 
     Object.values(formularios).forEach(id => {
@@ -314,7 +321,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
 });
 
 // btn atras
-document.getElementById('btnAtras').addEventListener('click', function () {
+document.getElementById('btnAtras', 'btnEnviar').addEventListener('click', function () {
     const primeraEtapa = document.getElementById('primeraEtapa');
     const incidenciaForm = document.getElementById('incidenciaForm');
     const detallesForm = document.getElementById('detallesForm');
@@ -333,6 +340,7 @@ document.getElementById('btnAtras').addEventListener('click', function () {
         }, 300);
     }
 });
+
 //estilo
 document.addEventListener('DOMContentLoaded', function () {
     const style = document.createElement('style');
@@ -348,6 +356,9 @@ document.addEventListener('DOMContentLoaded', function () {
     `;
     document.head.appendChild(style);
 });
+
+//esto es para el formato de bitacora acceso de la sucursal de altabrisa lo que hace es colocar el select2 este actualizara el campo
+//puesto segun el empleado seleccionado
 document.addEventListener('DOMContentLoaded', function () {
     const empleadoSelect = document.getElementById('empleadoSelect');
     const campoAsociadoInternoSelect = $('#campoAsociadoInterno');
@@ -395,8 +406,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-
     if (campoAsociadoInternoSelect.length) {
         campoAsociadoInternoSelect.select2({
             width: '100%',
@@ -417,6 +426,7 @@ document.addEventListener('DOMContentLoaded', function () {
         nuevoEmpleadoForm.addEventListener('submit', handleNewEmployeeSubmit);
     }
 
+    //este es un fetch para poder guardar un nuevo empleado
     function handleNewEmployeeSubmit(e) {
         e.preventDefault();
         const formData = new FormData(this);
@@ -449,6 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+ //tomo sus valores para poder manipularlos y asignar automaticamente eso datos a los campos que corresponden
     function addNewEmployeeOption(data) {
         const newOption = new Option(data.nombres, data.id_empleado, false, true);
         newOption.setAttribute('data-nombres', data.nombres);
@@ -526,7 +537,7 @@ function toggleForm(showSelect) {
     }
 }
 
-// Otras funciones
+// es para el campo otro de los selects
 function toggleOtroUnidad(select) {
     const textunidad = select.nextElementSibling;
     const otrotextunidad = textunidad.querySelector('textarea');
@@ -540,20 +551,6 @@ function toggleOtroUnidad(select) {
         otrotextunidad.setAttribute('required', 'required');
     }
 }
-
-// function toggleOtroArea(selectElement) {
-//     const otrosTextareaContainer = selectElement.nextElementSibling;
-//     const otrosTextarea = otrosTextareaContainer.querySelector('textarea');
-
-//     if (selectElement.value === 'Otro') {
-//         otrosTextareaContainer.style.display = 'block';
-//         otrosTextarea.value = ''; // Limpiar el textarea
-//     } else {
-//         otrosTextareaContainer.style.display = 'none';
-//         otrosTextarea.value = selectElement.value;
-//     }
-// }
-
 function ajustarValorCampo(form) {
     const selectElements = form.querySelectorAll('select[name^="campos["]');
     let valid = true;
@@ -580,6 +577,8 @@ document.addEventListener('alertaAbierta', function () {
 });
 
 
+//esta es la funcion para poder subir las fotos en un futuro esta hecha de igual forma en las vistas de cada formato algunas las tienen
+//algunas no
 function updatePhotoName(input, type) {
     const fileName = input.files[0] ? input.files[0].name : '';
     const message = type === 'subida' ? 'Foto subida: ' : 'Foto tomada: ';
@@ -593,13 +592,45 @@ function updatePhotoName(input, type) {
     }
 }
 
+//esta funcion es un validador para todos los formatos 
 function submitAndResetForm(boton) {
+    boton.disabled = true;
+    setTimeout(() => {
+        boton.disabled = false;
+    }, 5000);
     const formulario = boton.closest('form');
     const elementos = Array.from(formulario.elements);
     let esValido = true;
     let mensajeError = "";
 
-    // ejecutar esta parte para el formulario con id 'bitacora_acceso_porton'
+    const validaciones = [
+        { clase: 'ErrorRadios', mensaje: 'Por favor, selecciona un tipo de situación.' },
+        { clase: 'ErrorResiduos', mensaje: 'Por favor, selecciona un tipo de residuo.' },
+        { clase: 'ErrorPuerta', mensaje: 'Por favor, selecciona un tipo de Puerta.' },
+        { clase: 'ErrorLuces', mensaje: 'Por favor, selecciona un tipo de Luces.' },
+        { clase: 'ErrorAire', mensaje: 'Por favor, selecciona un tipo de Aire Acondicionado.' },
+        { clase: 'ErrorTV', mensaje: 'Por favor, selecciona un tipo de TV.' },
+        { clase: 'ErrorUbicacion', mensaje: 'Por favor, selecciona un tipo de ubicación.' },
+        { clase: 'ErrorCondicion', mensaje: 'Por favor, selecciona un tipo de Condición de seguridad.' },
+        { clase: 'ErrorDaños', mensaje: 'Por favor, selecciona un tipo de condición de daño.' }
+    ];
+
+    validaciones.forEach(({ clase, mensaje }) => {
+        const seccion = formulario.querySelector(`section.${clase}`);
+        if (seccion && getComputedStyle(seccion).display !== 'none') {
+            const radios = seccion.querySelectorAll('input[type="radio"]');
+            const selected = Array.from(radios).some(radio => radio.checked);
+
+
+            if (!selected) {
+                event.preventDefault();
+                esValido = false;
+                mensajeError = mensaje;
+            }
+        }
+    });
+
+    //estas funciones solo se deben hacer para dicho formato
     if (formulario.id === 'bitacora_acceso_porton') {
         const radioSeleccionado = formulario.querySelector('input[name="horaSelect"]:checked');
         if (!radioSeleccionado) {
@@ -610,12 +641,7 @@ function submitAndResetForm(boton) {
         $('#empleadoSelect').show();
         $('label:contains("Nombre asociado interno")').show();
         $('label:contains("Empleado no registrado:")').hide();
-        // $('label:contains("Hora de entrada")').hide();
-        // $('label:contains("Hora de salida")').hide();
-        // $('#campoHoraSalida').hide();
-        // $('#campoHoraEntrada').hide();
         $('#empleadoNoRegistradoContainer').hide();
-        // $('#agregarhoraBtn').hide();
     }
 
     elementos.forEach(elemento => {
@@ -628,6 +654,8 @@ function submitAndResetForm(boton) {
                 (['checkbox', 'radio', 'select'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
+                //valido que el campo vin tenga exactamente los 6 digitos su no lo tiene le muestro un error soicitando
+                //los 6 digitos
             if (elemento.classList.contains('vin')) {
                 const valorVin = elemento.value.trim();
                 if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
@@ -656,6 +684,7 @@ function submitAndResetForm(boton) {
                 title: "Error!",
                 text: mensajeError,
                 icon: "error"
+
             });
         });
         return;
@@ -686,11 +715,10 @@ function submitAndResetForm(boton) {
 
 
 
-//Formula
+//Esta es la formula para el formato de bahias
 //Consumo por bahías = Acum Final  menos Acum Inicial por día
-//Suma de Consumo por bahías 1-2, 3-4, 5-6, 7-8, 9-10,  =Total de surtido por día<script>
-// Función general para calcular el consumo por bahía
-// Función para calcular el consumo por bahía
+//Suma de Consumo por bahías 1-2, 3-4, 5-6, 7-8, 9-10,  =Total de surtido por día
+// funcion general para calcular el consumo por bahía
 function calcularConsumo(prefix, totalSurtidoClass) {
     const totalSurtido = document.querySelector(totalSurtidoClass);
     let totalConsumo = 0;
@@ -748,9 +776,73 @@ $(document).ready(function () {
     $('label:contains("Total surtido")').closest('tr').hide();
 });
 
+//boton enviarCorreo y la configuracion del turno
+$('#crearIncidenciaBtn').on('click', function () {
+    iniciarTurno();
+});
 
 
-//boton enviarCorreo
+// function iniciarTurno() {
+//     const selectedOption = document.querySelector('option[data-hora-fin]');
+//     if (!selectedOption || !selectedOption.hasAttribute('data-hora-fin')) {
+//         return;
+//     }
+//     const horaFin = selectedOption.getAttribute('data-hora-fin');
+//     if (!horaFin) {
+//         return;
+//     }
+//     const horaParts = horaFin.split(':');
+//     if (horaParts.length < 2 || isNaN(horaParts[0]) || isNaN(horaParts[1])) {
+//         return;
+//     }
+//     const ahora = new Date();
+//     const horaFinDate = new Date(ahora);
+//     horaFinDate.setHours(horaParts[0], horaParts[1], 0, 0);
+//     if (isNaN(horaFinDate.getTime())) {
+//         return;
+//     }
+
+//     const diferencia = horaFinDate - ahora;
+//     if (diferencia <= 0) {
+//         limpiarEstado();
+//         return;
+//     }
+
+//     const tiempoAlerta = diferencia - 900000;
+//     setTimeout(() => {
+//         const incidenciaForm = document.getElementById('incidenciaForm');
+//         const btnEnviar = document.getElementById('btnEnviar');
+
+//         if (incidenciaForm && btnEnviar) {
+//             const incidenciaFormOculto = window.getComputedStyle(incidenciaForm).display === 'none';
+//             if (incidenciaFormOculto) {
+//                 btnEnviar.style.display = 'block';
+//             } else {
+//                 btnEnviar.style.display = 'none';
+//             }
+//         }
+
+//         Swal.fire({
+//             title: '¡Alerta!',
+//             text: 'Faltan 15 minutos para que termine el turno.',
+//             icon: 'warning',
+//             confirmButtonText: 'Cerrar',
+//             toast: true,
+//             position: 'bottom-end',
+//             timer: horaFinDate,
+//             timerProgressBar: true,
+//         });
+//     }, tiempoAlerta);
+
+//     setTimeout(() => {
+//         limpiarEstado();
+//     }, diferencia);
+// }
+
+//esta e
+
+//esta es la funcion de turno determina en que momento acabara el turnol vigilate para posteriormente mostrara la alerta de advertencia
+//y mostrar el boton de envio de correos al concluir el turno el boton se vuelve a ocultar
 function iniciarTurno() {
     const selectedOption = document.querySelector('option[data-hora-fin]');
     if (!selectedOption || !selectedOption.hasAttribute('data-hora-fin')) {
@@ -776,51 +868,6 @@ function iniciarTurno() {
         limpiarEstado();
         return;
     }
-    // document.getElementById('envioCORREO').addEventListener('submit', function (event) {
-    //     event.preventDefault(); // Evita el envío normal del formulario
-
-    //     const form = event.target;
-    //     const formData = new FormData(form);
-    //     const btnEnviar = document.getElementById('btnEnviar');
-    //     const spinner = document.getElementById('spinner');
-    //     const btnText = document.getElementById('btnText');
-
-    //     // Mostrar spinner y deshabilitar botón
-    //     spinner.style.display = 'inline-block';
-    //     btnText.textContent = 'Enviando...';
-    //     btnEnviar.disabled = true;
-
-    //     fetch(form.action, {
-    //         method: 'POST',
-    //         body: formData,
-    //         headers: {
-    //             'X-Requested-With': 'XMLHttpRequest',
-    //         }
-    //     })
-    //         .then(response => {
-    //             if (!response.ok) {
-    //                 return response.json().then(data => {
-    //                     throw new Error(data.error || 'Ocurrió un error inesperado.');
-    //                 });
-    //             }
-    //             return response.json();
-    //         })
-    //         .catch(error => {
-    //             // Ocultar spinner y habilitar botón
-    //             spinner.style.display = 'none';
-    //             btnText.textContent = 'Enviar correo';
-    //             btnEnviar.disabled = false;
-
-    //             // Mostrar SweetAlert de error
-    //             Swal.fire({
-    //                 title: '¡Error!',
-    //                 text: error.message,
-    //                 icon: 'error',
-    //                 confirmButtonColor: '#f15252',
-    //                 confirmButtonText: 'Aceptar'
-    //             });
-    //         });
-    // });
 
     const tiempoAlerta = diferencia - 900000;
     setTimeout(() => {
@@ -840,12 +887,23 @@ function iniciarTurno() {
             btnEnviar.style.display = 'block';
         }
     }, tiempoAlerta);
-
     setTimeout(() => {
         limpiarEstado();
     }, diferencia);
 }
 
+//boton enviarcorreo
+//deshabilitar el boton btnEnviar por 5s
+var btnEnviar = document.getElementById('btnEnviar');
+btnEnviar.addEventListener('click', function (event) {
+    // Deshabilitar el botón
+    event.preventDefault();
+    this.form.submit();
+    btnEnviar.disabled = true;
+    setTimeout(function () {
+        btnEnviar.disabled = false;
+    }, 5000);
+});
 function limpiarEstado() {
     const btnEnviar = document.getElementById('btnEnviar');
     if (btnEnviar) {
@@ -857,13 +915,15 @@ function limpiarEstado() {
     }
 }
 
-iniciarTurno();
+// iniciarTurno();
 
 
 // $(document).ready(function () {
 //     EmpleadosSinSalida();
 // });
 
+
+// esta funcion es para el formato de bitacora para poder mostrar los empleados a los que les hace falta una hora de salida
 function EmpleadosSinSalida() {
     $.ajax({
         url: '/obtenerSalida',
@@ -936,6 +996,7 @@ function EmpleadosSinSalida() {
 //     EmpleadosSinSalida();
 // });
 
+// esta parte es un ajax para poder actualizar el campo hora de salida 
 $(document).ready(function () {
     // EmpleadosSinSalida();
     $('#actualizarHoraForm').on('submit', function (e) {
@@ -985,46 +1046,6 @@ $(document).ready(function () {
         });
     });
 });
-
-// $('#incidenciaForm').submit(function (e) {
-//     e.preventDefault();
-
-//     var formData = new FormData(this);
-
-//     $.ajax({
-//         url: '/incidenciassss',  // La URL para el POST
-//         method: 'POST',
-//         data: formData,
-//         processData: false,
-//         contentType: false,
-//         success: function (response) {
-//             // Aquí, response es el objeto JSON que contiene el mensaje
-//             Swal.fire({
-//                 position: "center",
-//                 icon: "success",
-//                 title: "¡Incidencia creada!",
-//                 text: response.message,  // Mostrar el mensaje que se pasa en el JSON
-//                 showConfirmButton: false,
-//                 timer: 1500
-//             }).then(() => {
-//                 window.history.back();  // Retrocede a la página anterior
-//             });
-
-//             // Mostrar los divs adicionales después de la alerta
-//             $('#campoAsociadoInterno').show();
-//             $('#empleadoSelect').show();
-//         },
-//         error: function (xhr) {
-//             alert('Hubo un error al procesar la solicitud');
-//         }
-//     });
-// });
-
-
-
-
-
-
 $(document).ready(function () {
     var formSelector = '#bitacora_acceso_porton';
     $(`${formSelector} label:contains("Empleado no registrado")`).hide();
@@ -1071,4 +1092,18 @@ $(document).ready(function () {
     $('.desab').on('focus mousedown selectstart', function (e) {
         e.preventDefault();
     });
+});
+$(document).ready(function () {
+    function toggleAriaHidden(modalId) {
+        $(modalId).on('show.bs.modal', function () {
+            $(this).removeAttr('aria-hidden');
+        });
+
+        $(modalId).on('hidden.bs.modal', function () {
+            $(this).attr('aria-hidden', 'true');
+        });
+    }
+
+    toggleAriaHidden('#HoraModal');
+    toggleAriaHidden('#agregarEmpleadoModal');
 });

@@ -15,7 +15,6 @@
                     </h3>
                 </div>
 
-
                 <div class="container mt-5">
                     @if (session('success'))
                         <div class="alert alert-success">
@@ -127,7 +126,9 @@
                                     required>
                                     <!-- Los empleados se cargarán aquí con AJAX -->
                                 </select>
-                                <small class="text-muted">Selecciona los empleados a agregar.</small>
+                                <small class="text-muted">Selecciona los empleados que deseas agregar. Puedes
+                                    seleccionar varios manteniendo presionada la tecla Ctrl mientras haces clic en los
+                                    empleados, o arrastrando el cursor para seleccionar un grupo.</small>
                                 <div class="invalid-feedback">Por favor selecciona al menos un empleado.</div>
                             </div>
                         </div>
@@ -136,8 +137,10 @@
 
 
                         <div class="submit-button-container">
-                            <button type="submit" class="btn btn-primary px-5 py-2 shadow-lg">
-                                <i class="fas fa-paper-plane"></i> Enlazar Formato
+                            <button type="submit" id="EnlaceFormato" class="btn btn-primary px-5 py-2 shadow-lg">
+                                <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
+                                    id="spinner"></span>
+                                <i class="fa-solid fa-link" id="checkIcon"></i> Enlazar Formato
                             </button>
                         </div>
                     </form>
@@ -269,7 +272,7 @@
                             uniqueEmpleados.forEach(empleado => {
                                 const option = document.createElement('option');
                                 option.value = empleado.id_empleado;
-                                option.text = empleado.nombres;
+                                option.text = empleado.nombres + ' ' + empleado.apellidos;
                                 option.setAttribute('data-email', empleado
                                     .email);
                                 empleadoSelect.appendChild(option);
@@ -331,6 +334,20 @@
                     alert('Error al cargar empresas.');
                 });
         }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var errorMessage = '{{ session('error') }}';
+
+            if (errorMessage) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMessage,
+                });
+            }
+        });
     </script>
 
     <script>
@@ -451,103 +468,20 @@
         });
     </script>
 
-    {{-- <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: '/empleados/formatos',
-                type: 'GET',
-                success: function(response) {
-                    if (response.success) {
-                        $('#empleadosorganizados').empty();
-
-                        let casetas = {};
-
-                        response.data.forEach(item => {
-                            if (!casetas[item.id_casetas]) {
-                                casetas[item.id_casetas] = {
-                                    empresa: item.empresa,
-                                    sucursal: item.sucursal,
-                                    caseta: item.nombre_caseta,
-                                    formatos: {}
-                                };
-                            }
-
-                            if (!casetas[item.id_casetas].formatos[item.Tipo]) {
-                                casetas[item.id_casetas].formatos[item.Tipo] = [];
-                            }
-
-                            casetas[item.id_casetas].formatos[item.Tipo].push(item);
-                        });
-
-                        for (let nombreCaseta in casetas) {
-                            let casetaData = casetas[nombreCaseta];
-                            $('#empleadosorganizados').append(
-                                `<h5><strong class="font-weight-bold" style="font-size: 1.2em; color: #000000 ;">${casetaData.empresa} / ${casetaData.sucursal} / ${casetaData.caseta}</strong></h5>`
-                            );
-                            // console.log(casetaData);
-
-                            for (let tipo in casetaData.formatos) {
-                                $('#empleadosorganizados').append(
-                                    `<div class="formato-tipo" style="font-size: 0.9">${tipo}</div>
-                                <ul style="list-style-type: none; padding-left: 20px;"></ul>`
-                                );
-
-                                // agregp a los  empleados para este formato
-                                casetaData.formatos[tipo].forEach(item => {
-                                    let checkbox = item.status == 1 ? 'checked' : '';
-                                    let listItem = `
-                                    <li class="empleado-item">
-                                        <span class="empleado-icon fa fa-user-circle"></span>
-                                        <span class="empleado-nombre">${item.nombres}</span>
-                                        <input type="checkbox" class="status-checkbox" data-id="${item.id_empleado}" data-formato-id="${item.id_formatos}" ${checkbox}>
-                                    </li>
-                                `;
-                                    $('#empleadosorganizados ul:last').append(
-                                        listItem);
-                                });
-                            }
-                        }
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $('#empleadosorganizados').on('change', '.status-checkbox', function() {
-                            let empleadoId = $(this).data('id');
-                            let formatoId = $(this).data('formato-id');
-                            let nuevoStatus = $(this).prop('checked') ? 1 : 0;
-                            $.ajax({
-                                url: `/empleados/actualizar-status/${empleadoId}/${formatoId}`,
-                                type: 'PUT',
-                                data: {
-                                    status: nuevoStatus
-                                },
-                                success: function(response) {
-                                    if (response.success) {
-                                        console.log(
-                                            'Estado actualizado correctamente.');
-                                    } else {
-                                        console.error(
-                                            'Error al actualizar el estado.');
-                                    }
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error en la solicitud:', error);
-                                }
-                            });
-                        });
-                    } else {
-                        console.error('Error en la respuesta del servidor.');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error al realizar la solicitud GET:', error);
-                }
-            });
-        });
-    </script> --}}
-
     <style>
+        #spinner {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #spinner.fade-in {
+            opacity: 1;
+        }
+
+        #checkIcon {
+            transition: opacity 0.5s ease;
+        }
+
         .submit-button-container {
             display: flex;
             justify-content: center;
@@ -587,49 +521,56 @@
     </script>
 
     <script>
-        function filterEmpleados() {
-            const searchValue = document.getElementById('empleado_search').value.toLowerCase();
-            const empleadoSelect = document.getElementById('id_empleado');
+    function filterEmpleados() {
+        const searchValue = document.getElementById('empleado_search').value.toLowerCase();
+        const empleadoSelect = document.getElementById('id_empleado');
 
-            // Obtener todos los elementos de la lista de empleados
-            const empleadoOptions = Array.from(empleadoSelect.options);
+        // obtengo todas las opciones de la lista de empleados
+        const empleadoOptions = Array.from(empleadoSelect.options);
 
-            // Filtrar los empleados en base al valor de búsqueda
-            const filteredEmpleados = empleadoOptions.filter(option => {
-                const empleadoNombre = option.text.toLowerCase();
-                return empleadoNombre.includes(searchValue);
-            });
-
-            // Limpiar la lista de empleados
-            empleadoSelect.innerHTML = '';
-
-            // Agregar los empleados filtrados a la lista
-            filteredEmpleados.forEach(empleado => {
-                empleadoSelect.appendChild(empleado);
-            });
-        }
-
-
-        // function filterFormatos() {
-        //     const searchValue = document.getElementById('formato_search').value.toLowerCase();
-        //     const formatoSelect = document.getElementById('id_formato');
-
-        //     // Obtener todos los elementos de la lista de formatos
-        //     const formatoOptions = Array.from(formatoSelect.options);
-
-        //     // Filtrar los formatos en base al valor de búsqueda
-        //     const filteredFormatos = formatoOptions.filter(option => {
-        //         const formatoNombre = option.text.toLowerCase();
-        //         return formatoNombre.includes(searchValue);
-        //     });
-
-        //     // Limpiar la lista de formatos
-        //     formatoSelect.innerHTML = '';
-
-        //     // Agregar los formatos filtrados a la lista
-        //     filteredFormatos.forEach(formato => {
-        //         formatoSelect.appendChild(formato);
-        //     });
-        // }
+        // filtro las opciones de empleados en base al valor de busqueda
+        empleadoOptions.forEach(option => {
+            const empleadoNombre = option.text.toLowerCase();
+            if (empleadoNombre.includes(searchValue)) {
+                option.style.display = '';  // muestro la opción si coincide
+            } else {
+                option.style.display = 'none';  // Ocultar la opción si no coincide
+            }
+        });
+    }
     </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#modalEditarCorreo').on('show.bs.modal', function() {
+                $(this).removeAttr('aria-hidden');
+            });
+
+            $('#modalEditarCorreo').on('hidden.bs.modal', function() {
+                $(this).attr('aria-hidden', 'true');
+            });
+        });
+    </script>
+
+    <script>
+        //boton enlace reporte
+        document.getElementById('EnlaceFormato').addEventListener('click', function(event) {
+            event.preventDefault();
+            var spinner = document.getElementById('spinner');
+            var checkIcon = document.getElementById('checkIcon');
+            var button = this;
+            checkIcon.style.opacity = 0;
+            spinner.classList.remove('d-none');
+            spinner.style.position = 'absolute';
+            spinner.style.left = checkIcon.offsetLeft + 'px';
+            spinner.style.top = checkIcon.offsetTop + 'px';
+
+            button.disabled = true;
+            setTimeout(function() {
+                button.form.submit();
+            }, 500); // tiempo de restraso
+        });
+    </script>
+
 </x-app-layout>

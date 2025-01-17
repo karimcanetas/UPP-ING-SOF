@@ -20,7 +20,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_vehiculos" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_vehiculos"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -44,7 +45,7 @@
                                 name="campos[{{ $campo->id_campo }}]" onchange="toggleOtroUnidad(this)" required>
                                 <option value="">Seleccione un Vehiculo</option>
                                 @foreach ($unidades_utilitarias as $ut)
-                                    <option value= "{{ $ut->nombre}}">{{ $ut->nombre }}</option>
+                                    <option value= "{{ $ut->nombre }}">{{ $ut->nombre }}</option>
                                 @endforeach
                                 <option value="otro">OTRO</option>
                             </select>
@@ -52,8 +53,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad80">Especificar otro Vehículo</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otro Vehículo"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="4" placeholder="Especifica otro Vehículo"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Placas')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -69,12 +70,10 @@
                                 required>
                         @elseif ($campoNombre == 'Hora de entrada')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                >
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Hora de salida')
                             <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                >
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Origen / Destino')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">

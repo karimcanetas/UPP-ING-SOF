@@ -20,7 +20,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_bitacora" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_bitacora"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -58,8 +59,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad6">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif($campoNombre == 'VIN (6 últimos dígitos)')
                             <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
@@ -80,17 +81,17 @@
 
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad7412">Especificar otro motivo</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otro motivo"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="4" placeholder="Especifica otro motivo"></textarea>
                             </div>
                         @elseif($campoNombre == 'Asesor que atenderá')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
                         @elseif($campoNombre == 'Cono')
-                            <input type="text" class="form-control" id="campo[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]"
+                                value="{{ old('campos.' . $campo->id_campo) }}" required>
                         @elseif($campoNombre == 'Placas')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campo.' . $campo->id_campo) }}"

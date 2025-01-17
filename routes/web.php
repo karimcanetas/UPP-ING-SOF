@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 // Ruta de la vista del login
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('send.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 

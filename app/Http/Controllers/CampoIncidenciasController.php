@@ -118,7 +118,7 @@ class CampoIncidenciasController extends Controller
 
         if ($archivosGenerados === 0 && !empty($errorFormatos)) {
             return redirect()->route('send.index')
-                ->with('error', 'No se pudieron enviar los formatos: ' . implode(', ', $errorFormatos) . ' porque no cuentan con campos.');
+                ->with('error', 'No se pudieron enviar los formatos: ' . implode(', ', $errorFormatos) . ' porque no cuentan con datos.');
         }
 
         return redirect()->route('send.index')->with('success', 'Correos enviados exitosamente.');

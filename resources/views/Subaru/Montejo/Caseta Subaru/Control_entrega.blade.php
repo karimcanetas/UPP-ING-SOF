@@ -20,7 +20,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_empresasub" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_empresasub"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -42,7 +43,6 @@
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 min="1111-01-01" max="9999-12-31" required>
                         @elseif ($campoNombre == 'Folio/Salida definitiva')
-                            <!-- Asumimos que este campo es de texto, cambia según necesidad -->
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
@@ -67,8 +67,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
                             <!-- campo VIN, restringido a solo 6 números -->
@@ -91,8 +91,8 @@
 
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad1469">Especificar otra Condición</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra condición"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra condición"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"

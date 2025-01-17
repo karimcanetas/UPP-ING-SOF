@@ -1,5 +1,5 @@
 <div class="modal fade" id="agregarEmpleadoModal" role="dialog" aria-labelledby="agregarEmpleadoModalLabel"
-    aria-hidden="true" data-backdrop="static" data-keyboard="true">
+    aria-hidden="false" data-backdrop="static" data-keyboard="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="border-radius: 10px; transition: transform 0.3s;">
             <div class="modal-header" style="background-color: #007bff; color: white;">

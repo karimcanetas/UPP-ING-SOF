@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalEditarCorreo" tabindex="-1" aria-labelledby="modalEditarCorreoLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditarCorreo" tabindex="-1" aria-labelledby="modalEditarCorreoLabel" aria-hidden="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-encabezado">
@@ -51,6 +51,23 @@
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+/* 
+    .modal-dialog {
+        max-width: 50%;
+        max-height: 5%;
+    } */
+
+    @media (min-width: 768px) {
+        .modal-dialog {
+            max-width: 50%;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .modal-dialog {
+            max-width: 70%;
+        }
     }
 
     .modal-encabezado {

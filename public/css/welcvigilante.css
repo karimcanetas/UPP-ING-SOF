@@ -542,6 +542,19 @@ h1 {
     margin-top: 1rem;
 }
 
+#spinner {
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+#spinner.fade-in {
+    opacity: 1;
+}
+
+#checkIcon {
+    transition: opacity 0.5s ease;
+}
+
 /* Estilo del label del radio */
 .radio-item label {
     display: block;

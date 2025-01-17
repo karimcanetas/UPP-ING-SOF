@@ -79,6 +79,7 @@ class EmpleadosCatologoController extends Controller
                 return [
                     'id_empleado' => $empleado->id_empleado,
                     'nombres' => $empleado->nombres,
+                    'apellidos' => $empleado->apellido_p,
                     'email' => $empleado->user->email ?? '',
                 ];
             });

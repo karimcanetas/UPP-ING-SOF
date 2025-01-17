@@ -4,8 +4,6 @@
         $casetaSeleccionada &&
             ($casetaSeleccionada->nombre === 'Área de Demos' || $casetaSeleccionada->nombre === 'Encierro'))
         <div id="Novedades_demos" style="display: none;">
-            <!-- Asegúrate de que sea visible cuando se cumpla la condición -->
-
             <div class="card horizontal-card d-none">
                 <div class="form-group">
                     <label for="id_casetas">Caseta:</label>

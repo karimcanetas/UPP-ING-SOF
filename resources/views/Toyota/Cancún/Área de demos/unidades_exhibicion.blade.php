@@ -19,7 +19,8 @@
                 </div>
                 <div>
                     <label for="fecha_hora">Fecha y hora del envio</label>
-                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_unidades" readonly>
+                    <input type="text" class="form-control fechahora" name="fecha_hora" id="fecha_hora_unidades"
+                        readonly>
                 </div>
             </div>
             <input type="hidden" name="formulario" value="control_proveedores_TOTs">
@@ -36,21 +37,21 @@
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
 
                         @if ($campoNombre == 'Ubicación de la unidad')
-                            <section class="form-group ">
+                            <section class="form-group ErrorUbicacion">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="piso" type="radio"
-                                            value="Piso" required>
+                                            value="Piso">
                                         <label for="piso">Piso</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="exterior" type="radio"
-                                            value="Exterior" required>
+                                            value="Exterior">
                                         <label for="exterior">Exterior</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="demos" type="radio"
-                                            value="Demos" required>
+                                            value="Demos">
                                         <label for="demos">Demos</label>
                                     </div>
                                 </div>
@@ -69,8 +70,8 @@
                             <!-- campo adicional para cuando se selecciona 'Otro' -->
                             <div class="textunidad" style="display: none; margin-top: 10px;">
                                 <label for="otrotextunidad14">Especificar otra unidad</label>
-                                <textarea class="form-control otrotextunidad" name="campos[{{ $campo->id_campo }}]" rows="4"
-                                    placeholder="Especifica otra unidad"></textarea>
+                                <textarea class="form-control otrotextunidad" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]" rows="4" placeholder="Especifica otra unidad"></textarea>
                             </div>
                         @elseif ($campoNombre == 'Color')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -83,22 +84,22 @@
                                 maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
                                 required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)" required>
                         @elseif ($campoNombre == 'Condición de seguridad de la unidad')
-                            <section class="form-group">
+                            <section class="form-group ErrorCondicion">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="abierto" type="radio"
-                                            value="Abierto" required>
+                                            value="Abierto">
                                         <label for="abierto">Abierto</label>
                                     </div>
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="cerrado" type="radio"
-                                            value="Cerrado" required>
+                                            value="Cerrado">
                                         <label for="cerrado">Cerrado</label>
                                     </div>
                                 </div>
                             </section>
                         @elseif ($campoNombre == 'Condición de daños de la unidad')
-                            <section class="form-group">
+                            <section class="form-group ErrorDaños">
                                 <div class="radio-list">
                                     <div class="radio-item">
                                         <input name="campos[{{ $campo->id_campo }}]" id="con_golpes" type="radio"

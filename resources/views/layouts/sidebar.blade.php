@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-light text-white accordion toggled animated animated-sm bounceInUp"
     id="accordionSidebar" style="background: linear-gradient(to right, black, rgb(62, 62, 62));">
 
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('dashboard') }}">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('send.index') }}">
         <div class="sidebar-brand-icon anim-down anim-pause-1">
             <div class="sidebar-brand-icon">
                 <svg width="70" height="40" viewBox="0 0 227 72" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -43,10 +43,10 @@
         {{ __('Menu') }}
     </div>
 
-    <li class="nav-item anim-right anim-pause-1 @if (Route::is('dashboard')) font-weight-bold active @endif">
-        <a class="nav-link" href="{{ route('dashboard') }}" data-toggle="popover"
+    <li class="nav-item anim-right anim-pause-1 @if (Route::is('send.index')) font-weight-bold active @endif">
+        <a class="nav-link" href="{{ route('send.index') }}" data-toggle="popover"
             data-content="Pulsar para ir al modulo de aplicaciones">
-            <svg @if (Route::is('dashboard')) width="70px" height="70px" @else width="45px" height="45px" @endif
+            <svg @if (Route::is('send.index')) width="70px" height="70px" @else width="45px" height="45px" @endif
                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

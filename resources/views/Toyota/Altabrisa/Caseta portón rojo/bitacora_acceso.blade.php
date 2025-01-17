@@ -54,6 +54,7 @@
 
             @foreach (['Nombre asociado interno', 'Empleado no registrado', 'Puesto', 'Hora de entrada', 'Hora de salida', 'Unidad - Vehiculo personal', 'Placas', 'Observaciones / Comentarios'] as $campoNombre)
                 @if ($campo = $campos->firstWhere('campo', $campoNombre))
+                    {{-- @dump($campo) --}}
                     <div class="form-group">
                         <label for="campos[{{ $campo->id_campo }}]">{{ $campo->campo }}:</label>
 
@@ -95,7 +96,8 @@
                             <div id="empleadoNoRegistradoContainer" style="display: none;">
                                 <input type="text" class="form-control" id="empleadoNombre"
                                     name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}">
+                                    value="{{ old('campos.' . $campo->id_campo) }}"
+                                    placeholder="Ingresa un empleado no registrado">
                             </div>
                         @elseif ($campoNombre == 'Puesto')
                             <input type="text" class="form-control puestoInput desab"
@@ -117,14 +119,14 @@
                         @elseif ($campoNombre == 'Unidad - Vehiculo personal')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}">
+                                value="{{ old('campos.' . $campo->id_campo) }}" placeholder="Ingresa una unidad">
                         @elseif($campoNombre == 'Placas')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]"
                                 value="{{ old('campos. ' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
                             <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                rows="3">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                                rows="3" placeholder="Ingresa alguna observación">{{ old('campos.' . $campo->id_campo) }}</textarea>
                         @endif
                     </div>
                 @endif

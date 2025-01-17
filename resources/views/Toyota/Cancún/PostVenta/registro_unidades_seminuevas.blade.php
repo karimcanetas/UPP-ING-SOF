@@ -53,21 +53,19 @@
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
                                 name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
                                 required>
-                            @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
-                                <!-- campo VIN, restringido a solo 6 numeros -->
-                                <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}" maxlength="6" pattern="\d{6}"
-                                    title="Debe contener exactamente 6 dígitos numéricos" required
-                                    placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)">
-                            @elseif ($campoNombre == 'Placas')
-                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
-                            @elseif ($campoNombre == 'Observaciones / Comentarios')
-                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                    name="campos[{{ $campo->id_campo }}]"
-                                    value="{{ old('campos.' . $campo->id_campo) }}">
+                        @elseif ($campoNombre == 'VIN (6 últimos dígitos)')
+                            <!-- campo VIN, restringido a solo 6 numeros -->
+                            <input type="text" class="form-control vin" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                                maxlength="6" pattern="\d{6}" title="Debe contener exactamente 6 dígitos numéricos"
+                                required placeholder="Ingrese 6 dígitos" oninput="validateNumberInput(this)">
+                        @elseif ($campoNombre == 'Placas')
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
+                                required>
+                        @elseif ($campoNombre == 'Observaciones / Comentarios')
+                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @endif
                     </div>
                 @endif
