@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
- //tomo sus valores para poder manipularlos y asignar automaticamente eso datos a los campos que corresponden
+    //tomo sus valores para poder manipularlos y asignar automaticamente eso datos a los campos que corresponden
     function addNewEmployeeOption(data) {
         const newOption = new Option(data.nombres, data.id_empleado, false, true);
         newOption.setAttribute('data-nombres', data.nombres);
@@ -654,8 +654,8 @@ function submitAndResetForm(boton) {
                 (['checkbox', 'radio', 'select'].includes(elemento.type) && !formulario.querySelector(`[name="${elemento.name}"]:checked`)) ||
                 (elemento.tagName === 'SELECT' && elemento.value === '');
 
-                //valido que el campo vin tenga exactamente los 6 digitos su no lo tiene le muestro un error soicitando
-                //los 6 digitos
+            //valido que el campo vin tenga exactamente los 6 digitos su no lo tiene le muestro un error soicitando
+            //los 6 digitos
             if (elemento.classList.contains('vin')) {
                 const valorVin = elemento.value.trim();
                 if (valorVin.length !== 6 || !/^\d{6}$/.test(valorVin)) {
@@ -924,6 +924,7 @@ function limpiarEstado() {
 
 
 // esta funcion es para el formato de bitacora para poder mostrar los empleados a los que les hace falta una hora de salida
+//esta consulta viene del incidenciasController en el metodo obtenerHoraSalida
 function EmpleadosSinSalida() {
     $.ajax({
         url: '/obtenerSalida',
@@ -935,13 +936,13 @@ function EmpleadosSinSalida() {
 
             data.forEach(function (item) {
                 let valorCampo34 = item.valor_campo_34;
-                let empleadoTexto = `${item.empleados?.empleado_67 || item.empleados?.empleado_76 || 'Empleado no disponible'} ${valorCampo34 === null || valorCampo34 === 'N/A' ? '(Sin hora de salida)' : ''}`;
-
+                let empleado67 = item.empleados?.empleado_67 !== 'N/A' ? item.empleados?.empleado_67 : null;
+                let empleado76 = item.empleados?.empleado_76 !== 'N/A' ? item.empleados?.empleado_76 : null;
+                let empleadoTexto = `${empleado67 || empleado76 || 'Empleado no disponible'} ${valorCampo34 === null || valorCampo34 === 'N/A' ? '(Sin hora de salida)' : ''}`;
                 let option = $('<option>', {
                     text: empleadoTexto,
                     value: item.id_incidencias
                 });
-
                 $('#miSelect').append(option);
             });
 
@@ -1046,6 +1047,8 @@ $(document).ready(function () {
         });
     });
 });
+//aqui utilizo jquuery para poder realizar los cambios unicamente en el formato de bitacora acceso porton de la sucursal de altabrisa
+//cuando se selecciona una opocion que cambio deberia realizar 
 $(document).ready(function () {
     var formSelector = '#bitacora_acceso_porton';
     $(`${formSelector} label:contains("Empleado no registrado")`).hide();
