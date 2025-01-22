@@ -36,6 +36,7 @@ class CampoIncidenciasController extends Controller
         $fechaFin = Carbon::parse($request->input('fecha_fin'));
         $formatoIds = explode(',', $request->input('formato_id'));
 
+        $formatoEspecialIds = [39, 32, 2, 3, 4, 5, 6, 8, 9, 10, 11, 36, 43, 22, 38, 47];
         $archivosGenerados = 0;
         $errorFormatos = [];
 
@@ -46,34 +47,53 @@ class CampoIncidenciasController extends Controller
                 continue; // Ssi el formato no existe sigue
             }
 
-            $camposIncidencias = $formato->campoIncidencias()
-                ->with(['campo', 'incidencia' => function ($query) use ($fechaInicio, $fechaFin) {
-                    $query->whereBetween('fecha_hora', [$fechaInicio, $fechaFin]);
-                }])
-                ->whereHas('incidencia', function ($query) use ($fechaInicio, $fechaFin) {
-                    $query->whereBetween('fecha_hora', [$fechaInicio, $fechaFin]);
-                })
-                ->whereNotNull('valor')
-                ->get();
+            if (in_array($formatoId, $formatoEspecialIds)) {
+
+                //formateo la fecha que ingreso el usuario al formato año /mes / dia
+                $fechaInicioformateada = $fechaInicio->format('Y-m-d');
+                $fechafinformateada = $fechaFin->format('Y-m-d');
+                $idIncidencias = collect();
+                $fechaActual = Carbon::parse($fechaInicioformateada);
+
+                while ($fechaActual->format('Y-m-d') <= $fechafinformateada) {
+                    $fechaFormateada = $fechaActual->format('Y-m-d');
+
+                    // realizo la consulta con like para buscar fechas ya que la columna valor es tipo texto
+                    $resultados = CampoIncidencia::on('mysql_2')
+                        //cuando el formato sean $formatoIds y esten dentro de formatoEspecialIds
+                        ->whereIn('id_formatos', $formatoIds)
+                        ->whereIn('id_formatos', $formatoEspecialIds)
+                        ->where('id_campo', 13)
+                        ->where('valor', 'LIKE', "%$fechaFormateada%")
+                        ->pluck('id_incidencias');
+
+                    $idIncidencias = $idIncidencias->merge($resultados);
+                    $fechaActual->addDay();
+
+                    // obtengo los campos de incidencia por formato
+                    $camposIncidencias = CampoIncidencia::on('mysql_2')
+                        ->whereIn('id_incidencias', $idIncidencias)
+                        ->where('id_formatos', $formatoId)
+                        ->with('incidencia')
+                        ->get();
+                }
+            } else {
+                $camposIncidencias = $formato->campoIncidencias()
+                    ->with(['campo', 'incidencia' => function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('fecha_hora', [$fechaInicio, $fechaFin]);
+                    }])
+                    ->whereHas('incidencia', function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('fecha_hora', [$fechaInicio, $fechaFin]);
+                    })
+                    ->whereNotNull('valor')
+                    ->get();
+            }
 
             if ($camposIncidencias->isEmpty()) {
                 $errorFormatos[] = $formato->Tipo;
                 continue; // si no hay incidencias se omite el formato
             }
 
-            // $incidenciasAgrupadas = $camposIncidencias->groupBy(function ($campoIncidencia) {
-            //     return $campoIncidencia->incidencia->id_incidencias; // Agrupar por id_incidencias
-            // });
-            // Log::info('formatos: ' . $formato->Tipo);
-            // foreach ($incidenciasAgrupadas as $incidencia) {
-            //     $nombreVigilante = $incidencia->first()->incidencia->nombre_vigilante;
-            //     $fechaHora = $incidencia->first()->incidencia->fecha_hora;
-            //     Log::info("incidencia con id_incidencias: " . $incidencia->first()->incidencia->id_incidencias);
-            //     Log::info("campos de la incidencia: {$incidencia->first()->incidencia->id_incidencias} - Nombre vigilante: $nombreVigilante, Fecha y hora: $fechaHora");
-            //     foreach ($incidencia as $campoIncidencia) {
-            //         Log::info("campos de la incidencia {$campoIncidencia->incidencia->id_incidencias} - Valor: " . $campoIncidencia->valor);
-            //     }
-            // }
             $empleadosHabilitados = EmpleadosFormatos::where('id_formatos', $formatoId)
                 ->where('status', 1)
                 ->get();
@@ -149,7 +169,6 @@ class CampoIncidenciasController extends Controller
             $fechaHoraFin->addDay();
         }
 
-
         // obtengo las incidencias
         $formatosCoincidentes = Incidencia::whereBetween('fecha_hora', [$fechaHoraInicio, $fechaHoraFin])
             // ->where('Nombre_vigilante', $nombreVigilante)
@@ -179,22 +198,6 @@ class CampoIncidenciasController extends Controller
                     ->get()
             );
         }
-
-        // $fechaActual = Carbon::now()->startOfDay();
-        // $finDeMes = Carbon::now()->endOfMonth()->startOfDay();
-
-        // $formatosCoincidentes = Incidencia::whereIn('id_formatos', [27, 29, 43])
-        //     ->where(function ($query) use ($fechaActual, $finDeMes) {
-        //         $query->whereBetween('fecha_hora', [$fechaActual, $finDeMes]);
-
-        //         if ($fechaActual->eq($finDeMes)) {
-        //             $query->orWhereBetween('fecha_hora', [
-        //                 $fechaActual->startOfMonth(),
-        //                 $finDeMes->subDay()
-        //             ]);
-        //         }
-        //     })
-        //     ->get();
         // actualizar el campo enviado 1 es enviado
         $formatosCoincidentes->each(function ($incidencia) {
             $incidencia->enviado = 1;
