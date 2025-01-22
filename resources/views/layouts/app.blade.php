@@ -4,7 +4,7 @@
 <head>
 
     @php
-        $tema = DB::select('select * from personalizacions where id = 1');
+        $tema = [];
     @endphp
 
 
@@ -44,17 +44,16 @@
         <link href="{{ url('css/loader.css') }}" rel="stylesheet">
         <link href="{{ url('css/style.css') }}" rel="stylesheet">
         <link href="{{ url('css/sucursal.css') }}" rel="stylesheet">
-        
+
 
         @if (Route::is('disenio') || Route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
             <link href="{{ url('css/app.css') }}" rel="stylesheet">
             <x-modalFormatos />
-           
         @endif
     @else
         <title>{{ config('app.name', 'Sistema administrativo de vigilancia') }}</title>
         <link href="{{ asset('https://serviciosespecializados.grupoprt.com/public/assets/img/logo/prt_Mesa.ico') }}"
-        rel='icon' type='image/png'>
+            rel='icon' type='image/png'>
 
 
         <!-- Bootstrap CSS -->
@@ -83,11 +82,11 @@
     {{-- <script src="https://cdn.ckeditor.com/ckeditor5/11.0.1/classic/ckeditor.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/progressbar.js@1.0.1/dist/progressbar.min.js"></script>
     <script src="{{ asset('assets/js/turn/turn.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Bootstrap JS y Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 
     @include('layouts.styles')
@@ -142,7 +141,7 @@
     @endif
 
     @if (route::is('dashboard', 'send.index', 'EmpleadoFormato.index'))
-    <x-modal-editarcorreo />
+        <x-modal-editarcorreo />
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
@@ -162,6 +161,8 @@
 
         <!-- Incluir Select2 JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
 
         <script>
             // $(document).ready(function() {
@@ -206,7 +207,7 @@
             });
         </script>
 
-    
+
 
         @foreach ($tema as $key => $loader)
             <script>
@@ -245,11 +246,91 @@
             });
         });
     </script>
+    @if (route::is('EmpleadoFormato.index'))
+        <script src="{{ asset('js/EmpleadoFormatos/EmpleadosFormatos.js') }}"></script>
+        {{-- Alertas --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var errorMessage = '{{ session('error') }}';
 
-    <!-- puestos dinamicos -->
+                if (errorMessage) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorMessage,
+                    });
+                }
+            });
 
+            $(document).ready(function() {
+                @if (session('success'))
+                    Swal.fire({
+                        title: "¡Éxito!",
+                        text: "{{ session('success') }}",
+                        icon: "success"
+                    });
+                @endif
+            });
+        </script>
+    @endif
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
+    @if (route::is('send.index'))
+        <script src="{{ asset('js/EnvioCorreos/EnvioCorreos.js') }}"></script>
+        {{-- Blade, Ajax cargar correos de y alertas --}}
+        <script>
+            function cargarCorreos(formatoId) {
+                if (formatoId) {
+                    $.ajax({
+                        url: '{{ route('get.correos', ': id') }}'.replace(':id', formatoId),
+                        method: 'GET',
+                        success: function(response) {
+                            $('#correos').empty();
+                            if (response.correos && response.correos.length > 0) {
+                                response.correos.forEach(function(correo) {
+                                    if (correo) {
+                                        const li =
+                                            `<li class="correo-item" onclick="agregarCorreo('${correo}')">${correo} <i class="fa-solid fa-plus"></i></li>`;
+                                        $('#correos').append(li);
+                                    }
+                                });
+                            } else {
+                                $('#correos').append('<li>No se encontraron correos disponibles.</li>');
+                            }
+                        },
+                        error: function() {
+                            $('#correos').append('<li>Error al cargar correos.</li>');
+                        }
+                    });
+
+                    document.getElementById('formato_id').value = formatoId;
+
+                    obtenerCampos(formatoId);
+                }
+            }
+
+            $(document).ready(function() {
+                @if (session('success'))
+                    Swal.fire({
+                        title: "¡Éxito!",
+                        text: "{{ session('success') }}",
+                        icon: "success"
+                    });
+                @endif
+            });
+
+            $(document).ready(function() {
+                @if (session('error'))
+                    Swal.fire({
+                        title: "Error!",
+                        text: "{{ session('error') }}",
+                        icon: "error"
+                    });
+                @endif
+            });
+        </script>
+    @endif
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css">
 
 </body>
 
