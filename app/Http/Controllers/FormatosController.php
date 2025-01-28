@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Correos;
 use App\Models\Formato;
+use Illuminate\Support\Facades\Session;
 use App\Models\CorreosFormatos;
+use Illuminate\Support\Facades\DB;
 use App\Models\Formatocaseta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +24,7 @@ class FormatosController extends Controller
     //         return $item->Caseta->id_casetas . ' - ' . $item->Caseta->nombre;
     //     })->map(function ($items) {
     //         return $items->map(function ($item) {
-                
+
     //             $empleados = $item->Formato->EmpleadosFormatos
     //                 ->where('status', 1)
     //                 ->map(fn($pivot) => $pivot->Empleado?->user?->email ? [
@@ -30,7 +32,7 @@ class FormatosController extends Controller
     //                     'email' => $pivot->Empleado->user->email,
     //                 ] : null)
     //                 ->filter();
-        
+
     //             return [
     //                 'id_casetas' => $item->id_casetas,
     //                 'nombre_caseta' => $item->Caseta->nombre,
@@ -42,7 +44,7 @@ class FormatosController extends Controller
     //             ];
     //         });
     //     });
-        
+
 
     //     Log::info('FormatoCasetas agrupadas por caseta:', $groupedByCaseta->toArray());
 
@@ -52,10 +54,27 @@ class FormatosController extends Controller
 
     public function checksSeparadores()
     {
+
+        $idSucursalPrincipal = Session::get('id_sucursal_principal');
+        Log::info('ID de sucursal principal desde otro metodo:', ['id_sucursal' => $idSucursalPrincipal]);
+
+        //buscar formatos de esa sucursal principal dada
+
+        $sucursalIds = DB::connection('mysql')
+            ->table('sucursales')
+            ->where('id_sucursal', $idSucursalPrincipal)
+            ->pluck('id_sucursal')
+            ->toArray();
+
         $FormatoCasetas = Formatocaseta::with([
             'Caseta.sucursal.empresa',
             'Formato.EmpleadosFormatos.Empleado.user'
-        ])->get();
+        ])
+            // ->get();
+            ->whereHas('Caseta', function ($query) use ($sucursalIds) {
+                $query->whereIn('id_sucursal', $sucursalIds);
+            })
+            ->get();
 
         // agrupo por sucursal
         $groupedBySucursal = $FormatoCasetas->groupBy(function ($item) {
