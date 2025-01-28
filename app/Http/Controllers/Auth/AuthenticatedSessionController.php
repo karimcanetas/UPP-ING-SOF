@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use App\Models\EmpleadosCatalogo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -35,6 +38,15 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt($credenciales)) {
             $user = $request->user();
+
+            $sucursalPrincipal = $user->empleado->id_sucursal_principal;
+
+            Session::put('id_sucursal_principal', $sucursalPrincipal);
+
+            Log::info('Usuario logueado:', [
+                'usuario' => Auth::user()->empleado->nombres,
+                'id_sucursal_principal' => $sucursalPrincipal
+            ]);
 
             Alert::html(
                 '<b> Bienvenido <u class="text-primary">' . Auth::user()->empleado->nombres . '</u> </b>',
