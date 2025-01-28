@@ -36,7 +36,7 @@ class CampoIncidenciasController extends Controller
         $fechaFin = Carbon::parse($request->input('fecha_fin'));
         $formatoIds = explode(',', $request->input('formato_id'));
 
-        $formatoEspecialIds = [39, 32, 2, 3, 4, 5, 6, 8, 9, 10, 11, 36, 43, 22, 38, 47];
+        $formatoEspecialIds = [38, 47, 37, 43, 36, 11, 10, 9, 8, 6, 5, 4, 3, 39, 32];
         $archivosGenerados = 0;
         $errorFormatos = [];
 

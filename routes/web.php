@@ -86,6 +86,8 @@ Route::controller(IncidenciaController::class)->group(function () {
     Route::post('/incidencias', 'store')->name('incidencias.store');
     Route::get('/obtenerSalida', 'obtenerHoraSalida');
     Route::post('/actualizar-salida', 'ActualizarSalida');
+    Route::get('/obtenerEntrada', 'obtenerHoraEntrada');
+    Route::post('/ActualizarEntrada', 'ActualizarEntrada'); 
 });
 
 
@@ -131,6 +133,7 @@ Route::put('/empleados/actualizar-status/{empleadoId}/{formatoId}', [EmpleadosCa
 
 //ruta envio vigilante 
 Route::post('/envio-vigilante', [CampoIncidenciasController::class, 'EnvioVigilante'])->name('envio.vigilante');
+
 
 // Autenticacion
 

@@ -50,8 +50,7 @@
                                 required>
                         @elseif ($campoNombre == 'Asesor')
                             <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}"
-                                required>
+                                name="campos[{{ $campo->id_campo }}]" value="{{ old('campos.' . $campo->id_campo) }}">
                         @elseif ($campoNombre == 'Unidad')
                             <!-- campo Unidad (select) -->
                             <select class="form-control" id="campos[{{ $campo->id_campo }}]"

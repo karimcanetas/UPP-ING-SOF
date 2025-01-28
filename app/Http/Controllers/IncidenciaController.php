@@ -252,4 +252,112 @@ class IncidenciaController extends Controller
             return response()->json(['error' => 'No se encontró el registro en campo_incidencias.'], 404);
         }
     }
+
+    public function obtenerHoraEntrada()
+    {
+        $hoy = Carbon::today();
+        $resultados = Incidencia::where('id_formatos', 23)
+            ->whereHas('campos', function ($query) {
+                $query->whereIn('id_campo', [19, 30, 65])
+                    ->where(function ($subQuery) {
+                        $subQuery->whereIn('id_campo', [30, 65])
+                            ->where(function ($valor) {
+                                $valor->whereNull('valor')
+                                    ->orWhere('valor', 'N/A')
+                                    ->orWhereRaw("valor NOT REGEXP '^[0-9]{2}:[0-9]{2}$'");
+                            })
+                            ->orWhereNotIn('id_campo', [30, 65]);
+                    });
+            })
+            ->whereDate('fecha_hora', $hoy)
+            ->with(['campoIncidencias' => function ($query) {
+                $query->select('id_incidencias', 'id_campo', 'valor');
+            }])
+            ->get()
+            ->map(function (Incidencia $incidencia) {
+                // Obtener datos específicos
+                $entrada = $incidencia->campoIncidencias
+                    ->where('id_campo', 30)
+                    ->first()?->valor;
+
+                $KmEntrada = $incidencia->campoIncidencias
+                    ->where('id_campo', 65)
+                    ->first()?->valor;
+
+                // Si la hora de entrada es válida, excluye el registro
+                if (!is_null($entrada) && $entrada !== 'N/A') {
+                    return null;
+                }
+
+                if (!is_null($KmEntrada) && $KmEntrada !== 'N/A') {
+                    return null;
+                }
+
+                $folio = $incidencia->campoIncidencias
+                    ->where('id_campo', 19)
+                    ->first()?->valor;
+
+                // Devolver los datos procesados
+                return [
+                    'id_incidencias' => $incidencia->id_incidencias,
+                    'id_formatos' => $incidencia->id_formatos,
+                    'fecha_hora' => $incidencia->fecha_hora,
+                    'HoraEntrada' => $entrada,
+                    'KmEntrada' => $KmEntrada,
+                    'Folio' => $folio,
+                ];
+            })
+            ->filter(); // Elimina registros nulos
+
+        return response()->json($resultados);
+    }
+
+    public function ActualizarEntrada(Request $request)
+    {
+        $validated = $request->validate([
+            'id_incidencias_Entrada' => 'required|exists:mysql_2.campo_incidencias,id_incidencias',
+            'hora_Entrada' => 'required|date_format:H:i',
+            'km_Entrada' => 'required|numeric'
+        ]);
+
+        $id_incidencias = $request->input('id_incidencias_Entrada');
+        $horaEntrada = $request->input('hora_Entrada');
+        $kmEntrada = $request->input('km_Entrada');
+
+        // Actualizar la hora de entrada (id_campo 30)
+        $campoHoraEntrada = DB::connection('mysql_2')->table('campo_incidencias')
+            ->where('id_incidencias', $id_incidencias)
+            ->where('id_campo', 30)
+            ->first();
+
+        if ($campoHoraEntrada) {
+            DB::connection('mysql_2')->table('campo_incidencias')
+                ->where('id_incidencias', $id_incidencias)
+                ->where('id_campo', 30)
+                ->update([
+                    'valor' => $horaEntrada,
+                ]);
+        } else {
+            return response()->json(['error' => 'No se encontró el campo de hora de entrada.'], 404);
+        }
+
+        // Actualizar el kilómetro de entrada (id_campo 65)
+        $campoKmEntrada = DB::connection('mysql_2')->table('campo_incidencias')
+            ->where('id_incidencias', $id_incidencias)
+            ->where('id_campo', 65)
+            ->first();
+
+        if ($campoKmEntrada) {
+            DB::connection('mysql_2')->table('campo_incidencias')
+                ->where('id_incidencias', $id_incidencias)
+                ->where('id_campo', 65)
+                ->update([
+                    'valor' => $kmEntrada,
+                ]);
+        } else {
+            return response()->json(['error' => 'No se encontró el campo de kilómetro de entrada.'], 404);
+        }
+
+        return response()->json(['success' => 'Hora de entrada y km de entrada actualizados exitosamente.']);
+    }
 }

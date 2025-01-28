@@ -62,7 +62,7 @@
                             <button type="submit" class="btn btn-success px-5 py-2 shadow-lg" id="generarReporte">
                                 <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"
                                     id="spinner"></span>
-                                <i class="fa-solid fa-check-circle" id="checkIcon"></i> Generar Reporte
+                                <i class="fa-solid fa-check-circle" id="checkIcon"></i> Enviar Reporte
                             </button>
                         </div>
                     </form>

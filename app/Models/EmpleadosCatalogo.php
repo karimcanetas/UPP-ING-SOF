@@ -29,6 +29,7 @@ class EmpleadosCatalogo extends Model
         'correo_personal',
         'celular_personal',
         'id_tipo_asociado',
+        'id_sucursal_principal',
         'id_puesto',
         'observaciones',
         'fecha_baja',

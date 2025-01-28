@@ -94,16 +94,18 @@
                             </div>
                         @elseif ($campoNombre == 'Empleado no registrado')
                             <div id="empleadoNoRegistradoContainer" style="display: none;">
-                                <input type="text" class="form-control" id="empleadoNombre"
+                                <input type="text" class="form-control desab" id="empleadoNombre"
                                     name="campos[{{ $campo->id_campo }}]"
                                     value="{{ old('campos.' . $campo->id_campo) }}"
                                     placeholder="Ingresa un empleado no registrado">
                             </div>
                         @elseif ($campoNombre == 'Puesto')
-                            <input type="text" class="form-control puestoInput desab"
-                                id="campos[{{ $campo->id_campo }}]" style="text-transform: uppercase"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            <div id="puestoid" style="display: block">
+                                <input type="text" class="form-control puestoInput desab"
+                                    id="campos[{{ $campo->id_campo }}]" style="text-transform: uppercase"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" required>
+                            </div>
                         @elseif ($campoNombre == 'Hora de entrada')
                             <div id="campoHoraEntrada" style="display: none;">
                                 <input type="time" class="form-control" id="campos[{{ $campo->id_campo }}]"
@@ -117,22 +119,30 @@
                                     value="{{ old('campos.' . $campo->id_campo) }}">
                             </div>
                         @elseif ($campoNombre == 'Unidad - Vehiculo personal')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos.' . $campo->id_campo) }}" placeholder="Ingresa una unidad">
+                            <div id="unidadID" style="display: block">
+                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos.' . $campo->id_campo) }}" placeholder="Ingresa una unidad">
+                            </div>
                         @elseif($campoNombre == 'Placas')
-                            <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
-                                name="campos[{{ $campo->id_campo }}]"
-                                value="{{ old('campos. ' . $campo->id_campo) }}">
+                            <div id="placasID" style="display: block">
+                                <input type="text" class="form-control" id="campos[{{ $campo->id_campo }}]"
+                                    name="campos[{{ $campo->id_campo }}]"
+                                    value="{{ old('campos. ' . $campo->id_campo) }}">
+                            </div>
                         @elseif ($campoNombre == 'Observaciones / Comentarios')
-                            <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
-                                rows="3" placeholder="Ingresa alguna observación">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                            <div id="observacionesID" style="display: block">
+                                <textarea class="form-control" id="campos[{{ $campo->id_campo }}]" name="campos[{{ $campo->id_campo }}]"
+                                    rows="3" placeholder="Ingresa alguna observación">{{ old('campos.' . $campo->id_campo) }}</textarea>
+                            </div>
                         @endif
                     </div>
                 @endif
             @endforeach
             <div class="form-group text-center">
-                <button type="submit" class="btn btn-primary" onclick="submitAndResetForm(this)">Enviar</button>
+                <div id="botonenviarID" style="display: block">
+                    <button type="submit" class="btn btn-primary" onclick="submitAndResetForm(this)">Enviar</button>
+                </div>
             </div>
         </div>
     @endif

@@ -19,11 +19,10 @@
                         <label for="visita_previa" class="modal-text font-weight-bold">
                             <i class="fas fa-question-circle"></i> ¿El empleado ya visitó con anterioridad?
                         </label>
-                        <div>
+                        <div class="d-flex align-items-center">
                             <input type="radio" class="btn-check visita" id="visita_si" name="visita_previa"
                                 value="si" onclick="toggleForm(true)" style="opacity: 0;">
-                            <label class="btn btn-outline-success" for="visita_si">Sí</label>
-
+                            <label class="btn btn-outline-success me-2" for="visita_si">Sí</label>
                             <input type="radio" class="btn-check visita" id="visita_no" name="visita_previa"
                                 value="no" onclick="toggleForm(false)" style="opacity: 0;">
                             <label class="btn btn-outline-danger" for="visita_no">No</label>
@@ -41,10 +40,12 @@
                             <option value="" disabled selected>Selecciona un empleado</option>
                             @foreach ($empleadosp as $empleadoNoRegistrado)
                                 <option data-id="{{ $empleadoNoRegistrado->id_puesto }}"
-                                    data-nombres="{{ $empleadoNoRegistrado->nombres }}"
+                                    data-nombres="{{ $empleadoNoRegistrado->nombres }} {{ $empleadoNoRegistrado->apellido_p }} {{ $empleadoNoRegistrado->apellido_m }}"
                                     data-puesto-id="{{ $empleadoNoRegistrado->id_puesto }}"
                                     data-puesto-nombre="{{ $empleadoNoRegistrado->puesto ? $empleadoNoRegistrado->puesto->nombre : 'Sin puesto' }}">
                                     {{ $empleadoNoRegistrado->nombres }}
+                                    {{ $empleadoNoRegistrado->apellido_p }}
+                                    {{ $empleadoNoRegistrado->apellido_m }}
                                 </option>
                             @endforeach
                         </select>
@@ -110,24 +111,25 @@
 </div>
 
 <style>
-    /* Estilo para el texto de la etiqueta */
-    .modal-text {
-        font-size: 16px;
-        /* Tamaño de fuente */
-        color: #333;
-        /* Color del texto */
-        line-height: 1.5;
-        /* Altura de línea */
-        margin-bottom: 10px;
-        /* Espaciado inferior */
+    .check-group .btn {
+        margin-right: 0;
     }
 
-    /* Estilo del modal */
+    .check-group input.visita {
+        margin: 0;
+    }
+
+    .modal-text {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.5;
+        margin-bottom: 10px;
+    }
+
     .modal-content {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     }
 
-    /* Efecto hover para botones */
     .btn-primary:hover {
         background-color: #0056b3;
         border-color: #0056b3;
@@ -138,7 +140,7 @@
         border-color: #5a6268;
     }
 
-    /* Animación de entrada */
+    /* animacion de entrada */
     .modal.fade .modal-dialog {
         transition: transform 0.3s ease-out;
     }
@@ -147,7 +149,6 @@
         transform: translate(0, 0);
     }
 
-    /* Responsividad */
     @media (max-width: 768px) {
         .modal-dialog {
             width: 90%;
@@ -155,7 +156,6 @@
         }
     }
 
-    /* Efecto de enfoque para mantener elementos visibles */
     .form-control:focus {
         border-color: #007bff;
         box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);

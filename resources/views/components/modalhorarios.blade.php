@@ -27,8 +27,8 @@
                         </div>
 
                         <div class="mt-3">
-                            <label for="miSelect" class="fw-semibold">Seleccionar Empleado:</label>
-                            <select id="miSelect" class="form-control form-control-lg"
+                            <label for="miSalida" class="fw-semibold">Seleccionar Empleado:</label>
+                            <select id="miSalida" class="form-control form-control-lg"
                                 aria-label="Seleccionar empleado">
                                 <option value="" disabled selected>Selecciona una opción</option>
                             </select>

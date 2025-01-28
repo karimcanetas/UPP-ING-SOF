@@ -176,7 +176,7 @@
                 var name = $(this).data("name");
                 event.preventDefault();
                 Swal.fire({
-                    imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/salir.gif',
+                    imageUrl: '{{ asset('assets/img/descarga/salir.gif') }}',
                     title: "¿Listo para salir?",
                     text: "Seleccione 'Cerrar sesión' para finalizar su sesión actual.",
                     imageWidth: 400,
@@ -189,7 +189,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         Swal.fire({
-                            imageUrl: 'https://serviciosespecializados.grupoprt.com/public/assets/img/descarga/check.gif',
+                            imageUrl: '{{ asset('assets/img/descarga/check.gif') }}',
                             imageWidth: 300,
                             imageHeight: 300,
                             imageAlt: 'Sesion cerrada!',
@@ -216,6 +216,7 @@
         @endforeach
     @else
         <!-- Bootstrap JS -->
+        <x-modalEntrada />
         <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
         <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
