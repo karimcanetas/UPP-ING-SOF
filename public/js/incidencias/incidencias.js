@@ -302,7 +302,7 @@ document.getElementById('id_formatos').addEventListener('change', function () {
         //EMPRESA SUBARU SUCURSAL MÉRIDA 
         //CASETA SUBARU
         'Novedades Subaru': 'novedad_subaru',
-        'Salida unidades ToTs subaru': 'unidades_subaru',
+        'Salida unidades ToTs subaru': 'salida_unidades_subaru',
         'Control de unidades en estacionamiento SUBARU': 'Control_subaru_servicio',
         'Bitácora de control de vehículos utilitarios': 'control_vehiculos',
         'Postventa - bitácora de surtido de aceite bahías Altabrisa': 'bitacora_bahias',
@@ -508,7 +508,6 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#empleadoNoRegistradoContainer').hide();
             $('label:contains("Empleado no registrado")').hide();
         }
-
     });
 
     // $(document).ready(function () {
@@ -642,6 +641,19 @@ function submitAndResetForm(boton) {
         $('label:contains("Nombre asociado interno")').show();
         $('label:contains("Empleado no registrado:")').hide();
         $('#empleadoNoRegistradoContainer').hide();
+        //mostrar el boton con id agregarEmpleadoBtn
+        $('#agregarEmpleadoBtn').show();
+        $('label:contains("Nombre asociado interno")').show();
+        $('#campoAsociadoInterno').show();
+        $('label:contains("Puesto")').show();
+        $('#puestoid').show();
+        $('#unidadID').show();
+        $('label:contains("Unidad - Vehiculo personal")').show();
+        $('#placasID').show();
+        $('label:contains("Placas")').show();
+        $('label:contains("Observaciones / Comentarios")').show();
+        $('#observacionesID').show();
+        $('#botonenviarID').show();
     }
 
     elementos.forEach(elemento => {
@@ -878,7 +890,7 @@ function iniciarTurno() {
             confirmButtonText: 'Cerrar',
             toast: true,
             position: 'bottom-end',
-            timer: horaFinDate,
+            timer: diferencia, // Duración hasta la hora de fin
             timerProgressBar: true,
         });
 
@@ -932,7 +944,7 @@ function EmpleadosSinSalida() {
         dataType: 'json',
         success: function (response) {
             let data = Array.isArray(response) ? response : Object.values(response);
-            $('#miSelect').empty().append('<option value="">Selecciona una opción</option>');
+            $('#miSalida').empty().append('<option value="">Selecciona una opción</option>');
 
             data.forEach(function (item) {
                 let valorCampo34 = item.valor_campo_34;
@@ -943,14 +955,15 @@ function EmpleadosSinSalida() {
                     text: empleadoTexto,
                     value: item.id_incidencias
                 });
-                $('#miSelect').append(option);
+                $('#miSalida').append(option);
             });
 
-            $('#miSelect').select2({
+            $('#miSalida').select2({
                 placeholder: 'Selecciona una opción',
                 allowClear: true,
                 minimumResultsForSearch: 0,
-                width: '100%'
+                width: '100%',
+                dropdownParent: $('#HoraModal')
             });
 
 
@@ -971,7 +984,7 @@ function EmpleadosSinSalida() {
                 }
             });
 
-            $('#miSelect').on('change', function () {
+            $('#miSalida').on('change', function () {
                 const selectedIncidencia = $(this).val();
                 if (selectedIncidencia) {
                     const selectedItem = data.find(item => item.id_incidencias == selectedIncidencia);
@@ -1028,7 +1041,7 @@ $(document).ready(function () {
 
                     });
                     $('#cerrar').click();
-                    $('#miSelect').val('').trigger('change');
+                    $('#miSalida').val('').trigger('change');
                     $('#actualizarHoraForm input').val('');
                     $('#actualizarHoraForm label.error').remove();
                 } else {
@@ -1057,6 +1070,19 @@ $(document).ready(function () {
     $(`${formSelector} label:contains("Hora de entrada")`).hide();
     $(`${formSelector} label:contains("Hora de salida")`).hide();
     $(`${formSelector} #agregarhoraBtn`).hide();
+    //mostrar el boton con id agregarEmpleadoBtn
+    $(`${formSelector} #agregarEmpleadoBtn`).show();
+    $(`${formSelector} label:contains("Nombre asociado interno")`).show();
+    $(`${formSelector} #campoAsociadoInterno`).show();
+    $(`${formSelector} label:contains("Puesto")`).show();
+    $(`${formSelector} #puestoid`).show();
+    $(`${formSelector} #unidadID`).show();
+    $(`${formSelector} label:contains("Unidad - Vehiculo personal")`).show();
+    $(`${formSelector} #placasID`).show();
+    $(`${formSelector} label:contains("Placas")`).show();
+    $(`${formSelector} label:contains("Observaciones / Comentarios")`).show();
+    $(`${formSelector} #observacionesID`).show();
+    $(`${formSelector} #botonenviarID`).show();
     $(`${formSelector} input[name="horaSelect"]`).change(function () {
         $(`${formSelector} #campoHoraEntrada`).hide();
         $(`${formSelector} #campoHoraSalida`).hide();
@@ -1066,12 +1092,42 @@ $(document).ready(function () {
             $(`${formSelector} label:contains("Hora de entrada")`).show();
             $(`${formSelector} #campoHoraEntrada input`).attr('required', true);
             $(`${formSelector} #agregarhoraBtn`).hide();
+
             $(`${formSelector} label:contains("Hora de salida")`).hide();
+            //mostrar el boton con id agregarEmpleadoBtn
+            $(`${formSelector} #agregarEmpleadoBtn`).show();
+            $(`${formSelector} label:contains("Nombre asociado interno")`).show();
+            $(`${formSelector} #campoAsociadoInterno`).show();
+            //ocultar label e inputs de los formularios
+            $(`${formSelector} label:contains("Puesto")`).show();
+            $(`${formSelector} #puestoid`).show();
+            $(`${formSelector} #unidadID`).show();
+            $(`${formSelector} label:contains("Unidad - Vehiculo personal")`).show();
+            $(`${formSelector} #placasID`).show();
+            $(`${formSelector} label:contains("Placas")`).show();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).show();
+            $(`${formSelector} #observacionesID`).show();
+            $(`${formSelector} #botonenviarID`).show();
         } else if ($(this).val() === 'salida') {
             EmpleadosSinSalida();
             $(`${formSelector} #agregarhoraBtn`).show();
             $(`${formSelector} label:contains("Hora de entrada")`).hide();
             $(`${formSelector} input[type="time"]`).attr('required', true);
+            //ocultar el boton con id agregarEmpleadoBtn
+            $(`${formSelector} #agregarEmpleadoBtn`).hide();
+            $(`${formSelector} label:contains("Nombre asociado interno")`).hide();
+            $(`${formSelector} #campoAsociadoInterno`).hide();
+            $(`${formSelector} label:contains("Hora de salida")`).hide();
+            $(`${formSelector} label:contains("Puesto")`).hide();
+            $(`${formSelector} #puestoid`).hide();
+            $(`${formSelector} #unidadID`).hide();
+            $(`${formSelector} label:contains("Unidad - Vehiculo personal")`).hide();
+            $(`${formSelector} #placasID`).hide();
+            $(`${formSelector} label:contains("Placas")`).hide();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).hide();
+            $(`${formSelector} #observacionesID`).hide();
+            $(`${formSelector} #botonenviarID`).hide();
+
         } else if ($(this).val() === 'ambas') {
             $(`${formSelector} #campoHoraEntrada`).show();
             $(`${formSelector} #campoHoraSalida`).show();
@@ -1079,6 +1135,17 @@ $(document).ready(function () {
             $(`${formSelector} label:contains("Hora de salida")`).show();
             $(`${formSelector} #agregarhoraBtn`).hide();
             $(`${formSelector} input[type="time"]`).attr('required', true);
+            //mostrar el boton con id agregarEmpleadoBtn
+            $(`${formSelector} #agregarEmpleadoBtn`).show();
+            $(`${formSelector} label:contains("Nombre asociado interno")`).show();
+            $(`${formSelector} #campoAsociadoInterno`).show();
+            $(`${formSelector} label:contains("Puesto")`).show();
+            $(`${formSelector} #puestoid`).show();
+            $(`${formSelector} #placasID`).show();
+            $(`${formSelector} label:contains("Placas")`).show();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).show();
+            $(`${formSelector} #observacionesID`).show();
+            $(`${formSelector} #botonenviarID`).show();
         }
     });
     $(`${formSelector}`).submit(function (e) {
@@ -1110,3 +1177,269 @@ $(document).ready(function () {
     toggleAriaHidden('#HoraModal');
     toggleAriaHidden('#agregarEmpleadoModal');
 });
+
+
+
+$(document).ready(function () {
+    var formSelector = '#salida_tots_subaru';
+    //hora entrada y salida
+    $(`${formSelector} #campoHoraEntrada`).hide();
+    $(`${formSelector} #HoraKmEntrada`).hide();
+    $(`${formSelector} #campoHoraSalida`).hide();
+    $(`${formSelector} label:contains("Hora de entrada")`).hide();
+    $(`${formSelector} label:contains("Hora de salida")`).hide();
+    //km entrada y salida
+    $(`${formSelector} #kmEntrada`).hide();
+    $(`${formSelector} #kmSalida`).hide();
+    $(`${formSelector} label:contains("KM de entrada")`).hide();
+    $(`${formSelector} label:contains("KM de salida")`).hide();
+
+    $(`${formSelector} input[name="horaSelect"]`).change(function () {
+        $(`${formSelector} #campoHoraEntrada`).hide();
+        $(`${formSelector} #campoHoraSalida`).hide();
+        $(`${formSelector} input[type="time"]`).removeAttr('required');
+        $(`${formSelector} input[type="number"]`).removeAttr('required');
+        if ($(this).val() === 'entrada') {
+            //hora entrada
+            FolioSinEntrada();
+            $(`${formSelector} #campoHoraEntrada`).hide();
+            $(`${formSelector} label:contains("Hora de entrada")`).hide();
+            // $(`${formSelector} #campoHoraEntrada input`).attr('required', true);
+            //km entrada
+            $(`${formSelector} #kmEntrada`).hide();
+            $(`${formSelector} label:contains("KM de entrada")`).hide();
+            $(`${formSelector} #HoraKmEntrada`).show();
+            $(`${formSelector} #kmEntrada input`).attr('required', true);
+            //hora salida oculta y km
+            $(`${formSelector} label:contains("Hora de salida")`).hide();
+            $(`${formSelector} #campoHoraSalida`).hide();
+            $(`${formSelector} #kmSalida`).hide();
+            $(`${formSelector} label:contains("KM de salida")`).hide();
+            //campos, requeridos a ocultar
+            $(`${formSelector} label:contains("Fecha")`).hide();
+            $(`${formSelector} #fechaTOT`).hide();
+            $(`${formSelector} label:contains("Placas")`).hide();
+            $(`${formSelector} #placasTOT`).hide();
+            $(`${formSelector} label:contains("Unidad")`).hide();
+            $(`${formSelector} #selectUnidad`).hide();
+            $(`${formSelector} label:contains("VIN (6 últimos dígitos)")`).hide();
+            $(`${formSelector} #VINtot`).hide();
+            $(`${formSelector} label:contains("Nombre Taller")`).hide();
+            $(`${formSelector} #TallerTOT`).hide();
+            $(`${formSelector} label:contains("Persona que retira la unidad (Proveedor)")`).hide();
+            $(`${formSelector} #proveedorTOT`).hide();
+            $(`${formSelector} label:contains("Folio / Num de pase")`).hide();
+            $(`${formSelector} #folioTOT`).hide();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).hide();
+            $(`${formSelector} #comentariosTOT`).hide();
+            $(`${formSelector} #BotonEnvio`).hide();
+        } else if ($(this).val() === 'salida') {
+            //hora salida
+            $(`${formSelector} #HoraKmEntrada`).hide();
+            $(`${formSelector} label:contains("Hora de salida")`).show();
+            $(`${formSelector} #campoHoraSalida`).show();
+            $(`${formSelector} #campoHoraSalida input`).attr('required', true);
+            //km salida
+            $(`${formSelector} #kmSalida`).show();
+            $(`${formSelector} label:contains("KM de salida")`).show();
+            $(`${formSelector} #kmSalida input`).attr('required', true);
+            //km de entrada oculta y km
+            $(`${formSelector} #campoHoraEntrada`).hide();
+            $(`${formSelector} label:contains("Hora de entrada")`).hide();
+            $(`${formSelector} #kmEntrada`).hide();
+            $(`${formSelector} label:contains("KM de entrada")`).hide();
+            //campos, requeridos a ocultar
+            $(`${formSelector} label:contains("Fecha")`).show();
+            $(`${formSelector} #fechaTOT`).show();
+            $(`${formSelector} label:contains("Placas")`).show();
+            $(`${formSelector} #placasTOT`).show();
+            $(`${formSelector} label:contains("Unidad")`).show();
+            $(`${formSelector} #selectUnidad`).show();
+            $(`${formSelector} label:contains("VIN (6 últimos dígitos)")`).show();
+            $(`${formSelector} #VINtot`).show();
+            $(`${formSelector} label:contains("Nombre Taller")`).show();
+            $(`${formSelector} #TallerTOT`).show();
+            $(`${formSelector} label:contains("Persona que retira la unidad (Proveedor)")`).show();
+            $(`${formSelector} #proveedorTOT`).show();
+            $(`${formSelector} label:contains("Folio / Num de pase")`).show();
+            $(`${formSelector} #folioTOT`).show();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).show();
+            $(`${formSelector} #comentariosTOT`).show();
+            $(`${formSelector} #BotonEnvio`).show();
+        } else if ($(this).val() === 'ambas') {
+            //hora
+            $(`${formSelector} #HoraKmEntrada`).hide();
+            $(`${formSelector} #campoHoraEntrada`).show();
+            $(`${formSelector} #campoHoraSalida`).show();
+            $(`${formSelector} label:contains("Hora de entrada")`).show();
+            $(`${formSelector} label:contains("Hora de salida")`).show();
+            $(`${formSelector} input[type="time"]`).attr('required', true);
+            //km
+            $(`${formSelector} #kmEntrada`).show();
+            $(`${formSelector} #kmSalida`).show();
+            $(`${formSelector} label:contains("KM de entrada")`).show();
+            $(`${formSelector} label:contains("KM de salida")`).show();
+            $(`${formSelector} input[type="number"]`).attr('required', true);
+            //campos, requeridos a ocultar
+            $(`${formSelector} label:contains("Fecha")`).show();
+            $(`${formSelector} #fechaTOT`).show();
+            $(`${formSelector} label:contains("Placas")`).show();
+            $(`${formSelector} #placasTOT`).show();
+            $(`${formSelector} label:contains("Unidad")`).show();
+            $(`${formSelector} #selectUnidad`).show();
+            $(`${formSelector} label:contains("VIN (6 últimos dígitos)")`).show();
+            $(`${formSelector} #VINtot`).show();
+            $(`${formSelector} label:contains("Nombre Taller")`).show();
+            $(`${formSelector} #TallerTOT`).show();
+            $(`${formSelector} label:contains("Persona que retira la unidad (Proveedor)")`).show();
+            $(`${formSelector} #proveedorTOT`).show();
+            $(`${formSelector} label:contains("Folio / Num de pase")`).show();
+            $(`${formSelector} #folioTOT`).show();
+            $(`${formSelector} label:contains("Observaciones / Comentarios")`).show();
+            $(`${formSelector} #comentariosTOT`).show();
+            $(`${formSelector} #BotonEnvio`).show();
+        }
+    });
+    $(`${formSelector}`).submit(function (e) {
+        if (!$(`${formSelector} input[name="horaSelect"]:checked`).length) {
+            $(`${formSelector} #horaSelectError`).show();
+            e.preventDefault();
+        } else {
+            $(`${formSelector} #horaSelectError`).hide();
+        }
+    });
+});
+
+$('#EntradaModal').on('show.bs.modal', function () {
+    FolioSinEntrada();
+});
+
+function FolioSinEntrada() {
+    $.ajax({
+        url: '/obtenerEntrada',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            // Convierte la respuesta a un array si no lo es
+            let data = Array.isArray(response) ? response : Object.values(response);
+            $('#miSelect').empty().append('<option value="">Selecciona una opción</option>');
+            data.forEach(function (item) {
+                let horaEntrada = item.HoraEntrada !== 'N/A' && item.HoraEntrada !== null ? item.HoraEntrada : '(Sin hora de entrada)';
+                let kmEntrada = item.KmEntrada !== 'N/A' && item.KmEntrada !== null ? item.KmEntrada : '(Sin Km de entrada)';
+                let folio = item.Folio || 'Folio no disponible';
+                let optionText = `Folio: ${folio} - Hora: ${horaEntrada} - Km: ${kmEntrada}`;
+                let option = $('<option>', {
+                    text: optionText,
+                    value: item.id_incidencias
+                });
+                $('#miSelect').append(option);
+            });
+            $('#miSelect').select2({
+                placeholder: 'Selecciona una opción',
+                allowClear: true,
+                minimumResultsForSearch: 0,
+                width: '100%',
+                dropdownParent: $('#EntradaModal')
+            });
+            $('#miSelect').on('change', function () {
+                let selectedId = $(this).val();
+                $('#id_incidencias_Entrada').val(selectedId);
+            });
+            Swal.fire({
+                title: 'Actualización',
+                text: 'Se actualizó la hora de entrada y el Km de entrada',
+                icon: 'success',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__slideInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__slideOutUp'
+                }
+            });
+        },
+        error: function (error) {
+            console.error("Error en la solicitud:", error);
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudieron cargar los datos. Intenta nuevamente.',
+                icon: 'error',
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOut'
+                }
+            });
+        }
+    });
+}
+
+$(document).ready(function () {
+    $('#entradaForm').on('submit', function (e) {
+        e.preventDefault();
+
+        let submitButton = $(this).find('button[type="submit"]');
+        submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...');
+
+        let formData = {
+            id_incidencias_Entrada: $('#id_incidencias_Entrada').val(),
+            hora_Entrada: $('#hora_Entrada').val(),
+            km_Entrada: $('#km_Entrada').val()
+        };
+        // console.log(formData);
+
+        $.ajax({
+            url: '/ActualizarEntrada',
+            type: 'POST',
+            data: formData,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            },
+            success: function (response) {
+                submitButton.prop('disabled', false).html('Guardar cambios');
+
+                if (response.success) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: response.success,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    $('#entradaForm')[0].reset();
+                    FolioSinEntrada();
+                    $('#cerrar').click();
+                    $('#miSelect').val('').trigger('change');
+                } else {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error en la solicitud',
+                        showConfirmButton: true
+                    });
+                }
+            },
+            error: function (xhr) {
+                submitButton.prop('disabled', false).html('Guardar cambios');
+
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Ocurrió un error: ' + xhr.responseJSON.message,
+                    showConfirmButton: true
+                });
+            },
+        });
+    });
+});
+
