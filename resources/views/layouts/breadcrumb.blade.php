@@ -90,7 +90,7 @@
 
             @if (Route::is('EmpleadoFormato.index'))
                 <li class="breadcrumb-item text-danger" aria-current="page">
-                    <b>{{ __('Agregar Correo') }}</b>
+                    <b>{{ __('Enlace de formatos') }}</b>
                 </li>
             @endif
 
@@ -101,46 +101,21 @@
 
 <divc class="text-right">
 
-    @if (Route::is('manual'))
-        <a href="#" class="btn btn-primary btn-sm anim-left anim-pause-1 border-50" id="mostrar_creador_manual"
-            data-toggle="popover" data-content="Pulsar para crear un nuevo dato">
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    @if (Route::is('EmpleadoFormato.index'))
+        <a class="btn btn-success btn-sm border-25 mb-2 anim-left anim-pause-1" id="editarmodal">
+            <svg width="34px" height="34px" fill="#ffffff" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
                 <g id="SVGRepo_iconCarrier">
-                    <path opacity="0.4"
-                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                        fill="#ffffff"></path>
-                    <path
-                        d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
-                        fill="#ffffff"></path>
+                    <path class="st0" d="M12 25l3 3 15-15-3-3-15 15zM11 26l3 3-4 1z"></path>
                 </g>
             </svg>
-            <b>{{ __('Crear una hoja de manual') }}</b>
+            {{ __('Destinatarios Correos') }}
         </a>
     @endif
 
-    {{-- @if (Route::is('dashboard', 'send.index', 'CorreoFormato.index'))
-        <a class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1" data-toggle="modal"
-            data-target="#exampleModal_empresa">
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <g opacity="0.5">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M20.25 2.76923C20.25 3.19407 19.9142 3.53846 19.5 3.53846L4.5 3.53846C4.08579 3.53846 3.75 3.19406 3.75 2.76923C3.75 2.3444 4.08579 2 4.5 2L19.5 2C19.9142 2 20.25 2.3444 20.25 2.76923ZM20.25 21.2308C20.25 21.6556 19.9142 22 19.5 22L4.5 22C4.08579 22 3.75 21.6556 3.75 21.2308C3.75 20.8059 4.08579 20.4615 4.5 20.4615L19.5 20.4615C19.9142 20.4615 20.25 20.8059 20.25 21.2308Z"
-                            fill="#ffffff"></path>
-                    </g>
-                    <path
-                        d="M16 5.84619C18.8284 5.84619 20.2426 5.84619 21.1213 6.7474C22 7.64861 22 9.09909 22 12C22 14.901 22 16.3515 21.1213 17.2527C20.2426 18.1539 18.8284 18.1539 16 18.1539L8 18.1539C5.17157 18.1539 3.75736 18.1539 2.87868 17.2527C2 16.3515 2 14.901 2 12C2 9.09909 2 7.64861 2.87868 6.7474C3.75736 5.84619 5.17157 5.84619 8 5.84619L16 5.84619Z"
-                        fill="#ffffff"></path>
-                </g>
-            </svg>
-            {{ __('Avanzado') }}
-        </a>
-
-        <a href="" class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1"" data-bs-toggle="tooltip"
+    {{-- <a href="" class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1"" data-bs-toggle="tooltip"
             data-bs-placement="top" title="Ver Detalles Tarea">
             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -158,49 +133,6 @@
                 </g>
             </svg>
             {{ __('Detalles de Tarea') }}
-        </a>
-
-        <a data-toggle="modal" data-target="#modal_nuevo_ticket"
-            class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1" data-bs-toggle="tooltip"
-            data-bs-placement="top" title="Ver Detalles Tarea">
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path opacity="0.5"
-                        d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z"
-                        fill="#fff"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M12 5.25C12.4142 5.25 12.75 5.58579 12.75 6V7.25H14C14.4142 7.25 14.75 7.58579 14.75 8C14.75 8.41421 14.4142 8.75 14 8.75L12.75 8.75L12.75 10C12.75 10.4142 12.4142 10.75 12 10.75C11.5858 10.75 11.25 10.4142 11.25 10L11.25 8.75H9.99997C9.58575 8.75 9.24997 8.41421 9.24997 8C9.24997 7.58579 9.58575 7.25 9.99997 7.25H11.25L11.25 6C11.25 5.58579 11.5858 5.25 12 5.25ZM7.25 14C7.25 13.5858 7.58579 13.25 8 13.25H16C16.4142 13.25 16.75 13.5858 16.75 14C16.75 14.4142 16.4142 14.75 16 14.75H8C7.58579 14.75 7.25 14.4142 7.25 14ZM8.25 18C8.25 17.5858 8.58579 17.25 9 17.25H15C15.4142 17.25 15.75 17.5858 15.75 18C15.75 18.4142 15.4142 18.75 15 18.75H9C8.58579 18.75 8.25 18.4142 8.25 18Z"
-                        fill="#fff"></path>
-                </g>
-            </svg>
-            {{ __('Nuevo Ticket') }}
-        </a>
-
-        <a href="" class="btn btn-primary btn-sm border-25 mb-2 anim-left anim-pause-1""
-            data-bs-toggle="tooltip" data-bs-placement="top" title="Crear Nueva Tarea">
-            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                <g id="SVGRepo_iconCarrier">
-                    <path opacity="0.5"
-                        d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z"
-                        fill="#fff"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M7.25 12C7.25 11.5858 7.58579 11.25 8 11.25H16C16.4142 11.25 16.75 11.5858 16.75 12C16.75 12.4142 16.4142 12.75 16 12.75H8C7.58579 12.75 7.25 12.4142 7.25 12Z"
-                        fill="#fff"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M7.25 8C7.25 7.58579 7.58579 7.25 8 7.25H16C16.4142 7.25 16.75 7.58579 16.75 8C16.75 8.41421 16.4142 8.75 16 8.75H8C7.58579 8.75 7.25 8.41421 7.25 8Z"
-                        fill="#fff"></path>
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                        d="M7.25 16C7.25 15.5858 7.58579 15.25 8 15.25H13C13.4142 15.25 13.75 15.5858 13.75 16C13.75 16.4142 13.4142 16.75 13 16.75H8C7.58579 16.75 7.25 16.4142 7.25 16Z"
-                        fill="#fff"></path>
-                </g>
-            </svg>
-            {{ __('Nueva Tarea') }}
         </a>
     @endif --}}
 
