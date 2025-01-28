@@ -70,9 +70,10 @@ class EmpleadosCatologoController extends Controller
         $empSuc = empleado_sucursal::where('id_sucursal', $sucursalId)->pluck('id_empleado');
         // obtengo los puestos asociados al departamento especificado
         $puestos = DepartamentoPuesto::where('id_departamento', $departamentoId)->pluck('id_puesto');
-        // obtengo los empleados que están en la sucursal y puestos solicitados
+        // obtengo los empleados que están en la sucursal y puestos solicitados y que su status sea 1
         $empleados = EmpleadosCatalogo::whereIn('id_empleado', $empSuc)
             ->whereIn('id_puesto', $puestos)
+            ->where('status', 1)
             ->with(['user:id,n_empleado,email'])
             ->get()
             ->map(function ($empleado) {
