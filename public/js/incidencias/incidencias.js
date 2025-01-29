@@ -1040,7 +1040,9 @@ $(document).ready(function () {
                         timer: 1500,
 
                     });
-                    $('#cerrar').click();
+                    $('#actualizarHoraForm')[0].reset();
+                    $('#cerrarHora').click();
+                    EmpleadosSinSalida();
                     $('#miSalida').val('').trigger('change');
                     $('#actualizarHoraForm input').val('');
                     $('#actualizarHoraForm label.error').remove();
@@ -1316,9 +1318,12 @@ $('#EntradaModal').on('show.bs.modal', function () {
 
 //Entrada la caseta subaru
 function FolioSinEntrada() {
+    let idFormatos = $('#formatos_subaru_tot').val();
     $.ajax({
         url: '/obtenerEntrada',
         type: 'GET',
+        //comentar si es necesario
+        data: { formatos_subaru_tot: idFormatos },
         dataType: 'json',
         success: function (response) {
             // Convierte la respuesta a un array si no lo es
