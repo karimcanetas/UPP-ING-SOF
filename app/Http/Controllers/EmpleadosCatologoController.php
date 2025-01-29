@@ -60,7 +60,7 @@ class EmpleadosCatologoController extends Controller
             'puestoNombre' => $puesto ? $puesto->nombre : '',
             'message' => 'Empleado agregado exitosamente.',
         ]);
-        
+
         // return redirect()->route('incidencias.create')->with('empleado_success', 'Empleado agregado exitosamente.');
     }
 
@@ -80,7 +80,7 @@ class EmpleadosCatologoController extends Controller
                 return [
                     'id_empleado' => $empleado->id_empleado,
                     'nombres' => $empleado->nombres,
-                    'apellidos' => $empleado->apellido_p,
+                    'apellidos' => $empleado->apellido_p . ' ' . $empleado->apellido_m,
                     'email' => $empleado->user->email ?? '',
                 ];
             });
@@ -99,6 +99,10 @@ class EmpleadosCatologoController extends Controller
         $empleados = DB::connection('mysql')
             ->table('empleados')
             ->whereIn('id_empleado', $pivotData->pluck('id_empleado'))
+            ->select(
+                'id_empleado',
+                DB::raw("CONCAT(nombres, ' ', apellido_p, ' ', apellido_m) AS nombres")
+            )
             ->pluck('nombres', 'id_empleado');
 
         // recupero la empresa y sucursal junto con la caseta
