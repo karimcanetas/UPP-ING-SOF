@@ -253,63 +253,69 @@ class IncidenciaController extends Controller
         }
     }
 
-    public function obtenerHoraEntrada()
+    public function obtenerHoraEntrada(Request $request)
     {
-        $hoy = Carbon::today();
-        $resultados = Incidencia::where('id_formatos', 23)
-            ->whereHas('campos', function ($query) {
-                $query->whereIn('id_campo', [19, 30, 65])
-                    ->where(function ($subQuery) {
-                        $subQuery->whereIn('id_campo', [30, 65])
-                            ->where(function ($valor) {
-                                $valor->whereNull('valor')
-                                    ->orWhere('valor', 'N/A')
-                                    ->orWhereRaw("valor NOT REGEXP '^[0-9]{2}:[0-9]{2}$'");
-                            })
-                            ->orWhereNotIn('id_campo', [30, 65]);
-                    });
-            })
-            ->whereDate('fecha_hora', $hoy)
-            ->with(['campoIncidencias' => function ($query) {
-                $query->select('id_incidencias', 'id_campo', 'valor');
-            }])
-            ->get()
-            ->map(function (Incidencia $incidencia) {
-                // Obtener datos específicos
-                $entrada = $incidencia->campoIncidencias
-                    ->where('id_campo', 30)
-                    ->first()?->valor;
+        $formato = $request->input('formatos_subaru_tot');
+        //Solo el formato de Empresa Toyota y subaru
+        if ($formato == 23 || $formato == 32) {
+            $hoy = Carbon::today();
+            //para remover solo se cambiaria el where por el whereIn y en lugar de pasar la variable formato colocar ambos ids
+            //y comentar el if y comentar la parte del ajax (data)
+            $resultados = Incidencia::where('id_formatos', $formato)
+                ->whereHas('campos', function ($query) {
+                    $query->whereIn('id_campo', [19, 30, 65])
+                        ->where(function ($subQuery) {
+                            $subQuery->whereIn('id_campo', [30, 65])
+                                ->where(function ($valor) {
+                                    $valor->whereNull('valor')
+                                        ->orWhere('valor', 'N/A')
+                                        ->orWhereRaw("valor NOT REGEXP '^[0-9]{2}:[0-9]{2}$'");
+                                })
+                                ->orWhereNotIn('id_campo', [30, 65]);
+                        });
+                })
+                ->whereDate('fecha_hora', $hoy)
+                ->with(['campoIncidencias' => function ($query) {
+                    $query->select('id_incidencias', 'id_campo', 'valor');
+                }])
+                ->get()
+                ->map(function (Incidencia $incidencia) {
+                    // Obtener datos específicos
+                    $entrada = $incidencia->campoIncidencias
+                        ->where('id_campo', 30)
+                        ->first()?->valor;
 
-                $KmEntrada = $incidencia->campoIncidencias
-                    ->where('id_campo', 65)
-                    ->first()?->valor;
+                    $KmEntrada = $incidencia->campoIncidencias
+                        ->where('id_campo', 65)
+                        ->first()?->valor;
 
-                // Si la hora de entrada es válida, excluye el registro
-                if (!is_null($entrada) && $entrada !== 'N/A') {
-                    return null;
-                }
+                    // Si la hora de entrada es válida, excluye el registro
+                    if (!is_null($entrada) && $entrada !== 'N/A') {
+                        return null;
+                    }
 
-                if (!is_null($KmEntrada) && $KmEntrada !== 'N/A') {
-                    return null;
-                }
+                    if (!is_null($KmEntrada) && $KmEntrada !== 'N/A') {
+                        return null;
+                    }
 
-                $folio = $incidencia->campoIncidencias
-                    ->where('id_campo', 19)
-                    ->first()?->valor;
+                    $folio = $incidencia->campoIncidencias
+                        ->where('id_campo', 19)
+                        ->first()?->valor;
 
-                // Devolver los datos procesados
-                return [
-                    'id_incidencias' => $incidencia->id_incidencias,
-                    'id_formatos' => $incidencia->id_formatos,
-                    'fecha_hora' => $incidencia->fecha_hora,
-                    'HoraEntrada' => $entrada,
-                    'KmEntrada' => $KmEntrada,
-                    'Folio' => $folio,
-                ];
-            })
-            ->filter(); // Elimina registros nulos
+                    // Devolver los datos procesados
+                    return [
+                        'id_incidencias' => $incidencia->id_incidencias,
+                        'id_formatos' => $incidencia->id_formatos,
+                        'fecha_hora' => $incidencia->fecha_hora,
+                        'HoraEntrada' => $entrada,
+                        'KmEntrada' => $KmEntrada,
+                        'Folio' => $folio,
+                    ];
+                })
+                ->filter(); // Elimina registros nulos
 
-        return response()->json($resultados);
+            return response()->json($resultados);
+        }
     }
 
     public function ActualizarEntrada(Request $request)
