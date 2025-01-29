@@ -1314,6 +1314,7 @@ $('#EntradaModal').on('show.bs.modal', function () {
     FolioSinEntrada();
 });
 
+//Entrada la caseta subaru
 function FolioSinEntrada() {
     $.ajax({
         url: '/obtenerEntrada',
