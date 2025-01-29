@@ -84,7 +84,7 @@
                 <table role="presentation" class="container">
                     <tr>
                         <td class="header">
-                            <img src="{{ asset('assets/img/logo/prt_Mesa.ico') }}" alt="Logo">
+                            <img src="{{ asset('assets/img/logo/prt_Mesa.png') }}" alt="Logo">
                         </td>
                     </tr>
                     <tr>
