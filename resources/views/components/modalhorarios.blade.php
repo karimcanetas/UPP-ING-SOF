@@ -43,7 +43,7 @@
 
                     <div class="modal-footer border-0">
                         <button type="button" class="btn btn-outline-secondary rounded-3 d-flex align-items-center"
-                            data-bs-dismiss="modal" id="cerrar">
+                            data-bs-dismiss="modal" id="cerrarHora">
                             <i class="fas fa-times-circle me-2"></i><span>Cancelar</span>
                         </button>
                         <button type="submit" class="btn btn-success rounded-3 d-flex align-items-center">
