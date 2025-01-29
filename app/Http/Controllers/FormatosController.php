@@ -13,45 +13,6 @@ use Illuminate\Support\Facades\Log;
 
 class FormatosController extends Controller
 {
-    // public function checksSeparadores()
-    // {
-    //     $FormatoCasetas = Formatocaseta::with([
-    //         'Caseta.sucursal.empresa',
-    //         'Formato.EmpleadosFormatos.Empleado.user'
-    //     ])->get();
-
-    //     $groupedByCaseta = $FormatoCasetas->groupBy(function($item) {
-    //         return $item->Caseta->id_casetas . ' - ' . $item->Caseta->nombre;
-    //     })->map(function ($items) {
-    //         return $items->map(function ($item) {
-
-    //             $empleados = $item->Formato->EmpleadosFormatos
-    //                 ->where('status', 1)
-    //                 ->map(fn($pivot) => $pivot->Empleado?->user?->email ? [
-    //                     'nombre' => $pivot->Empleado->nombres,
-    //                     'email' => $pivot->Empleado->user->email,
-    //                 ] : null)
-    //                 ->filter();
-
-    //             return [
-    //                 'id_casetas' => $item->id_casetas,
-    //                 'nombre_caseta' => $item->Caseta->nombre,
-    //                 'id_formatos' => $item->id_formatos,
-    //                 'Tipo' => $item->Formato->Tipo,
-    //                 'empresa' => $item->Caseta->sucursal->empresa->alias ?? 'Sin empresa',
-    //                 'sucursal' => $item->Caseta->sucursal->nombre ?? 'Sin sucursal',
-    //                 'empleados' => $empleados->values(),
-    //             ];
-    //         });
-    //     });
-
-
-    //     Log::info('FormatoCasetas agrupadas por caseta:', $groupedByCaseta->toArray());
-
-    //     return response()->json(['groupedByCaseta' => $groupedByCaseta]);
-    // }
-
-
     public function checksSeparadores()
     {
 
@@ -88,7 +49,7 @@ class FormatosController extends Controller
                     $empleados = $item->Formato->EmpleadosFormatos
                         ->where('status', 1)
                         ->map(fn($pivot) => $pivot->Empleado?->user?->email ? [
-                            'nombre' => $pivot->Empleado->nombres,
+                            'nombre' => $pivot->Empleado->nombres . ' ' . $pivot->Empleado->apellido_p . ' ' . $pivot->Empleado->apellido_m,
                             'email' => $pivot->Empleado->user->email,
                         ] : null)
                         ->filter();
