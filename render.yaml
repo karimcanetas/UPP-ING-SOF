@@ -1,36 +1,55 @@
-
+# render.yaml
 services:
   - type: web
-    name: vigilancia-prt
-    env: php
-    php_version: "8.2"
-    branch: main
+    name: vigilancia-prt # Name of your Render service
+    env: php             # Explicitly sets the environment to PHP
+    php_version: "8.2"   # Specifies the PHP version
+    branch: main         # The branch to deploy from (e.g., main, master)
+    # repo: https://github.com/karimcanetas/UPP-ING-SOF # You don't need to specify 'repo' here if Render is connected directly to your GitHub repo.
+                                                      # Render automatically gets this from your service settings.
+
     buildCommand: |
-      curl -sS https://getcomposer.org/installer | php
-      php composer.phar install --no-dev --optimize-autoloader
+      # Install Composer (Render often has it pre-installed, but this is a safe fallback)
+      # Using 'composer install' directly is usually preferred if Composer is already in PATH
+      # If Render's PHP runtime pre-installs Composer, you can often just use 'composer install'
+      composer install --no-dev --optimize-autoloader
+
+      # Frontend build commands (if you have Node.js/NPM dependencies)
       npm install
       npm run build
-      php artisan key:generate
+
+      # Laravel commands
+      php artisan key:generate --ansi # --ansi for colorful output in logs
+      php artisan migrate --force     # <--- ADD THIS to run migrations in production
+      php artisan storage:link        # <--- ADD THIS if you use storage/app/public
       php artisan config:cache
       php artisan route:cache
       php artisan view:cache
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
+
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT # Starts the Laravel development server
+
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: 'false'
       - key: APP_URL
-        value: https://tu-dominio.onrender.com
+        value: https://vigilancia-prt.onrender.com # <--- CHANGE THIS to your actual Render URL
+
+      # Database connection variables
+      # IMPORTANT: These should point to a separate database service (e.g., Render PostgreSQL/MySQL or a third-party DB)
+      # They should NOT point to 127.0.0.1 (localhost) or 3306 (default MySQL port)
+      # unless your DB is also on Render and configured to be accessible this way.
+      # Render's managed databases have specific internal connection strings.
       - key: DB_CONNECTION
-        value: mysql
+        value: mysql # Or pgsql if using PostgreSQL on Render
       - key: DB_HOST
-        value: 127.0.0.1
+        value: {{.Env.DB_HOST}} # <--- Best practice: Use Render's Secret Files or Environment Groups
       - key: DB_PORT
-        value: 3306
+        value: {{.Env.DB_PORT}} # <--- Best practice: Use Render's Secret Files or Environment Groups
       - key: DB_DATABASE
-        value: nombre_de_tu_base_de_datos
+        value: {{.Env.DB_DATABASE}} # <--- Best practice: Use Render's Secret Files or Environment Groups
       - key: DB_USERNAME
-        value: usuario_bd
+        value: {{.Env.DB_USERNAME}} # <--- Best practice: Use Render's Secret Files or Environment Groups
       - key: DB_PASSWORD
-        value: contraseña_bd
+        value: {{.Env.DB_PASSWORD}} # <--- Best practice: Use Render's Secret Files or Environment Groups
