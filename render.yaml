@@ -6,7 +6,8 @@ services:
     php_version: "8.2"
     branch: main
     buildCommand: |
-      composer install --no-interaction --prefer-dist --optimize-autoloader
+      curl -sS https://getcomposer.org/installer | php
+      php composer.phar install --no-dev --optimize-autoloader
       npm install
       npm run build
       php artisan key:generate
