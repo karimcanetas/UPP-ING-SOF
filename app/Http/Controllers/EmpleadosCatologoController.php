@@ -31,37 +31,34 @@ class EmpleadosCatologoController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request->all());
         $request->validate([
             'nombres' => 'required|string|max:255',
             'id_puesto' => 'required',
-            // 'id_tipo_asociado' => 'required',
             'apellido_p' => 'nullable|string|max:255',
             'apellido_m' => 'nullable|string|max:255',
         ]);
-
 
         $empleado = new EmpleadosNoRegistrados();
         $empleado->setConnection('mysql_2');  // Cambia la conexión a 'mysql_2'
         $empleado->nombres = strtoupper($request->nombres);
         $empleado->id_puesto = $request->id_puesto;
-        // $empleado->id_tipo_asociado = $request->id_tipo_asociado;
         $empleado->apellido_p = strtoupper($request->apellido_p);
         $empleado->apellido_m = strtoupper($request->apellido_m);
 
-
         $empleado->save();
+
         $puesto = Puestos::find($empleado->id_puesto);
+
+        // concateno el nombre completo con los apellidos
+        $nombreCompleto = $empleado->nombres . ' ' . $empleado->apellido_p . ' ' . $empleado->apellido_m;
+
         return response()->json([
             'id_empleado' => $empleado->id_empleado,
-            'nombres' => $empleado->nombres,
+            'nombres' => $nombreCompleto,
             'id_puesto' => $empleado->id_puesto,
             'puestoNombre' => $puesto ? $puesto->nombre : '',
             'message' => 'Empleado agregado exitosamente.',
         ]);
-
-        // return redirect()->route('incidencias.create')->with('empleado_success', 'Empleado agregado exitosamente.');
     }
 
     public function usuariosEmails($sucursalId, $departamentoId)

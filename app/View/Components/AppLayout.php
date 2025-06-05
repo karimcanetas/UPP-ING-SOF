@@ -6,6 +6,8 @@ use Illuminate\View\Component;
 use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Puestos;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Plataforma;
 use App\Models\TipoAsociado;
 use App\Models\Empresa;
 use App\Models\EmpleadosNoRegistrados;
@@ -40,6 +42,11 @@ class AppLayout extends Component
 
     public function render(): View
     {
+        $user = Auth::check() ? Auth::user() : null;
+        $plataformasPublicasApp = Plataforma::where('status', 1)
+        ->where('publica', 1)
+        ->get();
+        
         return view('layouts.app', [
             'empresas' => $this->empresas,
             'puestos' => $this->puestos,

@@ -188,7 +188,6 @@
     </li>
 
 
-
     {{-- <svg height="200" width="200" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5">
             <path d="m9 9l4.5 3L18 9M3 13.5h2m-4-3h4" strokeLinejoin="round" />

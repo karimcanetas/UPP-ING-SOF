@@ -37,4 +37,9 @@ class User extends Authenticatable
         return $this->belongsTo(EmpleadosCatalogo::class, 'n_empleado', 'n_empleado');
     }
 
+    public function plataformas()
+    {
+        return $this->belongsToMany(Plataforma::class, 'users_plataformas', 'id_user', 'id_plataforma');
+    }
+
 }

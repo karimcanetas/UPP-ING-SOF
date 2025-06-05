@@ -78,7 +78,7 @@ class ReporteExport implements FromView, WithTitle, WithEvents
 
     public function title(): string
     {
-        return 'Reporte Vigilancia PRT - ' . $this->formato->Tipo;
+        return 'Reporte Vigilancia KDO - ' . $this->formato->Tipo;
     }
 
     public function registerEvents(): array

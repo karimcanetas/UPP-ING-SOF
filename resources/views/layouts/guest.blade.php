@@ -329,10 +329,10 @@
             aria-valuemin="0" aria-valuemax="100"></div>
     </div>
 
-    <div class='ocean'>
+    <!-- <div class='ocean'>
         <div class='wave -one'> </div>
         <div class='wave -two'></div>
-    </div>
+    </div> -->
 
     @include('layouts.styles')
     @include('sweetalert::alert')
