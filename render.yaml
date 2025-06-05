@@ -1,18 +1,10 @@
 
 services:
   - type: web
-    name: upp-ing-sof
+    name: vigilancia-prt
     env: php
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader
-      php artisan key:generate
-      php artisan migrate --force
-    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
     plan: free
-    envVars:
-      - key: APP_ENV
-        value: production
-      - key: APP_KEY
-        generateValue: true
-      - key: PORT
-        value: 10000
+    buildCommand: "composer install && npm install && npm run build && php artisan key:generate"
+    startCommand: "php artisan serve --host=0.0.0.0 --port=$PORT"
+    autoDeploy: true
+    branch: main
